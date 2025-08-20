@@ -1,0 +1,328 @@
+import { ArrowRight, Users, Target, Lightbulb, Heart, Award, Globe, Code, Database, BarChart3, Map } from 'lucide-react';
+import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { ImageWithFallback } from './figma/ImageWithFallback';
+
+interface AboutPageProps {
+  onPageChange: (page: string) => void;
+}
+
+export function AboutPage({ onPageChange }: AboutPageProps) {
+  const values = [
+    {
+      icon: Target,
+      title: 'Excellence',
+      description: 'We strive for excellence in every project, delivering solutions that exceed expectations and drive real business value.'
+    },
+    {
+      icon: Lightbulb,
+      title: 'Innovation',
+      description: 'We embrace cutting-edge technologies and innovative approaches to solve complex data challenges and create competitive advantages.'
+    },
+    {
+      icon: Heart,
+      title: 'Integrity',
+      description: 'We maintain the highest standards of integrity, transparency, and ethical practices in all our client relationships and data handling.'
+    },
+    {
+      icon: Users,
+      title: 'Collaboration',
+      description: 'We believe in collaborative partnerships, working closely with our clients to understand their needs and achieve shared success.'
+    }
+  ];
+
+  const teamMembers = [
+    {
+      name: 'David Kiprotich',
+      role: 'Founder & Lead Data Scientist',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face',
+      bio: 'PhD in Data Science with 8+ years of experience in machine learning and analytics. Previously worked at tech giants in Silicon Valley.',
+      expertise: ['Machine Learning', 'Statistical Modeling', 'Big Data Analytics']
+    },
+    {
+      name: 'Sarah Wanjiku',
+      role: 'Senior Data Engineer',
+      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=400&fit=crop&crop=face',
+      bio: 'Masters in Computer Science with expertise in building scalable data infrastructure. Former lead engineer at fintech startups.',
+      expertise: ['Data Pipelines', 'Cloud Architecture', 'DevOps']
+    },
+    {
+      name: 'Michael Odhiambo',
+      role: 'Lead Software Developer',
+      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face',
+      bio: 'Full-stack developer with 6+ years building enterprise applications. Passionate about creating user-friendly solutions.',
+      expertise: ['Full-Stack Development', 'API Design', 'Mobile Apps']
+    },
+    {
+      name: 'Grace Akinyi',
+      role: 'GIS Specialist',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face',
+      bio: 'Geospatial engineer with expertise in remote sensing and spatial analysis. Worked on conservation projects across East Africa.',
+      expertise: ['GIS Development', 'Remote Sensing', 'Spatial Analysis']
+    }
+  ];
+
+  const milestones = [
+    {
+      year: '2019',
+      title: 'Company Founded',
+      description: 'StatsSpeak was established with a vision to democratize data science in Kenya.'
+    },
+    {
+      year: '2020',
+      title: 'First Major Contract',
+      description: 'Secured our first enterprise client and delivered a successful predictive analytics platform.'
+    },
+    {
+      year: '2021',
+      title: 'Team Expansion',
+      description: 'Grew our team to include specialists in data engineering and geospatial analysis.'
+    },
+    {
+      year: '2022',
+      title: 'Regional Recognition',
+      description: 'Won the East Africa Data Innovation Award for our work in agricultural technology.'
+    },
+    {
+      year: '2023',
+      title: '50+ Successful Projects',
+      description: 'Reached the milestone of 50 completed projects across various industries.'
+    },
+    {
+      year: '2024',
+      title: 'AI Innovation Lab',
+      description: 'Launched our AI Innovation Lab focusing on cutting-edge research and development.'
+    }
+  ];
+
+  const stats = [
+    { icon: Award, value: '100+', label: 'Projects Completed' },
+    { icon: Users, value: '50+', label: 'Happy Clients' },
+    { icon: Globe, value: '3', label: 'Countries Served' },
+    { icon: Code, value: '5+', label: 'Years Experience' }
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="py-20 lg:py-32 gradient-blue">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-white">
+              <h1 className="text-4xl lg:text-6xl font-bold mb-6">
+                About <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">StatsSpeak</span>
+              </h1>
+              <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                We're a passionate team of data scientists, engineers, and developers dedicated to transforming businesses through the power of data and technology.
+              </p>
+              <Button 
+                size="lg"
+                onClick={() => onPageChange('contact')}
+                className="bg-white text-deep-blue hover:bg-gray-100"
+              >
+                Work With Us
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </div>
+            <div className="relative">
+              <ImageWithFallback
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
+                alt="Team collaboration"
+                className="rounded-2xl shadow-2xl w-full h-auto"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent rounded-2xl"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mb-4">
+                  <stat.icon className="h-8 w-8 text-white" />
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-2">{stat.value}</div>
+                <div className="text-muted-foreground">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16">
+            <div>
+              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                To empower businesses across Kenya and East Africa with cutting-edge data solutions that drive growth, 
+                innovation, and competitive advantage in the digital economy.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                We believe that every organization, regardless of size, should have access to the transformative power 
+                of data science and modern technology solutions.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold mb-6">Our Vision</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                To be the leading data science and technology consulting firm in East Africa, known for delivering 
+                exceptional solutions that create lasting impact for our clients and communities.
+              </p>
+              <p className="text-muted-foreground leading-relaxed">
+                We envision a future where data-driven decision making is accessible to all organizations, 
+                fostering innovation and sustainable growth across the region.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+              Our <span className="gradient-text">Values</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              These core values guide everything we do and shape our interactions with clients, partners, and each other.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {values.map((value, index) => (
+              <Card key={index} className="border-0 shadow-lg text-center p-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <value.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4">{value.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="py-20">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+              Meet Our <span className="gradient-text">Team</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Our diverse team of experts brings together years of experience in data science, engineering, and technology.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <Card key={index} className="border-0 shadow-lg text-center overflow-hidden">
+                <div className="relative">
+                  <ImageWithFallback
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-64 object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                </div>
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{member.name}</h3>
+                  <p className="text-vibrant-blue font-medium mb-3">{member.role}</p>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{member.bio}</p>
+                  <div className="space-y-1">
+                    {member.expertise.map((skill, skillIndex) => (
+                      <div key={skillIndex} className="text-xs bg-muted px-2 py-1 rounded-full inline-block mr-1">
+                        {skill}
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
+              Our <span className="gradient-text">Journey</span>
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Key milestones in our growth and evolution as a leading data consultancy.
+            </p>
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-vibrant-blue to-vibrant-purple rounded-full"></div>
+            <div className="space-y-12">
+              {milestones.map((milestone, index) => (
+                <div key={index} className={`flex items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+                  <div className={`flex-1 ${index % 2 === 0 ? 'lg:text-right lg:pr-8' : 'lg:text-left lg:pl-8'}`}>
+                    <Card className="border-0 shadow-lg">
+                      <CardHeader>
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-full flex items-center justify-center text-white font-bold">
+                            {milestone.year.slice(-2)}
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg">{milestone.title}</CardTitle>
+                            <CardDescription className="text-vibrant-blue font-medium">{milestone.year}</CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground leading-relaxed">{milestone.description}</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <div className="w-6 h-6 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-full border-4 border-white shadow-lg z-10"></div>
+                  <div className="flex-1"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 gradient-blue">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
+            Join Our Journey
+          </h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Ready to partner with us? Let's explore how we can help transform your business through data and technology.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg"
+              onClick={() => onPageChange('contact')}
+              className="bg-white text-deep-blue hover:bg-gray-100"
+            >
+              Get In Touch
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => onPageChange('services')}
+              className="border-blue-300 text-blue-100 hover:bg-blue-50/10"
+            >
+              View Our Services
+            </Button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
