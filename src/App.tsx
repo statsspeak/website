@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigation } from "./components/Navigation";
 import { HomePage } from "./components/HomePage";
 import { ServicesPage } from "./components/ServicesPage";
@@ -6,7 +6,9 @@ import { CaseStudiesPage } from "./components/CaseStudiesPage";
 import { AboutPage } from "./components/AboutPage";
 import { ContactPage } from "./components/ContactPage";
 
-export default function App() {
+import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
+
+function AppContent() {
   const [currentPage, setCurrentPage] = useState("home");
 
   const renderPage = () => {
@@ -26,10 +28,17 @@ export default function App() {
     }
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
-      <main className="w-full">{renderPage()}</main>
+      <ScrollProgressBar />
+      <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
+      <PageTransition pageKey={currentPage}>
+        <main className="w-full">{renderPage()}</main>
+      </PageTransition>
 
       {/* Footer */}
       <footer className="bg-charcoal text-white py-16">
@@ -49,9 +58,9 @@ export default function App() {
                 solutions.
               </p>
               <div className="space-y-2 text-gray-300">
-                <p>📧 hello@statsspeak.co.ke</p>
-                <p>📞 +254 700 123 456</p>
-                <p>📍 Nairobi, Kenya</p>
+                <p>📧 info@statsspeak.co.ke</p>
+                <p>📞 +254 715 644 881</p>
+                <p>📍 10th Floor, Mercure, Upperhill, Nairobi</p>
               </div>
             </div>
 
@@ -147,3 +156,64 @@ export default function App() {
     </div>
   );
 }
+
+export default function App() {
+  return (
+    <ReactLenis root>
+      <AppContent />
+    </ReactLenis>
+  );
+}
+
+const useScrollProgress = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useLenis(({ progress }) => {
+    setScrollProgress(progress * 100);
+  });
+
+  return scrollProgress;
+};
+
+const ScrollProgressBar = () => {
+  const scrollProgress = useScrollProgress();
+
+  return (
+    <div className="fixed top-0 left-0 w-full h-2 bg-gray-200 z-50">
+      <div
+        className="h-full bg-gradient-to-r from-primary-blue to-blue-600"
+        style={{
+          width: `${scrollProgress}%`,
+          transition: "width 100ms linear",
+        }}
+      />
+    </div>
+  );
+};
+
+const PageTransition = ({ children, pageKey }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const lenis = useLenis();
+
+  useEffect(() => {
+    setIsVisible(false);
+    const timer = setTimeout(() => setIsVisible(true), 50);
+    return () => clearTimeout(timer);
+  }, [pageKey]);
+
+  useEffect(() => {
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+  }, [pageKey, lenis]);
+
+  return (
+    <div
+      className={`transition-all duration-700 ease-in-out ${
+        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+    >
+      {children}
+    </div>
+  );
+};
