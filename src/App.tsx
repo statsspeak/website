@@ -39,9 +39,8 @@ function AppContent() {
       <PageTransition pageKey={currentPage}>
         <main className="w-full">{renderPage()}</main>
       </PageTransition>
-      
 
-{/* Footer */}
+      {/* Footer */}
       <footer className="bg-charcoal text-white py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
@@ -152,7 +151,6 @@ function AppContent() {
               </a>
             </div>
           </div>
-
         </div>
       </footer>
     </div>
@@ -181,7 +179,7 @@ const ScrollProgressBar = () => {
   const scrollProgress = useScrollProgress();
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+    <div className="fixed top-0 left-0 w-full h-2 bg-gray-200 z-50">
       <div
         className="h-full bg-gradient-to-r from-primary-blue to-blue-600"
         style={{
