@@ -27,15 +27,6 @@ import lvct from "../assets/logos/lvct.png";
 import moh from "../assets/logos/moh.png";
 import pezesha from "../assets/logos/pezesha.png";
 
-import washington from "../assets/team-photos/washington-ogol.jpeg";
-import anthony from "../assets/team-photos/Antony.jpeg";
-import alloys from "../assets/team-photos/alloys-mila.jpeg";
-import anne from "../assets/team-photos/anne-ngatia.jpeg";
-import joan from "../assets/team-photos/Joan.jpg";
-import joram from "../assets/team-photos/joram-kabach.jpeg";
-import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
-import nancy from "../assets/team-photos/Nancy.png";
-
 interface HomePageProps {
   onPageChange: (page: string) => void;
 }
@@ -162,96 +153,6 @@ export function HomePage({ onPageChange }: HomePageProps) {
       name: "Pezesha",
       logo: pezesha,
       description: "Enabling SMEs access to credit",
-    },
-  ];
-
-  const directors = [
-    {
-      name: "Washington Ogol",
-      role: "Chief Executive Officer & Co-Founder",
-      image: washington,
-      bio: "In the realm of leadership, Washington Ogol stands out as a beacon of team collaboration. As the Chief Executive Officer, he embodies a profound affinity for team membership, exemplifying a people-focused approach that permeates our organizational culture.",
-      specialties: [
-        "Data Strategy",
-        "Data Engineering",
-        "Data Analytics & ML",
-        "Data Consultancy",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Anthony Ngatia",
-      role: "Chief Health Officer",
-      image: anthony,
-      bio: "Anthony Ngatia is a dedicated health professional with over 15 years of experience in public health and wellness. As the Chief Health Officer, he leads our health initiatives, ensuring the well-being of our community through innovative programs and strategic health policies. Anthony's expertise in preventive healthcare and his passion for improving health outcomes make him an invaluable asset to our team.",
-      specialties: [
-        "Global Health Data Scientist",
-        "Public Health Strategist",
-        "Consultant",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Joram Kabach",
-      role: "Chief Strategy Officer",
-      image: joram,
-      bio: "Joram Kabach is a seasoned operations expert with a passion for driving efficiency and excellence. As the Chief Strategy Officer, he oversees our day-to-day operations and ensures that our processes are optimized for success.",
-      specialties: [
-        "Entrepreneurship",
-        "AG-Tech",
-        "ED-Tech",
-        "E-Commerce",
-        "AI",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Anne Ngatia",
-      role: "Chief Marketing and Communications Officer",
-      image: anne,
-      bio: "Anne Ngatia brings a unique blend of marketing, storytelling, and project management skills to the table. As the Chief Marketing & Communications Officer, she leads our marketing strategies to attract and engage businesses, consumers and clients, in turn enhancing our brand's image and overall reputation.",
-      specialties: [
-        "Strategic planning ",
-        "Brand Management",
-        "Data-Driven Decision Making",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Alloys Mila",
-      role: "Chief Technology Officer",
-      image: alloys,
-      bio: "Alloys Mila is a visionary technologist with a knack for turning ideas into reality. As the Chief Technology Officer, he leads our technology team in developing innovative solutions that drive business growth and enhance customer experiences.",
-      specialties: [
-        "Product & Engineering Leader",
-        "Computer Engineering",
-        "Software Development",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Nancy Kinyua",
-      role: "Consultant",
-      image: nancy,
-      bio: "Nancy Kinyua is a seasoned geospatial expert with a passion for driving business growth. As the Lead Geospatial Consultant, she is responsible for overseeing the geospatial health of the organization and ensuring that our geospatial strategies align with our long-term goals.",
-      specialties: ["GIS Development", "Data Analytics", "Data Storytelling"],
-      linkedin: "#",
-    },
-    {
-      name: "Joanita Kisembo",
-      role: "Head Project Manager",
-      image: joan,
-      bio: "Joanita Kisembo is a seasoned project manager with a passion for driving business growth. As the Head Project Manager, she is responsible for overseeing the project health of the organization and ensuring that our project strategies align with our long-term goals.",
-      specialties: ["Data Analyst", "Business Analyst", "Project Management"],
-      linkedin: "#",
-    },
-    {
-      name: "Kelvin Adungosi",
-      role: "Head of Software & Data",
-      image: kelvin,
-      bio: "Kelvin Adungosi is the Head of Software & Data, a leader with a specialized background in data and technology. He focuses on three key areas: Enterprise Data Strategy, where he designs comprehensive plans for organizations to effectively use their data; Data Operations (Data Ops), where he builds and manages efficient data pipelines; and AI Development, where he creates advanced, data-driven solutions. His expertise lies in transforming raw data into powerful assets that drive innovation and business growth.",
-      specialties: ["Enterprise Data Strategy", "Data Ops", "AI Development"],
-      linkedin: "#",
     },
   ];
 
@@ -548,67 +449,6 @@ export function HomePage({ onPageChange }: HomePageProps) {
               View All Services
               <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
             </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Directors Section - Full width */}
-      <section className="py-16 xl:py-20 2xl:py-24 bg-white">
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <div className="text-center mb-12 xl:mb-16">
-            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-              Leadership <span className="text-primary-blue">Team</span>
-            </h2>
-            <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
-              Meet the visionary leaders driving Statsspeak's mission to
-              transform Africa through data intelligence.
-            </p>
-          </div>
-
-          <div className="flex gap-8 overflow-x-scroll snap-x max-w-7xl mx-auto">
-            {directors.map((director, index) => (
-              <Card
-                key={index}
-                className="min-w-full lg:min-w-[calc(33.33%-2rem)] snap-start border-0 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group"
-              >
-                <div className="relative">
-                  <ImageWithFallback
-                    src={director.image}
-                    alt={director.name}
-                    className="w-full h-80 xl:h-96 2xl:h-[28rem] object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <CardContent className="p-6 xl:p-8 2xl:p-10">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl xl:text-2xl 2xl:text-3xl font-bold mb-2">
-                      {director.name}
-                    </h3>
-                    <p className="text-primary-blue font-semibold text-base xl:text-lg 2xl:text-xl">
-                      {director.role}
-                    </p>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed mb-6 text-sm xl:text-base 2xl:text-lg">
-                    {director.bio}
-                  </p>
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-primary-blue text-sm xl:text-base">
-                      Specialties:
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {director.specialties.map((specialty, specialtyIndex) => (
-                        <span
-                          key={specialtyIndex}
-                          className="px-3 py-1 bg-light-blue text-primary-blue rounded-full text-xs xl:text-sm"
-                        >
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>

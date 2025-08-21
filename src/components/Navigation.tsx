@@ -64,9 +64,9 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
 
   const menuItems = [
     { id: "home", label: "Home" },
+    { id: "about", label: "About" },
     { id: "services", label: "Services" },
     { id: "case-studies", label: "Case Studies" },
-    { id: "about", label: "About" },
     { id: "contact", label: "Contact" },
   ];
 
