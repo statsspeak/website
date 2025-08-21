@@ -276,10 +276,6 @@ html {
   pointer-events: none;
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
 
 /* Custom animations */
 @keyframes fadeInUp {

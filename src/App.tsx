@@ -6,10 +6,9 @@ import { CaseStudiesPage } from "./components/CaseStudiesPage";
 import { AboutPage } from "./components/AboutPage";
 import { ContactPage } from "./components/ContactPage";
 
-// Import the ReactLenis component
-import { ReactLenis } from "@studio-freight/react-lenis";
+import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 
-export default function App() {
+function AppContent() {
   const [currentPage, setCurrentPage] = useState("home");
 
   const renderPage = () => {
@@ -34,81 +33,70 @@ export default function App() {
   };
 
   return (
-    // Wrap your entire application in the ReactLenis component
+    <div className="min-h-screen bg-background">
+      <ScrollProgressBar />
+      <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
+      <PageTransition pageKey={currentPage}>
+        <main className="w-full">{renderPage()}</main>
+      </PageTransition>
+      <footer className="bg-charcoal text-white py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          {/* ... (Your footer content) */}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
     <ReactLenis root>
-      <div className="min-h-screen bg-background">
-        {/* Scroll Progress Bar */}
-        <ScrollProgressBar />
-
-        <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
-
-        {/* Page Transition Wrapper */}
-        <PageTransition pageKey={currentPage}>
-          <main className="w-full">{renderPage()}</main>
-        </PageTransition>
-
-        {/* Footer with subtle animation */}
-        <footer className="bg-charcoal text-white py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            {/* ... (Your footer content remains the same) */}
-          </div>
-        </footer>
-      </div>
+      <AppContent />
     </ReactLenis>
   );
 }
 
-// Custom hook for scroll progress (optional, still works with Lenis)
 const useScrollProgress = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress =
-        totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
-      setScrollProgress(Math.min(progress, 100));
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Calculate initial progress
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useLenis(({ progress }) => {
+    setScrollProgress(progress * 100);
+  });
 
   return scrollProgress;
 };
 
-// Scroll Progress Bar Component (optional, still works with Lenis)
 const ScrollProgressBar = () => {
   const scrollProgress = useScrollProgress();
 
   return (
     <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
       <div
-        className="h-full bg-gradient-to-r from-primary-blue to-blue-600 transition-all duration-150 ease-out"
-        style={{ width: `${scrollProgress}%` }}
+        className="h-full bg-gradient-to-r from-primary-blue to-blue-600"
+        style={{
+          width: `${scrollProgress}%`,
+          transition: "width 100ms linear",
+        }}
       />
     </div>
   );
 };
 
-// Page Transition Wrapper (You can still use this for page changes)
 const PageTransition = ({ children, pageKey }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const lenis = useLenis();
 
   useEffect(() => {
-    // Reset animation on page change
     setIsVisible(false);
     const timer = setTimeout(() => setIsVisible(true), 50);
     return () => clearTimeout(timer);
   }, [pageKey]);
 
   useEffect(() => {
-    // Smooth scroll to top when page changes
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [pageKey]);
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+  }, [pageKey, lenis]);
 
   return (
     <div
