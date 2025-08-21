@@ -565,11 +565,11 @@ export function HomePage({ onPageChange }: HomePageProps) {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+          <div className="flex gap-8 overflow-x-scroll snap-x max-w-7xl mx-auto">
             {directors.map((director, index) => (
               <Card
                 key={index}
-                className="border-0 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+                className="min-w-full lg:min-w-[calc(33.33%-2rem)] snap-start border-0 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group"
               >
                 <div className="relative">
                   <ImageWithFallback
