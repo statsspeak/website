@@ -13,12 +13,12 @@ export default function App() {
     switch (currentPage) {
       case "home":
         return <HomePage onPageChange={setCurrentPage} />;
+      case "about":
+        return <AboutPage onPageChange={setCurrentPage} />;
       case "services":
         return <ServicesPage onPageChange={setCurrentPage} />;
       case "case-studies":
         return <CaseStudiesPage onPageChange={setCurrentPage} />;
-      case "about":
-        return <AboutPage onPageChange={setCurrentPage} />;
       case "contact":
         return <ContactPage onPageChange={setCurrentPage} />;
       default:
@@ -49,9 +49,9 @@ export default function App() {
                 solutions.
               </p>
               <div className="space-y-2 text-gray-300">
-                <p>📧 hello@statsspeak.co.ke</p>
-                <p>📞 +254 700 123 456</p>
-                <p>📍 Nairobi, Kenya</p>
+                <p>📧 info@statsspeak.co.ke</p>
+                <p>📞 +254 715 644 881</p>
+                <p>📍 10th Floor, Mercure, Upperhill, Nairobi</p>
               </div>
             </div>
 
