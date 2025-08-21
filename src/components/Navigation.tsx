@@ -1,10 +1,62 @@
 import { useState } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { motion } from "framer-motion";
 
 interface NavigationProps {
   currentPage: string;
   onPageChange: (page: string) => void;
+}
+
+function ShutterButton({
+  label,
+  onClick,
+  active,
+}: {
+  label: string;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  active: boolean;
+}) {
+  return (
+    <motion.button
+      onClick={onClick}
+      className="relative px-3 py-2 overflow-hidden rounded-2xl h-full"
+      whileHover="hover"
+      initial="rest"
+      animate="rest"
+    >
+      {/* Left shutter */}
+      <motion.span
+        className="absolute top-0 left-0 h-full bg-blue-200/50"
+        variants={{
+          rest: { width: 0 },
+          hover: {
+            width: "50%",
+            transition: { duration: 0.4, ease: "easeInOut" },
+          },
+        }}
+      />
+      {/* Right shutter */}
+      <motion.span
+        className="absolute top-0 right-0 h-full bg-blue-200/50"
+        variants={{
+          rest: { width: 0 },
+          hover: {
+            width: "50%",
+            transition: { duration: 0.4, ease: "easeInOut", delay: 0.05 },
+          },
+        }}
+      />
+      {/* Text */}
+      <span
+        className={`relative z-10 ${
+          active ? "text-blue-600" : "text-slate-500 group-hover:text-blue-600"
+        }`}
+      >
+        {label}
+      </span>
+    </motion.button>
+  );
 }
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
@@ -19,21 +71,18 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+    <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:h-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-full">
+        <div className="flex flex-row h-full items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <button
               onClick={() => onPageChange("home")}
               className="flex items-center space-x-2 text-xl font-bold"
             >
-              <img
-                src="https://statsspeak.co.ke/favicon.svg"
-                alt="Statsspeak Logo"
-                className="h-8 w-8"
-              />
-
+              <div className="h-8 w-8 rounded-lg bg-primary-blue flex items-center justify-center animate-pulse-primary-blue">
+                <span className="text-white font-bold">S</span>
+              </div>
               <span className="gradient-text">Statsspeak</span>
             </button>
           </div>
@@ -41,17 +90,11 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
-              <button
-                key={item.id}
+              <ShutterButton
                 onClick={() => onPageChange(item.id)}
-                className={`px-3 py-2 rounded-md transition-colors ${
-                  currentPage === item.id
-                    ? "text-primary-blue bg-light-blue"
-                    : "text-muted-foreground hover:text-primary-blue hover:bg-light-blue/50"
-                }`}
-              >
-                {item.label}
-              </button>
+                label={item.label}
+                active={currentPage === item.id}
+              />
             ))}
             <Button
               onClick={() => onPageChange("contact")}
@@ -91,7 +134,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                   className={`block w-full text-left px-3 py-2 rounded-md transition-colors ${
                     currentPage === item.id
                       ? "text-primary-blue bg-light-blue"
-                      : "text-muted-foreground hover:text-primary-blue hover:bg-light-blue/50"
+                      : "text-muted-foreground hover:text-primary-blue shutter-effect"
                   }`}
                 >
                   {item.label}
