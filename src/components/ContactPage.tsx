@@ -1,11 +1,23 @@
-import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Textarea } from './ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { useState } from "react";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Textarea } from "./ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface ContactPageProps {
   onPageChange: (page: string) => void;
@@ -13,86 +25,90 @@ interface ContactPageProps {
 
 export function ContactPage({ onPageChange }: ContactPageProps) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    service: '',
-    budget: '',
-    message: ''
+    name: "",
+    email: "",
+    company: "",
+    service: "",
+    budget: "",
+    message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // In a real application, you would send this data to your backend
-    console.log('Form submitted:', formData);
+    console.log("Form submitted:", formData);
     setIsSubmitted(true);
-    
+
     // Reset form after 3 seconds
     setTimeout(() => {
       setIsSubmitted(false);
       setFormData({
-        name: '',
-        email: '',
-        company: '',
-        service: '',
-        budget: '',
-        message: ''
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        budget: "",
+        message: "",
       });
     }, 3000);
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const contactInfo = [
     {
       icon: Mail,
-      title: 'Email',
-      detail: 'hello@statsspeak.co.ke',
-      link: 'mailto:hello@statsspeak.co.ke'
+      title: "Email",
+      detail: "hello@statsspeak.co.ke",
+      link: "mailto:hello@statsspeak.co.ke",
     },
     {
       icon: Phone,
-      title: 'Phone',
-      detail: '+254 700 123 456',
-      link: 'tel:+254700123456'
+      title: "Phone",
+      detail: "+254 700 123 456",
+      link: "tel:+254700123456",
     },
     {
       icon: MapPin,
-      title: 'Office',
-      detail: 'Nairobi, Kenya',
-      link: 'https://maps.google.com/?q=Nairobi,Kenya'
+      title: "Office",
+      detail: "Nairobi, Kenya",
+      link: "https://maps.google.com/?q=Nairobi,Kenya",
     },
     {
       icon: Clock,
-      title: 'Business Hours',
-      detail: 'Mon - Fri: 9AM - 6PM EAT',
-      link: null
-    }
+      title: "Business Hours",
+      detail: "Mon - Fri: 9AM - 6PM EAT",
+      link: null,
+    },
   ];
 
   const faqs = [
     {
-      question: 'What types of projects do you work on?',
-      answer: 'We work on data science, data engineering, software development, and geospatial engineering projects across various industries including finance, agriculture, healthcare, and logistics.'
+      question: "What types of projects do you work on?",
+      answer:
+        "We work on data science, data engineering, software development, and geospatial engineering projects across various industries including finance, agriculture, healthcare, and logistics.",
     },
     {
-      question: 'How long does a typical project take?',
-      answer: 'Project timelines vary depending on complexity and scope. Small projects may take 2-4 weeks, while larger enterprise solutions can take 3-6 months. We provide detailed timelines during our initial consultation.'
+      question: "How long does a typical project take?",
+      answer:
+        "Project timelines vary depending on complexity and scope. Small projects may take 2-4 weeks, while larger enterprise solutions can take 3-6 months. We provide detailed timelines during our initial consultation.",
     },
     {
-      question: 'Do you provide ongoing support?',
-      answer: 'Yes, we offer comprehensive support and maintenance packages to ensure your solutions continue to perform optimally. We also provide training for your team.'
+      question: "Do you provide ongoing support?",
+      answer:
+        "Yes, we offer comprehensive support and maintenance packages to ensure your solutions continue to perform optimally. We also provide training for your team.",
     },
     {
-      question: 'What is your pricing model?',
-      answer: 'We offer flexible pricing models including fixed-price projects, hourly rates, and retainer agreements. Pricing depends on project scope, complexity, and timeline.'
-    }
+      question: "What is your pricing model?",
+      answer:
+        "We offer flexible pricing models including fixed-price projects, hourly rates, and retainer agreements. Pricing depends on project scope, complexity, and timeline.",
+    },
   ];
 
   if (isSubmitted) {
@@ -105,9 +121,10 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
             </div>
             <h2 className="text-2xl font-bold mb-4">Message Sent!</h2>
             <p className="text-muted-foreground mb-6">
-              Thank you for your interest. We'll get back to you within 24 hours.
+              Thank you for your interest. We'll get back to you within 24
+              hours.
             </p>
-            <Button onClick={() => onPageChange('home')} className="w-full">
+            <Button onClick={() => onPageChange("home")} className="w-full">
               Return to Home
             </Button>
           </CardContent>
@@ -123,10 +140,14 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center text-white">
             <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Get In <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">Touch</span>
+              Get In{" "}
+              <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
+                Touch
+              </span>
             </h1>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Ready to transform your business with data? Let's discuss your project and explore how we can help you achieve your goals.
+              Ready to transform your business with data? Let's discuss your
+              project and explore how we can help you achieve your goals.
             </p>
           </div>
         </div>
@@ -142,7 +163,8 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                 <CardHeader>
                   <CardTitle className="text-2xl">Start Your Project</CardTitle>
                   <CardDescription>
-                    Fill out the form below and we'll get back to you within 24 hours.
+                    Fill out the form below and we'll get back to you within 24
+                    hours.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -153,7 +175,9 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                         <Input
                           id="name"
                           value={formData.name}
-                          onChange={(e) => handleInputChange('name', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("name", e.target.value)
+                          }
                           placeholder="Your full name"
                           required
                         />
@@ -164,7 +188,9 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                           id="email"
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          onChange={(e) =>
+                            handleInputChange("email", e.target.value)
+                          }
                           placeholder="your.email@company.com"
                           required
                         />
@@ -176,7 +202,9 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                       <Input
                         id="company"
                         value={formData.company}
-                        onChange={(e) => handleInputChange('company', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("company", e.target.value)
+                        }
                         placeholder="Your company name"
                       />
                     </div>
@@ -184,33 +212,65 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="service">Service Needed *</Label>
-                        <Select value={formData.service} onValueChange={(value) => handleInputChange('service', value)}>
+                        <Select
+                          value={formData.service}
+                          onValueChange={(value) =>
+                            handleInputChange("service", value)
+                          }
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="data-science">Data Science & Analytics</SelectItem>
-                            <SelectItem value="data-engineering">Data Engineering</SelectItem>
-                            <SelectItem value="software-development">Software Development</SelectItem>
-                            <SelectItem value="geospatial">Geospatial Engineering</SelectItem>
-                            <SelectItem value="consulting">Consulting</SelectItem>
+                            <SelectItem value="data-science">
+                              Data Science & Analytics
+                            </SelectItem>
+                            <SelectItem value="data-engineering">
+                              Data Engineering
+                            </SelectItem>
+                            <SelectItem value="software-development">
+                              Software Development
+                            </SelectItem>
+                            <SelectItem value="geospatial">
+                              Geospatial Engineering
+                            </SelectItem>
+                            <SelectItem value="consulting">
+                              Consulting
+                            </SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="budget">Project Budget</Label>
-                        <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
+                        <Select
+                          value={formData.budget}
+                          onValueChange={(value) =>
+                            handleInputChange("budget", value)
+                          }
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select budget range" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="under-50k">Under $50,000</SelectItem>
-                            <SelectItem value="50k-100k">$50,000 - $100,000</SelectItem>
-                            <SelectItem value="100k-250k">$100,000 - $250,000</SelectItem>
-                            <SelectItem value="250k-500k">$250,000 - $500,000</SelectItem>
-                            <SelectItem value="over-500k">Over $500,000</SelectItem>
-                            <SelectItem value="discuss">Prefer to discuss</SelectItem>
+                            <SelectItem value="under-50k">
+                              Under $50,000
+                            </SelectItem>
+                            <SelectItem value="50k-100k">
+                              $50,000 - $100,000
+                            </SelectItem>
+                            <SelectItem value="100k-250k">
+                              $100,000 - $250,000
+                            </SelectItem>
+                            <SelectItem value="250k-500k">
+                              $250,000 - $500,000
+                            </SelectItem>
+                            <SelectItem value="over-500k">
+                              Over $500,000
+                            </SelectItem>
+                            <SelectItem value="discuss">
+                              Prefer to discuss
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -221,16 +281,18 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                       <Textarea
                         id="message"
                         value={formData.message}
-                        onChange={(e) => handleInputChange('message', e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange("message", e.target.value)
+                        }
                         placeholder="Tell us about your project, challenges, and goals..."
                         rows={6}
                         required
                       />
                     </div>
 
-                    <Button 
-                      type="submit" 
-                      size="lg" 
+                    <Button
+                      type="submit"
+                      size="2xl"
                       className="w-full bg-gradient-to-r from-vibrant-blue to-vibrant-purple text-white"
                     >
                       Send Message
@@ -259,14 +321,16 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                       <div>
                         <div className="font-medium">{info.title}</div>
                         {info.link ? (
-                          <a 
-                            href={info.link} 
+                          <a
+                            href={info.link}
                             className="text-muted-foreground hover:text-vibrant-blue transition-colors"
                           >
                             {info.detail}
                           </a>
                         ) : (
-                          <div className="text-muted-foreground">{info.detail}</div>
+                          <div className="text-muted-foreground">
+                            {info.detail}
+                          </div>
                         )}
                       </div>
                     </div>
@@ -276,7 +340,9 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
 
               <Card className="border-0 shadow-xl bg-gradient-to-br from-vibrant-blue to-vibrant-purple text-white">
                 <CardContent className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">Why Choose StatsSpeak?</h3>
+                  <h3 className="text-xl font-semibold mb-4">
+                    Why Choose StatsSpeak?
+                  </h3>
                   <ul className="space-y-3 text-blue-100">
                     <li className="flex items-center">
                       <CheckCircle className="h-5 w-5 mr-3 flex-shrink-0" />
@@ -321,7 +387,9 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                   <CardTitle className="text-lg">{faq.question}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {faq.answer}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -338,16 +406,18 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
               Located in the heart of Nairobi, Kenya's tech hub
             </p>
           </div>
-          
+
           <div className="bg-muted/50 rounded-2xl p-8 text-center">
             <MapPin className="h-12 w-12 text-vibrant-blue mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">StatsSpeak Offices</h3>
             <p className="text-muted-foreground mb-4">
-              Westlands, Nairobi<br />
+              Westlands, Nairobi
+              <br />
               Kenya
             </p>
             <p className="text-sm text-muted-foreground">
-              We're open Monday to Friday, 9AM to 6PM EAT.<br />
+              We're open Monday to Friday, 9AM to 6PM EAT.
+              <br />
               Schedule a meeting to visit our office and meet the team.
             </p>
           </div>
