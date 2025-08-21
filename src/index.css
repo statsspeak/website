@@ -1,0 +1,363 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 14px;
+  --background: #ffffff;
+  --foreground: #1a1f2e;
+  --card: #ffffff;
+  --card-foreground: #1a1f2e;
+  --popover: #ffffff;
+  --popover-foreground: #1a1f2e;
+  --primary: #1A7595;
+  --primary-foreground: #ffffff;
+  --secondary: #f8fafc;
+  --secondary-foreground: #1a1f2e;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #1A7595;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: transparent;
+  --input-background: #f8fafc;
+  --switch-background: #cbd5e1;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #1A7595;
+  --chart-1: #1A7595;
+  --chart-2: #2A8BA3;
+  --chart-3: #3AA1B1;
+  --chart-4: #10b981;
+  --chart-5: #f59e0b;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1f2e;
+  --sidebar-primary: #1A7595;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8fafc;
+  --sidebar-accent-foreground: #1a1f2e;
+  --sidebar-border: #e2e8f0;
+  --sidebar-ring: #1A7595;
+  
+  /* Custom colors for StatsSpeak - Updated Theme */
+  --primary-blue: #1A7595;
+  --primary-blue-light: #4A9BB3;
+  --primary-blue-dark: #135A73;
+  --primary-blue-lighter: #E8F4F8;
+  --charcoal: #1a1f2e;
+  --deep-blue: #0f1729;
+  --light-blue: #F0F8FB;
+  --medium-blue: #2A8BA3;
+  --light-gray: #f8fafc;
+  --medium-gray: #64748b;
+}
+
+.dark {
+  --background: #0f1729;
+  --foreground: #f8fafc;
+  --card: #1a1f2e;
+  --card-foreground: #f8fafc;
+  --popover: #1a1f2e;
+  --popover-foreground: #f8fafc;
+  --primary: #1A7595;
+  --primary-foreground: #ffffff;
+  --secondary: #1e293b;
+  --secondary-foreground: #f8fafc;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1A7595;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #334155;
+  --input: #1e293b;
+  --ring: #1A7595;
+  --chart-1: #1A7595;
+  --chart-2: #2A8BA3;
+  --chart-3: #3AA1B1;
+  --chart-4: #10b981;
+  --chart-5: #f59e0b;
+  --sidebar: #1a1f2e;
+  --sidebar-foreground: #f8fafc;
+  --sidebar-primary: #1A7595;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f8fafc;
+  --sidebar-border: #334155;
+  --sidebar-ring: #1A7595;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Custom colors */
+  --color-primary-blue: var(--primary-blue);
+  --color-primary-blue-light: var(--primary-blue-light);
+  --color-primary-blue-dark: var(--primary-blue-dark);
+  --color-primary-blue-lighter: var(--primary-blue-lighter);
+  --color-charcoal: var(--charcoal);
+  --color-deep-blue: var(--deep-blue);
+  --color-light-blue: var(--light-blue);
+  --color-medium-blue: var(--medium-blue);
+  --color-light-gray: var(--light-gray);
+  --color-medium-gray: var(--medium-gray);
+}
+
+@layer base {
+  * {
+  @apply border-[var(--color-border)] outline-[var(--color-ring)/50];
+}
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.025em;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -0.025em;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h5 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h6 {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    p {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    button {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    input {
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
+
+/* Custom gradient backgrounds with new primary blue */
+.gradient-primary-blue {
+  background: linear-gradient(135deg, var(--primary-blue-light) 0%, var(--primary-blue) 100%);
+}
+
+.gradient-blue {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--medium-blue) 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-pattern {
+  background-image: 
+    radial-gradient(circle at 25% 25%, var(--primary-blue-light) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, var(--light-blue) 0%, transparent 50%);
+}
+
+/* Enhanced data network background pattern - more subtle */
+.data-network-background {
+  background-image: 
+    linear-gradient(90deg, rgba(26, 117, 149, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(26, 117, 149, 0.05) 1px, transparent 1px);
+  background-size: 80px 80px;
+  position: relative;
+}
+
+.data-network-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(26, 117, 149, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 80% 20%, rgba(42, 139, 163, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 40% 40%, rgba(26, 117, 149, 0.06) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes rotateText {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-rotate-text {
+  animation: rotateText 3s ease-in-out infinite;
+}
+
+/* Pulse animation for primary blue elements */
+@keyframes pulse-primary-blue {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(26, 117, 149, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(26, 117, 149, 0);
+  }
+}
+
+.animate-pulse-primary-blue {
+  animation: pulse-primary-blue 2s infinite;
+}
+
+/* Enhanced glowing data lines animation */
+@keyframes glowingLines {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow: 0 0 8px rgba(26, 117, 149, 0.4);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 25px rgba(26, 117, 149, 0.7), 0 0 35px rgba(26, 117, 149, 0.4);
+  }
+}
+
+.animate-glowing-lines {
+  animation: glowingLines 4s ease-in-out infinite;
+}
+
+/* Glass morphism effect */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
