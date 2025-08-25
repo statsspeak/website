@@ -312,7 +312,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white drop-shadow-xl"
                     style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
                   >
-                    100+
+                    50+
                   </div>
                   <div
                     className="text-sm xl:text-base text-gray-100 drop-shadow-md"
@@ -326,7 +326,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white drop-shadow-xl"
                     style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
                   >
-                    50+
+                    20+
                   </div>
                   <div
                     className="text-sm xl:text-base text-gray-100 drop-shadow-md"
@@ -425,7 +425,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                   <CardDescription className="text-muted-foreground mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
                     {service.description}
                   </CardDescription>
-                  <div className="grid grid-cols-2 gap-3 xl:gap-4">
+                  <div className="grid grid-cols-2 gap-3 xl:gap-4 mb-6">
                     {service.features.map((feature, featureIndex) => (
                       <div key={featureIndex} className="flex items-center">
                         <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
@@ -435,6 +435,14 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       </div>
                     ))}
                   </div>
+                  {/* Add the "Read more..." link here */}
+                  <Button
+                    variant="link"
+                    onClick={() => onPageChange("services")}
+                    className="p-0 h-auto text-primary-blue hover:text-medium-blue transition-colors duration-200"
+                  >
+                    Read more...
+                  </Button>
                 </CardContent>
               </Card>
             ))}
