@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
+import StatsSpeakLogo from "./logo";
 
 interface NavigationProps {
   currentPage: string;
@@ -140,9 +141,8 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
             >
               <div className="flex items-center">
                 {/* Circle S */}
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">S</span>
-                </div>
+
+                <StatsSpeakLogo />
 
                 {/* Expanding text */}
                 <motion.span
