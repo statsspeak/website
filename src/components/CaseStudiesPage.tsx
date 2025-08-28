@@ -57,6 +57,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["Geospatial Data", "GRID3", "Digital Health Solutions"],
       duration: "2 years",
       impact: "High",
+      link: "/case-studies/improving-healthcare-delivery",
     },
     {
       id: 2,
@@ -78,6 +79,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["PostgreSQL", "Data Warehouse", "Analytics Platforms"],
       duration: "Not specified",
       impact: "High",
+      link: "/case-studies/twiga-foods-analytics",
     },
     {
       id: 3,
@@ -100,6 +102,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       ],
       duration: "5 months",
       impact: "Medium",
+      link: "/case-studies/amref-analytics-platform",
     },
     {
       id: 4,
@@ -122,6 +125,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["HMIS Integration", "Data Analytics Platform"],
       duration: "Not specified",
       impact: "High",
+      link: "/case-studies/moh-kenya-pcns",
     },
     {
       id: 5,
@@ -145,6 +149,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       ],
       duration: "3 months",
       impact: "High",
+      link: "/case-studies/vaccine-supply-chain",
     },
   ];
 
@@ -306,6 +311,16 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                         </Badge>
                       ))}
                     </div>
+                  </div>
+                  <div className="flex justify-end pt-4">
+                    <Button
+                      variant="ghost"
+                      className="text-vibrant-blue hover:bg-vibrant-blue/10"
+                      onClick={() => onPageChange(study.link)}
+                    >
+                      Read More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
