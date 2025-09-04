@@ -1,6 +1,5 @@
 import {
   ArrowRight,
-  ExternalLink,
   BarChart3,
   Database,
   Code,
@@ -164,21 +163,6 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
     }
   };
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "Data Science":
-        return BarChart3;
-      case "Data Engineering":
-        return Database;
-      case "Software Development":
-        return Code;
-      case "Geospatial Engineering":
-        return Map;
-      default:
-        return BarChart3;
-    }
-  };
-
   const stats = [
     { icon: Award, value: "100+", label: "Projects Delivered" },
     { icon: Users, value: "50+", label: "Happy Clients" },
@@ -229,7 +213,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {caseStudies.map((study, index) => (
+            {caseStudies.map((study) => (
               <Card
                 key={study.id}
                 className="overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300"

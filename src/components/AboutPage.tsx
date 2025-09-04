@@ -7,9 +7,6 @@ import {
   Award,
   Globe,
   Code,
-  Database,
-  BarChart3,
-  Map,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import {

@@ -4,8 +4,6 @@ import {
   PlayCircle,
   CheckCircle,
   Users,
-  Award,
-  Clock,
   Star,
   TrendingUp,
   Globe,
@@ -87,33 +85,6 @@ export function HomePage({ onPageChange }: HomePageProps) {
         "Remote Sensing",
         "Location Intelligence",
       ],
-    },
-  ];
-
-  const stats = [
-    {
-      icon: Users,
-      value: "30+",
-      label: "Projects Completed",
-      color: "text-primary-blue",
-    },
-    {
-      icon: Award,
-      value: "10+",
-      label: "Happy Clients",
-      color: "text-medium-blue",
-    },
-    {
-      icon: Clock,
-      value: "5+",
-      label: "Years Experience",
-      color: "text-primary-blue-dark",
-    },
-    {
-      icon: CheckCircle,
-      value: "99%",
-      label: "Success Rate",
-      color: "text-primary-blue",
     },
   ];
 

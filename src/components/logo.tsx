@@ -1,5 +1,3 @@
-import React from "react";
-
 const StatsSpeakLogo = ({ width = 36, height = 48, className = "" }) => {
   return (
     <svg

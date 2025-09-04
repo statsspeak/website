@@ -28,7 +28,7 @@ function AppContent() {
     }
   };
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: string) => {
     setCurrentPage(page);
   };
 
@@ -191,7 +191,12 @@ const ScrollProgressBar = () => {
   );
 };
 
-const PageTransition = ({ children, pageKey }) => {
+interface PageTransitionProps {
+  children: React.ReactNode;
+  pageKey: string;
+}
+
+const PageTransition = ({ children, pageKey }: PageTransitionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const lenis = useLenis();
 

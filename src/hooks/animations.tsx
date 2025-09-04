@@ -2,7 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { useLenis } from "@studio-freight/react-lenis";
 
 // Custom hook for scroll-triggered animations
-export const useScrollAnimation = (options = {}) => {
+type ScrollAnimationOptions = {
+  threshold?: number;
+  rootMargin?: string;
+  triggerOnce?: boolean;
+  stagger?: number;
+  animationType?: string;
+};
+
+export const useScrollAnimation = (options: ScrollAnimationOptions = {}) => {
   const {
     threshold = 0.1,
     rootMargin = "0px",
@@ -14,7 +22,7 @@ export const useScrollAnimation = (options = {}) => {
   const [isVisible, setIsVisible] = useState(false);
   const [hasTriggered, setHasTriggered] = useState(false);
   const elementRef = useRef(null);
-  const observerRef = useRef(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const element = elementRef.current;
@@ -110,9 +118,21 @@ export const useScrollAnimation = (options = {}) => {
 };
 
 // Staggered children animation hook
-export const useStaggeredAnimation = (childrenCount, baseDelay = 100) => {
-  const [visibleChildren, setVisibleChildren] = useState(new Set());
-  const containerRef = useRef(null);
+interface UseStaggeredAnimationReturn {
+  0: React.RefObject<HTMLDivElement>;
+  1: Set<number>;
+}
+
+export const useStaggeredAnimation = (
+  childrenCount: number,
+  baseDelay: number = 100
+): UseStaggeredAnimationReturn => {
+  const [visibleChildren, setVisibleChildren] = useState<Set<number>>(
+    new Set()
+  );
+  const containerRef = useRef<HTMLDivElement>(
+    null
+  ) as React.RefObject<HTMLDivElement>;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -141,15 +161,18 @@ export const useStaggeredAnimation = (childrenCount, baseDelay = 100) => {
 };
 
 // Parallax scroll hook
-export const useParallax = (speed = 0.5) => {
+export const useParallax = (
+  speed = 0.5
+): [React.RefObject<HTMLDivElement>, number] => {
   const [offset, setOffset] = useState(0);
-  const elementRef = useRef(null);
+  const elementRef = useRef<HTMLDivElement>(
+    null
+  ) as React.RefObject<HTMLDivElement>;
 
   useLenis(({ scroll }) => {
     if (elementRef.current) {
       const rect = elementRef.current.getBoundingClientRect();
       const elementTop = rect.top + scroll;
-      const elementHeight = rect.height;
       const windowHeight = window.innerHeight;
 
       // Calculate parallax offset
@@ -164,7 +187,7 @@ export const useParallax = (speed = 0.5) => {
 // Morphing background hook for sections
 export const useMorphingBackground = () => {
   const [morphValue, setMorphValue] = useState(0);
-  const sectionRef = useRef(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useLenis(({ scroll }) => {
     if (sectionRef.current) {
@@ -204,10 +227,15 @@ export const useMorphingBackground = () => {
 };
 
 // Text reveal animation hook
-export const useTextReveal = (text = "", speed = 50) => {
+export const useTextReveal = (
+  text = "",
+  speed = 50
+): [string, React.RefObject<HTMLSpanElement>] => {
   const [revealedText, setRevealedText] = useState("");
   const [isRevealing, setIsRevealing] = useState(false);
-  const textRef = useRef(null);
+  const textRef = useRef<HTMLSpanElement>(
+    null
+  ) as React.RefObject<HTMLSpanElement>;
 
   useEffect(() => {
     if (!textRef.current) return;
@@ -237,7 +265,7 @@ export const useTextReveal = (text = "", speed = 50) => {
     return () => observer.disconnect();
   }, [text, speed, isRevealing]);
 
-  return [textRef, revealedText];
+  return [revealedText, textRef];
 };
 
 // Demo Component showing all animations
@@ -245,29 +273,38 @@ export const ScrollAnimationDemo = () => {
   const [heroRef, heroClasses] = useScrollAnimation({
     animationType: "magneticRise",
     threshold: 0.2,
-  });
+  }) as [React.RefObject<HTMLDivElement>, string, boolean];
 
   const [cardRef1, cardClasses1] = useScrollAnimation({
     animationType: "slideUpScale",
     stagger: 0,
     threshold: 0.1,
-  });
+  }) as [React.RefObject<HTMLDivElement>, string];
 
   const [cardRef2, cardClasses2] = useScrollAnimation({
     animationType: "slideUpScale",
     stagger: 150,
     threshold: 0.1,
-  });
+  }) as [React.RefObject<HTMLDivElement>, string];
 
   const [cardRef3, cardClasses3] = useScrollAnimation({
     animationType: "slideUpScale",
     stagger: 300,
     threshold: 0.1,
-  });
+  }) as [React.RefObject<HTMLDivElement>, string];
 
-  const [parallaxRef, parallaxOffset] = useParallax(-0.3);
-  const [morphRef, getMorphStyle, morphValue] = useMorphingBackground();
-  const [textRef, revealedText] = useTextReveal(
+  const [parallaxRef, parallaxOffset]: [
+    React.RefObject<HTMLDivElement>,
+    number
+  ] = useParallax(-0.3);
+  const [morphRef, getMorphStyle] = useMorphingBackground() as [
+    React.RefObject<HTMLDivElement>,
+    (
+      startColor?: string,
+      endColor?: string
+    ) => { background: string; transform: string; transition: string }
+  ];
+  const [revealedText, textRef] = useTextReveal(
     "Transforming Data Into Insights",
     80
   );
