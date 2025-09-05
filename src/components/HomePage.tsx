@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   ArrowRight,
   PlayCircle,
@@ -11,21 +11,288 @@ import {
   Globe,
   Shield,
 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import amref from "../assets/logos/amref.png";
-import digitax from "../assets/logos/digitax.png";
-import lipachat from "../assets/logos/lipachat.png";
-import lvct from "../assets/logos/lvct.png";
-import moh from "../assets/logos/moh.png";
-import pezesha from "../assets/logos/pezesha.png";
+import { useLenis } from "@studio-freight/react-lenis";
 
-interface HomePageProps {
-  onPageChange: (page: string) => void;
-}
+// Custom Hooks for Scroll Animations
+const useScrollReveal = (options = {}) => {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const {
+    threshold = 0.1,
+    delay = 0,
+    duration = 800,
+    distance = 50,
+    direction = "up",
+  } = options;
 
-export function HomePage({ onPageChange }: HomePageProps) {
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => setIsVisible(true), delay);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(element);
+    return () => observer.unobserve(element);
+  }, [threshold, delay]);
+
+  const getTransform = () => {
+    if (isVisible) return "translateY(0) translateX(0)";
+
+    switch (direction) {
+      case "up":
+        return `translateY(${distance}px)`;
+      case "down":
+        return `translateY(-${distance}px)`;
+      case "left":
+        return `translateX(${distance}px)`;
+      case "right":
+        return `translateX(-${distance}px)`;
+      default:
+        return `translateY(${distance}px)`;
+    }
+  };
+
+  const style = {
+    opacity: isVisible ? 1 : 0,
+    transform: getTransform(),
+    transition: `all ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`,
+  };
+
+  return { ref, style, isVisible };
+};
+
+const useStaggerAnimation = (options = {}) => {
+  const refs = useRef([]);
+  const [visibleItems, setVisibleItems] = useState(new Set());
+  const { stagger = 100, threshold = 0.1 } = options;
+
+  const addRef = useCallback(
+    (element, index) => {
+      if (element && !refs.current[index]) {
+        refs.current[index] = element;
+
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                setVisibleItems((prev) => new Set([...prev, index]));
+              }, index * stagger);
+            }
+          },
+          { threshold }
+        );
+
+        observer.observe(element);
+      }
+    },
+    [stagger, threshold]
+  );
+
+  const getItemStyle = (index) => ({
+    opacity: visibleItems.has(index) ? 1 : 0,
+    transform: visibleItems.has(index) ? "translateY(0)" : "translateY(30px)",
+    transition: "all 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+  });
+
+  return { addRef, getItemStyle };
+};
+
+const useParallax = (speed = 0.5) => {
+  const ref = useRef(null);
+  const [offset, setOffset] = useState(0);
+
+  useLenis(({ scroll }) => {
+    if (ref.current) {
+      const element = ref.current;
+      const rect = element.getBoundingClientRect();
+      const elementTop = rect.top + scroll;
+      const elementHeight = rect.height;
+      const windowHeight = window.innerHeight;
+
+      // Calculate if element is in viewport
+      if (
+        scroll + windowHeight > elementTop &&
+        scroll < elementTop + elementHeight
+      ) {
+        const relativePos =
+          (scroll - elementTop + windowHeight) / (windowHeight + elementHeight);
+        setOffset(relativePos * speed * 100);
+      }
+    }
+  });
+
+  return {
+    ref,
+    style: {
+      transform: `translateY(${offset}px)`,
+    },
+  };
+};
+
+// Mock components (replace with your actual components)
+const Button = ({ children, className, onClick, variant, size, ...props }) => (
+  <button
+    className={`inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors ${className}`}
+    onClick={onClick}
+    {...props}
+  >
+    {children}
+  </button>
+);
+
+const Card = ({ children, className }) => (
+  <div className={`rounded-lg border bg-white shadow-sm ${className}`}>
+    {children}
+  </div>
+);
+
+const CardContent = ({ children, className }) => (
+  <div className={`p-6 ${className}`}>{children}</div>
+);
+
+const CardTitle = ({ children, className }) => (
+  <h3
+    className={`text-2xl font-semibold leading-none tracking-tight ${className}`}
+  >
+    {children}
+  </h3>
+);
+
+const CardDescription = ({ children, className }) => (
+  <p className={`text-sm text-muted-foreground ${className}`}>{children}</p>
+);
+
+const ImageWithFallback = ({ src, alt, className }) => (
+  <img src={src} alt={alt} className={className} />
+);
+
+// Mock data
+const services = [
+  {
+    title: "Data Science & Analytics",
+    description:
+      "Transform raw data into actionable business insights with advanced analytics and machine learning solutions.",
+    image:
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+    features: [
+      "Predictive Analytics",
+      "Machine Learning",
+      "Statistical Modeling",
+      "Business Intelligence",
+    ],
+  },
+  {
+    title: "Data Engineering",
+    description:
+      "Build robust data pipelines and infrastructure for scalable data processing and real-time analytics.",
+    image:
+      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+    features: [
+      "ETL Pipelines",
+      "Data Warehousing",
+      "Cloud Architecture",
+      "Real-time Processing",
+    ],
+  },
+  {
+    title: "Software Development",
+    description:
+      "Custom software solutions tailored to your business needs with modern technologies and best practices.",
+    image:
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
+    features: [
+      "Web Applications",
+      "Mobile Apps",
+      "API Development",
+      "System Integration",
+    ],
+  },
+  {
+    title: "Geospatial Engineering",
+    description:
+      "Leverage location-based data for mapping, spatial analysis, and location intelligence solutions.",
+    image:
+      "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop",
+    features: [
+      "GIS Solutions",
+      "Spatial Analysis",
+      "Remote Sensing",
+      "Location Intelligence",
+    ],
+  },
+];
+
+const partners = [
+  {
+    name: "AMREF Health Africa",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=AMREF",
+    description: "Leading health organization in Africa",
+  },
+  {
+    name: "Digitax",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=DIGITAX",
+    description: "eTims Solution",
+  },
+  {
+    name: "Lipachat",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=LIPACHAT",
+    description: "Automated marketing and customer care",
+  },
+  {
+    name: "LVCT",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=LVCT",
+    description: "Health Campaign",
+  },
+  {
+    name: "MOH",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=MOH",
+    description: "Ministry of Health, Kenya",
+  },
+  {
+    name: "Pezesha",
+    logo: "https://via.placeholder.com/120x60/1a7595/white?text=PEZESHA",
+    description: "Enabling SMEs access to credit",
+  },
+];
+
+const testimonials = [
+  {
+    quote:
+      "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
+    author: "Dr. Mary Nyong'o",
+    role: "Director, AMREF Health Africa",
+    image:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
+    rating: 5,
+  },
+  {
+    quote:
+      "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
+    author: "John Konchellah",
+    role: "Director General, Kenya Wildlife Service",
+    image:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+    rating: 5,
+  },
+  {
+    quote:
+      "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
+    author: "Anne Kananu",
+    role: "Deputy Governor, Nairobi City County",
+    image:
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+    rating: 5,
+  },
+];
+
+export function HomePage({ onPageChange }) {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   // Dynamic text rotation for tagline
@@ -35,166 +302,45 @@ export function HomePage({ onPageChange }: HomePageProps) {
     "Geospatial Engineering",
   ];
 
-  const services = [
-    {
-      title: "Data Science & Analytics",
-      description:
-        "Transform raw data into actionable business insights with advanced analytics and machine learning solutions.",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-      features: [
-        "Predictive Analytics",
-        "Machine Learning",
-        "Statistical Modeling",
-        "Business Intelligence",
-      ],
-    },
-    {
-      title: "Data Engineering",
-      description:
-        "Build robust data pipelines and infrastructure for scalable data processing and real-time analytics.",
-      image:
-        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-      features: [
-        "ETL Pipelines",
-        "Data Warehousing",
-        "Cloud Architecture",
-        "Real-time Processing",
-      ],
-    },
-    {
-      title: "Software Development",
-      description:
-        "Custom software solutions tailored to your business needs with modern technologies and best practices.",
-      image:
-        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-      features: [
-        "Web Applications",
-        "Mobile Apps",
-        "API Development",
-        "System Integration",
-      ],
-    },
-    {
-      title: "Geospatial Engineering",
-      description:
-        "Leverage location-based data for mapping, spatial analysis, and location intelligence solutions.",
-      image:
-        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop",
-      features: [
-        "GIS Solutions",
-        "Spatial Analysis",
-        "Remote Sensing",
-        "Location Intelligence",
-      ],
-    },
-  ];
+  // Scroll animation hooks
+  const heroReveal = useScrollReveal({
+    delay: 200,
+    duration: 1000,
+    distance: 80,
+  });
+  const heroParallax = useParallax(-0.3);
+  const partnersReveal = useScrollReveal({ delay: 100, threshold: 0.2 });
+  const partnersStagger = useStaggerAnimation({ stagger: 150 });
+  const servicesTitle = useScrollReveal({ delay: 0, distance: 60 });
+  const servicesStagger = useStaggerAnimation({ stagger: 200 });
+  const testimonialsReveal = useScrollReveal({ delay: 100, threshold: 0.15 });
+  const testimonialsStagger = useStaggerAnimation({ stagger: 250 });
+  const whyChooseReveal = useScrollReveal({ delay: 50, threshold: 0.2 });
+  const whyChooseStagger = useStaggerAnimation({ stagger: 120 });
+  const ctaReveal = useScrollReveal({
+    delay: 100,
+    distance: 40,
+    threshold: 0.3,
+  });
 
-  const stats = [
-    {
-      icon: Users,
-      value: "30+",
-      label: "Projects Completed",
-      color: "text-primary-blue",
-    },
-    {
-      icon: Award,
-      value: "10+",
-      label: "Happy Clients",
-      color: "text-medium-blue",
-    },
-    {
-      icon: Clock,
-      value: "5+",
-      label: "Years Experience",
-      color: "text-primary-blue-dark",
-    },
-    {
-      icon: CheckCircle,
-      value: "99%",
-      label: "Success Rate",
-      color: "text-primary-blue",
-    },
-  ];
-
-  const partners = [
-    {
-      name: "AMREF Health Africa",
-      logo: amref,
-      description: "Leading health organization in Africa",
-    },
-    {
-      name: "Digitax",
-      logo: digitax,
-      description: "eTims Solution",
-    },
-    {
-      name: "Lipachat",
-      logo: lipachat,
-      description: "Automated marketing and customer care",
-    },
-    {
-      name: "lvct",
-      logo: lvct,
-      description: "Health Campaign",
-    },
-    {
-      name: "MOH",
-      logo: moh,
-      description: "Ministry of Health, Kenya",
-    },
-    {
-      name: "Pezesha",
-      logo: pezesha,
-      description: "Enabling SMEs access to credit",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote:
-        "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
-      author: "Dr. Mary Nyong'o",
-      role: "Director, AMREF Health Africa",
-      image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
-      rating: 5,
-    },
-    {
-      quote:
-        "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
-      author: "John Konchellah",
-      role: "Director General, Kenya Wildlife Service",
-      image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      rating: 5,
-    },
-    {
-      quote:
-        "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
-      author: "Anne Kananu",
-      role: "Deputy Governor, Nairobi City County",
-      image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-      rating: 5,
-    },
-  ];
-
-  // Auto-rotate text - Updated to 1.5 seconds
+  // Auto-rotate text
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
-    }, 1500); // Change text every 1.5 seconds
-
+    }, 1500);
     return () => clearInterval(timer);
   }, [rotatingTexts.length]);
 
   return (
     <div className="w-full">
-      {/* Hero Section - Full width with enhanced scaling */}
+      {/* Hero Section */}
       <section className="overflow-hidden py-16 lg:py-24 xl:py-32 min-h-screen flex items-center sticky top-0 z-10">
-        {/* Vibrant Background Image - Full visibility */}
-        <div className="absolute inset-0">
+        {/* Background with Parallax */}
+        <div
+          ref={heroParallax.ref}
+          className="absolute inset-0"
+          style={heroParallax.style}
+        >
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
             alt="Data network visualization over satellite map"
@@ -205,43 +351,26 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
       <div className="relative z-20 bg-transparent -mt-[100vh]">
         <section className="py-16 xl:py-20 2xl:py-24 bg-none">
-          {/* Subtle overlay for text readability - much lighter */}
+          {/* Subtle overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
 
           <div className="relative z-10 container mx-auto">
-            {/* Subtle data network pattern overlay */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="data-network-background w-full h-full"></div>
-            </div>
-
-            {/* Animated background elements - more vibrant */}
+            {/* Animated background elements */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-primary-blue/30 rounded-full blur-3xl animate-float"></div>
+              <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
               <div
-                className="absolute bottom-20 right-10 w-96 h-96 bg-medium-blue/25 rounded-full blur-3xl animate-float"
+                className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/25 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "2s" }}
-              ></div>
-              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-primary-blue/50 to-transparent rotate-45 animate-glowing-lines"></div>
-              <div
-                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-medium-blue/50 to-transparent rotate-12 animate-glowing-lines"
-                style={{ animationDelay: "1s" }}
-              ></div>
-              <div
-                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-primary-blue/40 to-transparent rotate-75 animate-glowing-lines"
-                style={{ animationDelay: "3s" }}
               ></div>
             </div>
 
             <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
               <div className="flex items-center justify-center min-h-[80vh]">
-                <div className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl">
-                  {/* <div className="inline-flex items-center px-4 py-2 bg-white/95 rounded-full border border-primary-blue/30 shadow-lg backdrop-blur-sm">
-                  <Star className="w-4 h-4 text-primary-blue mr-2" />
-                  <span className="text-sm font-medium text-primary-blue">
-                    Trusted by 50+ Organizations
-                  </span>
-                </div> */}
-
+                <div
+                  ref={heroReveal.ref}
+                  style={heroReveal.style}
+                  className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl"
+                >
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight">
                     <span
                       className="block text-white drop-shadow-xl"
@@ -255,18 +384,16 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     >
                       Drive Growth & Impact
                     </span>
-
-                    {/* Dynamic rotating text - Enhanced visibility */}
                     <span
                       className="block text-white drop-shadow-xl text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl mt-4 min-h-[1.2em]"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
                       Your partner in{" "}
                       <span
-                        className="text-primary-blue font-bold inline-block min-w-[280px] text-left"
+                        className="text-blue-400 font-bold inline-block min-w-[280px] text-left"
                         style={{
                           textShadow:
-                            "3px 3px 8px rgba(0,0,0,0.9), 0 0 20px rgba(26, 117, 149, 0.5)",
+                            "3px 3px 8px rgba(0,0,0,0.9), 0 0 20px rgba(59, 130, 246, 0.5)",
                         }}
                       >
                         {rotatingTexts[currentTextIndex]}
@@ -288,7 +415,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                     <Button
                       size="lg"
                       onClick={() => onPageChange("services")}
-                      className="bg-primary-blue/95 backdrop-blur-sm hover:bg-primary-blue text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-primary-blue/50"
+                      className="bg-blue-600/95 backdrop-blur-sm hover:bg-blue-700 text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-blue-600/50"
                     >
                       Explore Our Services
                       <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6 group-hover:translate-x-1 transition-transform" />
@@ -297,8 +424,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       size="lg"
                       variant="outline"
                       onClick={() => onPageChange("case-studies")}
-                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
-                      style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.8)" }}
+                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
                     >
                       <PlayCircle className="mr-2 h-5 w-5 xl:h-6 xl:w-6" />
                       View Case Studies
@@ -354,24 +480,34 @@ export function HomePage({ onPageChange }: HomePageProps) {
             </div>
           </div>
         </section>
-        {/* Partners Section - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-background">
+
+        {/* Partners Section */}
+        <section
+          ref={partnersReveal.ref}
+          style={partnersReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gray-50"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Trusted <span className="text-primary-blue">Partners</span>
+                Trusted <span className="text-blue-600">Partners</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 We're proud to work with leading organizations across Kenya and
                 East Africa, delivering impactful solutions that drive real
                 change.
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
               {partners.map((partner, index) => (
-                <div key={index} className="group text-center">
-                  <div className="bg-gray-50 rounded-2xl p-6 xl:p-8 mb-4 transition-all duration-300 group-hover:bg-light-blue group-hover:shadow-lg">
+                <div
+                  key={index}
+                  ref={(el) => partnersStagger.addRef(el, index)}
+                  style={partnersStagger.getItemStyle(index)}
+                  className="group text-center"
+                >
+                  <div className="bg-white rounded-2xl p-6 xl:p-8 mb-4 transition-all duration-300 group-hover:bg-blue-50 group-hover:shadow-lg">
                     <ImageWithFallback
                       src={partner.logo}
                       alt={partner.name}
@@ -381,7 +517,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                   <h4 className="font-semibold text-sm xl:text-base text-center mb-1">
                     {partner.name}
                   </h4>
-                  <p className="text-xs xl:text-sm text-muted-foreground text-center">
+                  <p className="text-xs xl:text-sm text-gray-500 text-center">
                     {partner.description}
                   </p>
                 </div>
@@ -390,52 +526,59 @@ export function HomePage({ onPageChange }: HomePageProps) {
           </div>
         </section>
 
-        {/* Services Overview - Full width */}
+        {/* Services Overview */}
         <section className="py-16 xl:py-20 2xl:py-24 bg-white">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div className="text-center mb-12 xl:mb-16">
+            <div
+              ref={servicesTitle.ref}
+              style={servicesTitle.style}
+              className="text-center mb-12 xl:mb-16"
+            >
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Our <span className="text-primary-blue">Expertise</span>
+                Our <span className="text-blue-600">Expertise</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 Comprehensive data solutions designed to unlock insights, drive
                 innovation, and accelerate your business growth.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {services.map((service, index) => (
-                <Card
+                <div
                   key={index}
-                  className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white"
+                  ref={(el) => servicesStagger.addRef(el, index)}
+                  style={servicesStagger.getItemStyle(index)}
                 >
-                  <div className="relative overflow-hidden">
-                    <ImageWithFallback
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                  <CardContent className="p-6 xl:p-8 2xl:p-10">
-                    <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-primary-blue">
-                      {service.title}
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                      {service.description}
-                    </CardDescription>
-                    <div className="grid grid-cols-2 gap-3 xl:gap-4">
-                      {service.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center">
-                          <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
-                          <span className="text-sm xl:text-base text-muted-foreground">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
+                  <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
+                    <div className="relative overflow-hidden">
+                      <ImageWithFallback
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                  </CardContent>
-                </Card>
+                    <CardContent className="p-6 xl:p-8 2xl:p-10">
+                      <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-blue-600">
+                        {service.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-600 mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
+                        {service.description}
+                      </CardDescription>
+                      <div className="grid grid-cols-2 gap-3 xl:gap-4">
+                        {service.features.map((feature, featureIndex) => (
+                          <div key={featureIndex} className="flex items-center">
+                            <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-blue-600 mr-2 flex-shrink-0" />
+                            <span className="text-sm xl:text-base text-gray-600">
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
 
@@ -443,7 +586,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
               <Button
                 size="lg"
                 onClick={() => onPageChange("services")}
-                className="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 View All Services
                 <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
@@ -452,131 +595,145 @@ export function HomePage({ onPageChange }: HomePageProps) {
           </div>
         </section>
 
-        {/* Testimonials - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-background">
+        {/* Testimonials */}
+        <section
+          ref={testimonialsReveal.ref}
+          style={testimonialsReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gray-50"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                What Our <span className="text-primary-blue">Partners Say</span>
+                What Our <span className="text-blue-600">Partners Say</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600">
                 Don't just take our word for it - hear from our satisfied
                 partners and clients.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {testimonials.map((testimonial, index) => (
-                <Card
+                <div
                   key={index}
-                  className="border-0 shadow-xl bg-white relative"
+                  ref={(el) => testimonialsStagger.addRef(el, index)}
+                  style={testimonialsStagger.getItemStyle(index)}
                 >
-                  <CardContent className="p-6 xl:p-8 2xl:p-10">
-                    <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-5 w-5 xl:h-6 xl:w-6 text-yellow-400 fill-current"
+                  <Card className="border-0 shadow-xl bg-white relative h-full">
+                    <CardContent className="p-6 xl:p-8 2xl:p-10">
+                      <div className="flex mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="h-5 w-5 xl:h-6 xl:w-6 text-yellow-400 fill-current"
+                          />
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 italic leading-relaxed text-base xl:text-lg 2xl:text-xl">
+                        "{testimonial.quote}"
+                      </p>
+                      <div className="flex items-center">
+                        <ImageWithFallback
+                          src={testimonial.image}
+                          alt={testimonial.author}
+                          className="w-16 h-16 xl:w-20 xl:h-20 rounded-full mr-4 object-cover"
                         />
-                      ))}
-                    </div>
-                    <p className="text-muted-foreground mb-6 italic leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="flex items-center">
-                      <ImageWithFallback
-                        src={testimonial.image}
-                        alt={testimonial.author}
-                        className="w-16 h-16 xl:w-20 xl:h-20 rounded-full mr-4 object-cover"
-                      />
-                      <div>
-                        <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
-                          {testimonial.author}
-                        </div>
-                        <div className="text-primary-blue font-medium text-sm xl:text-base">
-                          {testimonial.role}
+                        <div>
+                          <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
+                            {testimonial.author}
+                          </div>
+                          <div className="text-blue-600 font-medium text-sm xl:text-base">
+                            {testimonial.role}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Why Choose Us - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-white">
+        {/* Why Choose Us */}
+        <section
+          ref={whyChooseReveal.ref}
+          style={whyChooseReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-white"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Why Choose <span className="text-primary-blue">Statsspeak</span>
+                Why Choose <span className="text-blue-600">Statsspeak</span>
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Shield className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+              {[
+                {
+                  icon: Shield,
+                  title: "Trusted Expertise",
+                  description:
+                    "Proven track record with government agencies and leading organizations across Africa.",
+                  color: "bg-blue-600",
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Measurable Results",
+                  description:
+                    "Data-driven solutions that deliver quantifiable business impact and ROI.",
+                  color: "bg-cyan-600",
+                },
+                {
+                  icon: Users,
+                  title: "Local Understanding",
+                  description:
+                    "Deep understanding of African markets, challenges, and opportunities.",
+                  color: "bg-blue-700",
+                },
+                {
+                  icon: Globe,
+                  title: "Global Standards",
+                  description:
+                    "International best practices combined with local expertise and insights.",
+                  color: "bg-blue-600",
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  ref={(el) => whyChooseStagger.addRef(el, index)}
+                  style={whyChooseStagger.getItemStyle(index)}
+                >
+                  <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow h-full">
+                    <div
+                      className={`w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
+                    >
+                      <item.icon className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
+                    </div>
+                    <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm xl:text-base 2xl:text-lg">
+                      {item.description}
+                    </p>
+                  </Card>
                 </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Trusted Expertise
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Proven track record with government agencies and leading
-                  organizations across Africa.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-medium-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <TrendingUp className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Measurable Results
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Data-driven solutions that deliver quantifiable business
-                  impact and ROI.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue-dark rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Users className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Local Understanding
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Deep understanding of African markets, challenges, and
-                  opportunities.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Globe className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Global Standards
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  International best practices combined with local expertise and
-                  insights.
-                </p>
-              </Card>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue">
+        {/* CTA Section */}
+        <section
+          ref={ctaReveal.ref}
+          style={ctaReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-blue-600 to-cyan-600"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
             <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white mb-6">
               Ready to Transform Your Organization?
             </h2>
-            <p className="text-lg xl:text-xl 2xl:text-2xl text-primary-blue-light mb-8 max-w-3xl mx-auto">
+            <p className="text-lg xl:text-xl 2xl:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Join leading organizations across Africa who trust Statsspeak to
               unlock insights, drive innovation, and achieve sustainable growth.
             </p>
@@ -584,7 +741,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
               <Button
                 size="lg"
                 onClick={() => onPageChange("contact")}
-                className="bg-white text-primary-blue hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 Start Your Project
                 <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
@@ -593,7 +750,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 size="lg"
                 variant="outline"
                 onClick={() => onPageChange("about")}
-                className="border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 Learn More About Us
               </Button>
