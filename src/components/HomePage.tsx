@@ -321,9 +321,6 @@ export function HomePage({ onPageChange }) {
     threshold: 0.3,
   });
 
-<<<<<<< HEAD
-  // Auto-rotate text
-=======
   const partners = [
     {
       name: "AMREF Health Africa",
@@ -388,7 +385,6 @@ export function HomePage({ onPageChange }) {
   ];
 
   // Auto-rotate text - Updated to 1.5 seconds
->>>>>>> main
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
