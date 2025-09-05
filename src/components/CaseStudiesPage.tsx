@@ -1,6 +1,5 @@
 import {
   ArrowRight,
-  ExternalLink,
   BarChart3,
   Database,
   Code,
@@ -57,6 +56,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["Geospatial Data", "GRID3", "Digital Health Solutions"],
       duration: "2 years",
       impact: "High",
+      link: "/case-studies/improving-healthcare-delivery",
     },
     {
       id: 2,
@@ -78,6 +78,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["PostgreSQL", "Data Warehouse", "Analytics Platforms"],
       duration: "Not specified",
       impact: "High",
+      link: "/case-studies/twiga-foods-analytics",
     },
     {
       id: 3,
@@ -100,6 +101,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       ],
       duration: "5 months",
       impact: "Medium",
+      link: "/case-studies/amref-analytics-platform",
     },
     {
       id: 4,
@@ -122,6 +124,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       technologies: ["HMIS Integration", "Data Analytics Platform"],
       duration: "Not specified",
       impact: "High",
+      link: "/case-studies/moh-kenya-pcns",
     },
     {
       id: 5,
@@ -145,6 +148,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       ],
       duration: "3 months",
       impact: "High",
+      link: "/case-studies/vaccine-supply-chain",
     },
   ];
 
@@ -156,21 +160,6 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
         return "bg-yellow-100 text-yellow-800";
       default:
         return "bg-blue-100 text-blue-800";
-    }
-  };
-
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "Data Science":
-        return BarChart3;
-      case "Data Engineering":
-        return Database;
-      case "Software Development":
-        return Code;
-      case "Geospatial Engineering":
-        return Map;
-      default:
-        return BarChart3;
     }
   };
 
@@ -224,7 +213,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
-            {caseStudies.map((study, index) => (
+            {caseStudies.map((study) => (
               <Card
                 key={study.id}
                 className="overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
@@ -306,6 +295,16 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                         </Badge>
                       ))}
                     </div>
+                  </div>
+                  <div className="flex justify-end pt-4">
+                    <Button
+                      variant="ghost"
+                      className="text-vibrant-blue hover:bg-vibrant-blue/10"
+                      onClick={() => onPageChange(study.link)}
+                    >
+                      Read More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

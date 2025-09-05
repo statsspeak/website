@@ -4,8 +4,6 @@ import {
   PlayCircle,
   CheckCircle,
   Users,
-  Award,
-  Clock,
   Star,
   TrendingUp,
   Globe,
@@ -323,7 +321,74 @@ export function HomePage({ onPageChange }) {
     threshold: 0.3,
   });
 
+<<<<<<< HEAD
   // Auto-rotate text
+=======
+  const partners = [
+    {
+      name: "AMREF Health Africa",
+      logo: amref,
+      description: "Leading health organization in Africa",
+    },
+    {
+      name: "Digitax",
+      logo: digitax,
+      description: "eTims Solution",
+    },
+    {
+      name: "Lipachat",
+      logo: lipachat,
+      description: "Automated marketing and customer care",
+    },
+    {
+      name: "lvct",
+      logo: lvct,
+      description: "Health Campaign",
+    },
+    {
+      name: "MOH",
+      logo: moh,
+      description: "Ministry of Health, Kenya",
+    },
+    {
+      name: "Pezesha",
+      logo: pezesha,
+      description: "Enabling SMEs access to credit",
+    },
+  ];
+
+  const testimonials = [
+    {
+      quote:
+        "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
+      author: "Dr. Mary Nyong'o",
+      role: "Director, AMREF Health Africa",
+      image:
+        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
+      rating: 5,
+    },
+    {
+      quote:
+        "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
+      author: "John Konchellah",
+      role: "Director General, Kenya Wildlife Service",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+      rating: 5,
+    },
+    {
+      quote:
+        "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
+      author: "Anne Kananu",
+      role: "Deputy Governor, Nairobi City County",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+      rating: 5,
+    },
+  ];
+
+  // Auto-rotate text - Updated to 1.5 seconds
+>>>>>>> main
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
