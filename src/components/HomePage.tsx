@@ -13,53 +13,21 @@ import { useScrollReveal } from "../hooks/animations";
 import { useParallax } from "../hooks/animations";
 import { useStaggerAnimation } from "../hooks/animations";
 import { ANIMATION_PRESETS } from "../hooks/animations";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
+import amref from "../assets/logos/amref.png";
+import digitax from "../assets/logos/digitax.png";
+import lipachat from "../assets/logos/lipachat.png";
+import lvct from "../assets/logos/lvct.png";
+import moh from "../assets/logos/moh.png";
+import pezesha from "../assets/logos/pezesha.png";
 
-// Animation hooks imports (you would import these from your hooks folder)
+interface HomePageProps {
+  onPageChange: (page: string) => void;
+}
 
-// Mock components for demonstration (replace with your actual imports)
-const Button = ({ children, className, onClick, variant, size, ...props }) => (
-  <button
-    className={`inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors ${
-      variant === "outline"
-        ? "border border-current bg-transparent hover:bg-current hover:text-white"
-        : "bg-blue-600 text-white hover:bg-blue-700"
-    } ${size === "lg" ? "px-8 py-3 text-lg" : ""} ${className}`}
-    onClick={onClick}
-    {...props}
-  >
-    {children}
-  </button>
-);
-
-const Card = ({ children, className }) => (
-  <div className={`rounded-lg border bg-white shadow-sm ${className || ""}`}>
-    {children}
-  </div>
-);
-
-const CardContent = ({ children, className }) => (
-  <div className={`p-6 ${className || ""}`}>{children}</div>
-);
-
-const CardTitle = ({ children, className }) => (
-  <h3
-    className={`text-2xl font-semibold leading-none tracking-tight ${
-      className || ""
-    }`}
-  >
-    {children}
-  </h3>
-);
-
-const CardDescription = ({ children, className }) => (
-  <p className={`text-sm text-gray-600 ${className || ""}`}>{children}</p>
-);
-
-const ImageWithFallback = ({ src, alt, className }) => (
-  <img src={src} alt={alt} className={className} />
-);
-
-export function HomePage({ onPageChange }) {
+export function HomePage({ onPageChange }: HomePageProps) {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
   // Dynamic text rotation for tagline
@@ -127,32 +95,32 @@ export function HomePage({ onPageChange }) {
   const partners = [
     {
       name: "AMREF Health Africa",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=AMREF",
+      logo: amref,
       description: "Leading health organization in Africa",
     },
     {
       name: "Digitax",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=DIGITAX",
+      logo: digitax,
       description: "eTims Solution",
     },
     {
       name: "Lipachat",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=LIPACHAT",
+      logo: lipachat,
       description: "Automated marketing and customer care",
     },
     {
-      name: "LVCT",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=LVCT",
+      name: "lvct",
+      logo: lvct,
       description: "Health Campaign",
     },
     {
       name: "MOH",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=MOH",
+      logo: moh,
       description: "Ministry of Health, Kenya",
     },
     {
       name: "Pezesha",
-      logo: "https://via.placeholder.com/120x60/1a7595/white?text=PEZESHA",
+      logo: pezesha,
       description: "Enabling SMEs access to credit",
     },
   ];
@@ -195,7 +163,7 @@ export function HomePage({ onPageChange }) {
     delay: 100,
     threshold: 0.2,
   });
-  const partnersStagger = useStaggerAnimation({ stagger: 150, threshold: 0.1 });
+
   const servicesTitle = useScrollReveal(ANIMATION_PRESETS.sectionTitle);
   const servicesStagger = useStaggerAnimation({ stagger: 200, threshold: 0.1 });
   const testimonialsReveal = useScrollReveal({
@@ -251,7 +219,7 @@ export function HomePage({ onPageChange }) {
       </section>
 
       <div className="relative z-20 bg-transparent -mt-[100vh]">
-        <section className="py-16 xl:py-20 2xl:py-24 bg-none">
+        <section className="py-16 xl:py-20 2xl:py-24 bg-none ">
           {/* Subtle overlay for text readability - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
 
@@ -263,18 +231,18 @@ export function HomePage({ onPageChange }) {
 
             {/* Animated background elements - more vibrant */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/30 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-20 left-10 w-72 h-72 bg-primary-blue/30 rounded-full blur-3xl animate-pulse"></div>
               <div
-                className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/25 rounded-full blur-3xl animate-pulse"
+                className="absolute bottom-20 right-10 w-96 h-96 bg-medium-blue/25 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "2s" }}
               ></div>
-              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-blue-600/50 to-transparent rotate-45 animate-pulse"></div>
+              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-primary-blue/50 to-transparent rotate-45 animate-pulse"></div>
               <div
-                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-cyan-600/50 to-transparent rotate-12 animate-pulse"
+                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-medium-blue/50 to-transparent rotate-12 animate-pulse"
                 style={{ animationDelay: "1s" }}
               ></div>
               <div
-                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-blue-600/40 to-transparent rotate-75 animate-pulse"
+                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-primary-blue/40 to-transparent rotate-75 animate-pulse"
                 style={{ animationDelay: "3s" }}
               ></div>
             </div>
@@ -307,10 +275,10 @@ export function HomePage({ onPageChange }) {
                     >
                       Your partner in{" "}
                       <span
-                        className="text-blue-400 font-bold inline-block min-w-[280px] text-left"
+                        className="text-primary-blue font-bold inline-block min-w-[280px] text-left"
                         style={{
                           textShadow:
-                            "3px 3px 8px rgba(0,0,0,0.9), 0 0 20px rgba(59, 130, 246, 0.5)",
+                            "3px 3px 8px rgba(0,0,0,0.9), 0 0 20px rgba(26, 117, 149, 0.5)",
                         }}
                       >
                         {rotatingTexts[currentTextIndex]}
@@ -330,19 +298,18 @@ export function HomePage({ onPageChange }) {
 
                   <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
                     <Button
-                      variant=""
-                      size="lg"
+                      size="xl"
                       onClick={() => onPageChange("services")}
-                      className="bg-blue-600/95 backdrop-blur-sm hover:bg-blue-700 text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-blue-600/50"
+                      className="bg-primary-blue/95 backdrop-blur-sm hover:bg-primary-blue rounded-full text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-primary-blue/50"
                     >
                       Explore Our Services
                       <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
-                      size="lg"
+                      size="xl"
                       variant="outline"
                       onClick={() => onPageChange("case-studies")}
-                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
+                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
                       style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.8)" }}
                     >
                       <PlayCircle className="mr-2 h-5 w-5 xl:h-6 xl:w-6" />
@@ -400,7 +367,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Partners Section - Full width with animations */}
+        {/* Partners Section */}
         <section
           ref={partnersReveal.ref}
           style={partnersReveal.style}
@@ -409,7 +376,7 @@ export function HomePage({ onPageChange }) {
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Trusted <span className="text-blue-600">Partners</span>
+                Trusted <span className="text-primary-blue">Partners</span>
               </h2>
               <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 We're proud to work with leading organizations across Kenya and
@@ -420,13 +387,8 @@ export function HomePage({ onPageChange }) {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
               {partners.map((partner, index) => (
-                <div
-                  key={index}
-                  ref={(el) => partnersStagger.addRef(el, index)}
-                  style={partnersStagger.getItemStyle(index)}
-                  className="group text-center"
-                >
-                  <div className="bg-white rounded-2xl p-6 xl:p-8 mb-4 transition-all duration-300 group-hover:bg-blue-50 group-hover:shadow-lg">
+                <div key={index} className="group text-center">
+                  <div className="bg-gray-50 rounded-2xl p-6 xl:p-8 mb-4 transition-all duration-300 group-hover:bg-light-blue group-hover:shadow-lg">
                     <ImageWithFallback
                       src={partner.logo}
                       alt={partner.name}
@@ -436,7 +398,7 @@ export function HomePage({ onPageChange }) {
                   <h4 className="font-semibold text-sm xl:text-base text-center mb-1">
                     {partner.name}
                   </h4>
-                  <p className="text-xs xl:text-sm text-gray-500 text-center">
+                  <p className="text-xs xl:text-sm text-muted-foreground text-center">
                     {partner.description}
                   </p>
                 </div>
@@ -445,8 +407,8 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Services Overview - Full width with animations */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-white">
+        {/* Services Overview */}
+        <section className="py-16 xl:py-20 2xl:py-24 bg-white min-h-screen">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div
               ref={servicesTitle.ref}
@@ -454,7 +416,7 @@ export function HomePage({ onPageChange }) {
               className="text-center mb-12 xl:mb-16"
             >
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Our <span className="text-blue-600">Expertise</span>
+                Our <span className="text-primary-blue">Expertise</span>
               </h2>
               <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 Comprehensive data solutions designed to unlock insights, drive
@@ -476,10 +438,10 @@ export function HomePage({ onPageChange }) {
                         alt={service.title}
                         className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-blue-600/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                     <CardContent className="p-6 xl:p-8 2xl:p-10">
-                      <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-blue-600">
+                      <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-primary-blue">
                         {service.title}
                       </CardTitle>
                       <CardDescription className="text-gray-600 mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
@@ -488,7 +450,7 @@ export function HomePage({ onPageChange }) {
                       <div className="grid grid-cols-2 gap-3 xl:gap-4">
                         {service.features.map((feature, featureIndex) => (
                           <div key={featureIndex} className="flex items-center">
-                            <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-blue-600 mr-2 flex-shrink-0" />
+                            <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
                             <span className="text-sm xl:text-base text-gray-600">
                               {feature}
                             </span>
@@ -503,9 +465,9 @@ export function HomePage({ onPageChange }) {
 
             <div className="text-center mt-12 xl:mt-16">
               <Button
-                size="lg"
+                size="xl"
                 onClick={() => onPageChange("services")}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 View All Services
                 <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
@@ -514,16 +476,16 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Testimonials - Full width with animations */}
+        {/* Testimonials */}
         <section
           ref={testimonialsReveal.ref}
           style={testimonialsReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gray-50"
+          className="py-16 xl:py-20 2xl:py-24 bg-gray-50 min-h-screen"
         >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                What Our <span className="text-blue-600">Partners Say</span>
+                What Our <span className="text-primary-blue">Partners Say</span>
               </h2>
               <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600">
                 Don't just take our word for it - hear from our satisfied
@@ -561,7 +523,7 @@ export function HomePage({ onPageChange }) {
                           <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
                             {testimonial.author}
                           </div>
-                          <div className="text-blue-600 font-medium text-sm xl:text-base">
+                          <div className="text-primary-blue font-medium text-sm xl:text-base">
                             {testimonial.role}
                           </div>
                         </div>
@@ -574,7 +536,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Why Choose Us - Full width with animations */}
+        {/* Why Choose Us */}
         <section
           ref={whyChooseReveal.ref}
           style={whyChooseReveal.style}
@@ -583,7 +545,7 @@ export function HomePage({ onPageChange }) {
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Why Choose <span className="text-blue-600">Statsspeak</span>
+                Why Choose <span className="text-primary-blue">Statsspeak</span>
               </h2>
             </div>
 
@@ -594,14 +556,14 @@ export function HomePage({ onPageChange }) {
                   title: "Trusted Expertise",
                   description:
                     "Proven track record with government agencies and leading organizations across Africa.",
-                  color: "bg-blue-600",
+                  color: "bg-primary-blue",
                 },
                 {
                   icon: TrendingUp,
                   title: "Measurable Results",
                   description:
                     "Data-driven solutions that deliver quantifiable business impact and ROI.",
-                  color: "bg-cyan-600",
+                  color: "bg-medium-blue",
                 },
                 {
                   icon: Users,
@@ -615,7 +577,7 @@ export function HomePage({ onPageChange }) {
                   title: "Global Standards",
                   description:
                     "International best practices combined with local expertise and insights.",
-                  color: "bg-blue-600",
+                  color: "bg-primary-blue",
                 },
               ].map((item, index) => (
                 <div
@@ -642,11 +604,11 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* CTA Section - Full width with animations */}
+        {/* CTA Section */}
         <section
           ref={ctaReveal.ref}
           style={ctaReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-blue-600 to-cyan-600"
+          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue "
         >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
             <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white mb-6">
@@ -658,18 +620,18 @@ export function HomePage({ onPageChange }) {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
               <Button
-                size="lg"
+                size="xl"
                 onClick={() => onPageChange("contact")}
-                className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="bg-white text-primary-blue hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 Start Your Project
                 <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
               </Button>
               <Button
-                size="lg"
+                size="xl"
                 variant="outline"
                 onClick={() => onPageChange("about")}
-                className="border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="border-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 Learn More About Us
               </Button>
