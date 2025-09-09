@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const processSteps = [
   {
@@ -37,16 +37,16 @@ const ProcessCircle = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [currentArrow, setCurrentArrow] = useState(0);
   const [arrowProgress, setArrowProgress] = useState(0);
-  const [completedArrows, setCompletedArrows] = useState([]);
+  const [completedArrows, setCompletedArrows] = useState<number[]>([]);
   const [animationProgress, setAnimationProgress] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
 
   const sectionRef = useRef(null);
-  const animationRef = useRef(null);
+  const animationRef = useRef<number>(null);
 
   // Calculate positions for steps around a circle
-  const getStepPosition = (index, total, radius = 160) => {
+  const getStepPosition = (index: number, total: number, radius = 160) => {
     const angle = (-90 + (360 / total) * index) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius + 250,
@@ -55,7 +55,11 @@ const ProcessCircle = () => {
   };
 
   // Generate curved path between two points
-  const generateCurvedPath = (start, end, curvature = 0.3) => {
+  const generateCurvedPath = (
+    start: { x: number; y: number },
+    end: { x: number; y: number },
+    curvature = 0.3
+  ) => {
     const midX = (start.x + end.x) / 2;
     const midY = (start.y + end.y) / 2;
 
@@ -76,7 +80,7 @@ const ProcessCircle = () => {
   };
 
   // Auto-play animation function
-  const updateAnimation = (progress) => {
+  const updateAnimation = (progress: number) => {
     const totalArrows = processSteps.length - 1;
     const progressPerArrow = 1 / totalArrows;
 
@@ -175,7 +179,7 @@ const ProcessCircle = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 py-20"
+      className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 py-20 animate-fadeIn"
     >
       <div className="h-screen flex items-center justify-center">
         <div className="container mx-auto px-4 relative">
@@ -467,23 +471,6 @@ const ProcessCircle = () => {
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeIn {
-          animation: fadeIn 0.5s ease-out;
-        }
-      `}</style>
     </section>
   );
 };

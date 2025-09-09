@@ -11,7 +11,16 @@ import { useState, useEffect, useRef } from "react";
  * @param {string} options.easing - CSS easing function
  * @returns {Object} { ref, style, isVisible }
  */
-export const useScrollReveal = (options = {}) => {
+
+type Options = {
+  threshold?: number;
+  delay?: number;
+  duration?: number;
+  distance?: number;
+  direction?: string;
+  easing?: string;
+};
+export const useScrollReveal = (options: Options = {}) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 

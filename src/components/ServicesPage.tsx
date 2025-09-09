@@ -151,39 +151,6 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
     },
   ];
 
-  const processSteps = [
-    {
-      step: "01",
-      title: "Discovery & Analysis",
-      description:
-        "We start by understanding your business goals, current challenges, and data landscape.",
-    },
-    {
-      step: "02",
-      title: "Strategy & Planning",
-      description:
-        "Develop a comprehensive roadmap with clear timelines, milestones, and success metrics.",
-    },
-    {
-      step: "03",
-      title: "Development & Implementation",
-      description:
-        "Build and deploy solutions using industry best practices and cutting-edge technologies.",
-    },
-    {
-      step: "04",
-      title: "Testing & Optimization",
-      description:
-        "Rigorous testing and performance optimization to ensure reliability and efficiency.",
-    },
-    {
-      step: "05",
-      title: "Deployment & Support",
-      description:
-        "Smooth deployment with ongoing support and maintenance to ensure continued success.",
-    },
-  ];
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -360,7 +327,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
               size="lg"
               variant="outline"
               onClick={() => onPageChange("case-studies")}
-              className="border-white text-white hover:bg-white hover:text-sky-blue px-8 py-4 text-lg"
+              className="border-white text-black hover:bg-white hover:text-sky-blue px-8 py-4 text-lg"
             >
               View Case Studies
             </Button>

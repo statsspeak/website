@@ -215,7 +215,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
                 power of data and technology.
               </p>
               <Button
-                size="lg"
+                size="2xl"
                 onClick={() => onPageChange("contact")}
                 className="bg-white text-deep-blue hover:bg-gray-100"
               >
@@ -405,7 +405,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
               size="lg"
               variant="outline"
               onClick={() => onPageChange("services")}
-              className="border-blue-300 text-blue-100 hover:bg-blue-50/10"
+              className="border-blue-300 text-black hover:bg-blue-50/10"
             >
               View Our Services
             </Button>

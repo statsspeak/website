@@ -1,8 +1,19 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const LeadershipCarousel = ({ directors }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const LeadershipCarousel = ({
+  directors,
+}: {
+  directors: {
+    name: string;
+    role: string;
+    image: string;
+    bio: string;
+    specialties: string[];
+    linkedin: string;
+  }[];
+}) => {
+  const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isPaused, setIsPaused] = useState(false);
 
   const handleNext = useCallback(() => {
@@ -15,7 +26,7 @@ const LeadershipCarousel = ({ directors }) => {
     );
   };
 
-  const goToIndex = (index) => {
+  const goToIndex = (index: number) => {
     setActiveIndex(index);
   };
 
@@ -30,7 +41,7 @@ const LeadershipCarousel = ({ directors }) => {
 
   // Keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "ArrowRight") handleNext();
       else if (event.key === "ArrowLeft") handlePrev();
     };

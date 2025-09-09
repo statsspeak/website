@@ -1,19 +1,29 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, type CSSProperties } from "react";
+
+type Direction = "up" | "down" | "left" | "right";
+
+interface StaggerOptions {
+  stagger?: number;
+  threshold?: number;
+  duration?: number;
+  distance?: number;
+  direction?: Direction;
+  easing?: string;
+}
+
+interface UseStaggerAnimationReturn {
+  addRef: (element: HTMLElement | null, index: number) => void;
+  getItemStyle: (index: number) => CSSProperties;
+}
 
 /**
  * Custom hook for staggered animations on lists of elements
- * @param {Object} options - Configuration options
- * @param {number} options.stagger - Delay between each item animation in ms
- * @param {number} options.threshold - Intersection observer threshold (0-1)
- * @param {number} options.duration - Animation duration in ms
- * @param {number} options.distance - Movement distance in pixels
- * @param {string} options.direction - Animation direction ('up', 'down', 'left', 'right')
- * @param {string} options.easing - CSS easing function
- * @returns {Object} { addRef, getItemStyle }
  */
-export const useStaggerAnimation = (options = {}) => {
-  const refs = useRef([]);
-  const [visibleItems, setVisibleItems] = useState(new Set());
+export const useStaggerAnimation = (
+  options: StaggerOptions = {}
+): UseStaggerAnimationReturn => {
+  const refs = useRef<(HTMLElement | null)[]>([]);
+  const [visibleItems, setVisibleItems] = useState<Set<number>>(new Set());
 
   const {
     stagger = 100,
@@ -25,7 +35,7 @@ export const useStaggerAnimation = (options = {}) => {
   } = options;
 
   const addRef = useCallback(
-    (element, index) => {
+    (element: HTMLElement | null, index: number) => {
       if (element && !refs.current[index]) {
         refs.current[index] = element;
 
@@ -46,7 +56,7 @@ export const useStaggerAnimation = (options = {}) => {
     [stagger, threshold]
   );
 
-  const getTransform = (index) => {
+  const getTransform = (index: number): string => {
     if (visibleItems.has(index)) return "translateY(0) translateX(0)";
 
     switch (direction) {
@@ -63,7 +73,7 @@ export const useStaggerAnimation = (options = {}) => {
     }
   };
 
-  const getItemStyle = (index) => ({
+  const getItemStyle = (index: number): CSSProperties => ({
     opacity: visibleItems.has(index) ? 1 : 0,
     transform: getTransform(index),
     transition: `all ${duration}ms ${easing}`,

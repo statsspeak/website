@@ -465,7 +465,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
             <div className="text-center mt-12 xl:mt-16">
               <Button
-                size="xl"
+                size="2xl"
                 onClick={() => onPageChange("services")}
                 className="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >

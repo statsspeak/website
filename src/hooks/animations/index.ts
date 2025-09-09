@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 // Barrel exports for animation hooks
 export { useScrollReveal } from "./useScrollReveal";
 export { useStaggerAnimation } from "./useStaggerAnimation";
@@ -70,8 +72,10 @@ export const ANIMATION_PRESETS = {
 };
 
 // Utility function to combine multiple animation styles
-export const combineAnimationStyles = (...styles) => {
-  return styles.reduce(
+export const combineAnimationStyles = (
+  ...styles: Array<Partial<CSSProperties>>
+): CSSProperties => {
+  return styles.reduce<CSSProperties>(
     (combined, style) => ({
       ...combined,
       ...style,

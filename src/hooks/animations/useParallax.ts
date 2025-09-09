@@ -8,7 +8,15 @@ import { useState, useRef, useEffect } from "react";
  * @param {number} options.offset - Initial offset value
  * @returns {Object} { ref, style }
  */
-export const useParallax = (speed = 0.5, options = {}) => {
+type Options = {
+  offset?: number;
+  disabled: boolean;
+};
+
+export const useParallax = (
+  speed = 0.5,
+  options: Options = { disabled: false }
+) => {
   const ref = useRef(null);
   const [offset, setOffset] = useState(options.offset || 0);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -18,7 +26,7 @@ export const useParallax = (speed = 0.5, options = {}) => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setIsDisabled(mediaQuery.matches || options.disabled);
 
-    const handleMediaChange = (e) => {
+    const handleMediaChange = (e: MediaQueryListEvent) => {
       setIsDisabled(e.matches || options.disabled);
     };
 
@@ -32,7 +40,7 @@ export const useParallax = (speed = 0.5, options = {}) => {
     const handleScroll = () => {
       if (!ref.current) return;
 
-      const element = ref.current;
+      const element: Element = ref.current;
       const rect = element.getBoundingClientRect();
       const elementTop = rect.top + window.scrollY;
       const elementHeight = rect.height;
