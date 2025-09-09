@@ -115,7 +115,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
   const menuItems = [
     { id: "home", label: "Home" },
     { id: "about", label: "About Us" },
-    { id: "services", label: "Service", hasDropdown: true },
+    { id: "services", label: "Service" },
     { id: "case-studies", label: "Case Studies" },
     { id: "contact", label: "Contact Us" },
   ];
@@ -171,7 +171,6 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                   onClick={() => onPageChange(item.id)}
                   label={item.label}
                   active={currentPage === item.id}
-                  hasDropdown={item.hasDropdown}
                 />
               ))}
             </div>
@@ -268,7 +267,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                     `}
                 >
                   <span>{item.label}</span>
-                  {item.hasDropdown && <ChevronDown className="w-4 h-4" />}
+                  {/* {item.hasDropdown && <ChevronDown className="w-4 h-4" />} */}
                 </button>
               ))}
               <div className="pt-2 border-t border-slate-800/50 mt-2">

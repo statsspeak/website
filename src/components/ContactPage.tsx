@@ -292,8 +292,8 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
 
                     <Button
                       type="submit"
-                      size="lg"
-                      className="w-full bg-gradient-to-r from-vibrant-blue to-vibrant-purple text-white"
+                      size="xl"
+                      className="w-full bg-gradient-to-r from-vibrant-blue to-vibrant-purple text-black"
                     >
                       Send Message
                       <Send className="ml-2 h-5 w-5" />

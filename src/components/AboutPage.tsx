@@ -26,6 +26,7 @@ import joan from "../assets/team-photos/Joan.jpg";
 import joram from "../assets/team-photos/joram-kabach.jpeg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
 import nancy from "../assets/team-photos/Nancy.png";
+import LeadershipCarousel from "./Team";
 
 interface AboutPageProps {
   onPageChange: (page: string) => void;
@@ -214,7 +215,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
                 power of data and technology.
               </p>
               <Button
-                size="lg"
+                size="2xl"
                 onClick={() => onPageChange("contact")}
                 className="bg-white text-deep-blue hover:bg-gray-100"
               >
@@ -317,65 +318,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
       </section>
 
       {/* Team */}
-      <section className="py-16 xl:py-20 2xl:py-24 bg-white">
-        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <div className="text-center mb-12 xl:mb-16">
-            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-              Leadership <span className="text-primary-blue">Team</span>
-            </h2>
-            <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
-              Meet the visionary leaders driving Statsspeak's mission to
-              transform Africa through data intelligence.
-            </p>
-          </div>
-
-          <div className="flex gap-8 overflow-x-scroll snap-x max-w-7xl mx-auto">
-            {directors.map((director, index) => (
-              <Card
-                key={index}
-                className="min-w-full lg:min-w-[calc(33.33%-2rem)] snap-start border-0 shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden group"
-              >
-                <div className="relative">
-                  <ImageWithFallback
-                    src={director.image}
-                    alt={director.name}
-                    className="w-full h-80 xl:h-96 2xl:h-[28rem] object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <CardContent className="p-6 xl:p-8 2xl:p-10">
-                  <div className="text-center mb-6">
-                    <h3 className="text-xl xl:text-2xl 2xl:text-3xl font-bold mb-2">
-                      {director.name}
-                    </h3>
-                    <p className="text-primary-blue font-semibold text-base xl:text-lg 2xl:text-xl">
-                      {director.role}
-                    </p>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed mb-6 text-sm xl:text-base 2xl:text-lg">
-                    {director.bio}
-                  </p>
-                  <div className="space-y-3">
-                    <h4 className="font-semibold text-primary-blue text-sm xl:text-base">
-                      Specialties:
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {director.specialties.map((specialty, specialtyIndex) => (
-                        <span
-                          key={specialtyIndex}
-                          className="px-3 py-1 bg-light-blue text-primary-blue rounded-full text-xs xl:text-sm"
-                        >
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <LeadershipCarousel directors={directors} />
 
       {/* Timeline */}
       <section className="py-20 bg-muted/30">
@@ -462,7 +405,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
               size="lg"
               variant="outline"
               onClick={() => onPageChange("services")}
-              className="border-blue-300 text-blue-100 hover:bg-blue-50/10"
+              className="border-blue-300 text-black hover:bg-blue-50/10"
             >
               View Our Services
             </Button>

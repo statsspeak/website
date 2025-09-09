@@ -10,6 +10,7 @@ import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import ProcessCircle from "./ProcessCircle";
 
 interface ServicesPageProps {
   onPageChange: (page: string) => void;
@@ -126,38 +127,27 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
         "Enhanced planning",
       ],
     },
-  ];
-
-  const processSteps = [
     {
-      step: "01",
-      title: "Discovery & Analysis",
+      title: "AI Agents & Workflows",
       description:
-        "We start by understanding your business goals, current challenges, and data landscape.",
-    },
-    {
-      step: "02",
-      title: "Strategy & Planning",
-      description:
-        "Develop a comprehensive roadmap with clear timelines, milestones, and success metrics.",
-    },
-    {
-      step: "03",
-      title: "Development & Implementation",
-      description:
-        "Build and deploy solutions using industry best practices and cutting-edge technologies.",
-    },
-    {
-      step: "04",
-      title: "Testing & Optimization",
-      description:
-        "Rigorous testing and performance optimization to ensure reliability and efficiency.",
-    },
-    {
-      step: "05",
-      title: "Deployment & Support",
-      description:
-        "Smooth deployment with ongoing support and maintenance to ensure continued success.",
+        "Build intelligent AI-powered agents and automated workflows that drive business efficiency, customer engagement, and data-driven decision-making.",
+      image: "/ai.jpg",
+      features: [
+        "Conversational AI Agents (Chat/WhatsApp/Web)",
+        "Automated Data Analysis & Reporting",
+        "AI-Powered Business Workflows",
+        "Natural Language Interfaces for Dashboards",
+        "Smart Alerts & Notifications",
+        "Integration with APIs, Databases, and CRMs",
+      ],
+      technologies: ["LangChain", "LangGraph", "Python"],
+      benefits: [
+        "Automated decision support",
+        "Improved customer engagement",
+        "Faster insights with natural language",
+        "Scalable and customizable workflows",
+        "Seamless integration with existing systems",
+      ],
     },
   ];
 
@@ -261,42 +251,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
         </div>
       </section>
 
-      {/* Process Section */}
-      <section className="py-20 bg-gradient-to-br from-light-blue/20 to-sky-blue-light/10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Our <span className="text-sky-blue">Process</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              A proven methodology that ensures successful project delivery and
-              exceeds client expectations.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-5 gap-8">
-            {processSteps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="relative mb-6">
-                  <div className="w-16 h-16 bg-sky-blue rounded-full flex items-center justify-center mx-auto text-white font-bold text-lg shadow-lg">
-                    {step.step}
-                  </div>
-                  {index < processSteps.length - 1 && (
-                    <div className="hidden md:block absolute top-8 left-16 w-full h-0.5 bg-gradient-to-r from-sky-blue to-medium-blue"></div>
-                  )}
-                </div>
-                <h3 className="text-lg font-semibold mb-3 text-sky-blue-dark">
-                  {step.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+      <ProcessCircle />
       {/* Why Choose Us */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -372,7 +327,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
               size="lg"
               variant="outline"
               onClick={() => onPageChange("case-studies")}
-              className="border-white text-white hover:bg-white hover:text-sky-blue px-8 py-4 text-lg"
+              className="border-white text-black hover:bg-white hover:text-sky-blue px-8 py-4 text-lg"
             >
               View Case Studies
             </Button>

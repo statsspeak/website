@@ -9,9 +9,13 @@ import {
   Globe,
   Shield,
 } from "lucide-react";
+import { useScrollReveal } from "../hooks/animations";
+import { useParallax } from "../hooks/animations";
+import { useStaggerAnimation } from "../hooks/animations";
+import { ANIMATION_PRESETS } from "../hooks/animations";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 import amref from "../assets/logos/amref.png";
 import digitax from "../assets/logos/digitax.png";
 import lipachat from "../assets/logos/lipachat.png";
@@ -151,11 +155,47 @@ export function HomePage({ onPageChange }: HomePageProps) {
     },
   ];
 
+  // Animation hooks - using your existing theme colors
+  const heroReveal = useScrollReveal(ANIMATION_PRESETS.heroTitle);
+  const heroParallax = useParallax(ANIMATION_PRESETS.backgroundParallax);
+  const partnersReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 100,
+    threshold: 0.2,
+  });
+
+  const servicesTitle = useScrollReveal(ANIMATION_PRESETS.sectionTitle);
+  const servicesStagger = useStaggerAnimation({ stagger: 200, threshold: 0.1 });
+  const testimonialsReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 100,
+    threshold: 0.15,
+  });
+  const testimonialsStagger = useStaggerAnimation({
+    stagger: 250,
+    threshold: 0.1,
+  });
+  const whyChooseReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 50,
+    threshold: 0.2,
+  });
+  const whyChooseStagger = useStaggerAnimation({
+    stagger: 120,
+    threshold: 0.1,
+  });
+  const ctaReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.fadeInUp,
+    delay: 100,
+    distance: 40,
+    threshold: 0.3,
+  });
+
   // Auto-rotate text - Updated to 1.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
-    }, 1500); // Change text every 1.5 seconds
+    }, 1500);
 
     return () => clearInterval(timer);
   }, [rotatingTexts.length]);
@@ -164,8 +204,12 @@ export function HomePage({ onPageChange }: HomePageProps) {
     <div className="w-full">
       {/* Hero Section - Full width with enhanced scaling */}
       <section className="overflow-hidden py-16 lg:py-24 xl:py-32 min-h-screen flex items-center sticky top-0 z-10">
-        {/* Vibrant Background Image - Full visibility */}
-        <div className="absolute inset-0">
+        {/* Vibrant Background Image with Parallax - Full visibility */}
+        <div
+          ref={heroParallax.ref}
+          style={heroParallax.style}
+          className="absolute inset-0"
+        >
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
             alt="Data network visualization over satellite map"
@@ -175,7 +219,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       <div className="relative z-20 bg-transparent -mt-[100vh]">
-        <section className="py-16 xl:py-20 2xl:py-24 bg-none">
+        <section className="py-16 xl:py-20 2xl:py-24 bg-none ">
           {/* Subtle overlay for text readability - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
 
@@ -187,32 +231,29 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
             {/* Animated background elements - more vibrant */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-primary-blue/30 rounded-full blur-3xl animate-float"></div>
+              <div className="absolute top-20 left-10 w-72 h-72 bg-primary-blue/30 rounded-full blur-3xl animate-pulse"></div>
               <div
-                className="absolute bottom-20 right-10 w-96 h-96 bg-medium-blue/25 rounded-full blur-3xl animate-float"
+                className="absolute bottom-20 right-10 w-96 h-96 bg-medium-blue/25 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "2s" }}
               ></div>
-              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-primary-blue/50 to-transparent rotate-45 animate-glowing-lines"></div>
+              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-primary-blue/50 to-transparent rotate-45 animate-pulse"></div>
               <div
-                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-medium-blue/50 to-transparent rotate-12 animate-glowing-lines"
+                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-medium-blue/50 to-transparent rotate-12 animate-pulse"
                 style={{ animationDelay: "1s" }}
               ></div>
               <div
-                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-primary-blue/40 to-transparent rotate-75 animate-glowing-lines"
+                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-primary-blue/40 to-transparent rotate-75 animate-pulse"
                 style={{ animationDelay: "3s" }}
               ></div>
             </div>
 
             <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
               <div className="flex items-center justify-center min-h-[80vh]">
-                <div className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl">
-                  {/* <div className="inline-flex items-center px-4 py-2 bg-white/95 rounded-full border border-primary-blue/30 shadow-lg backdrop-blur-sm">
-                  <Star className="w-4 h-4 text-primary-blue mr-2" />
-                  <span className="text-sm font-medium text-primary-blue">
-                    Trusted by 50+ Organizations
-                  </span>
-                </div> */}
-
+                <div
+                  ref={heroReveal.ref}
+                  style={heroReveal.style}
+                  className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl"
+                >
                   <h1 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight">
                     <span
                       className="block text-white drop-shadow-xl"
@@ -257,15 +298,15 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
                   <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
                     <Button
-                      size="lg"
+                      size="xl"
                       onClick={() => onPageChange("services")}
-                      className="bg-primary-blue/95 backdrop-blur-sm hover:bg-primary-blue text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-primary-blue/50"
+                      className="bg-primary-blue/95 backdrop-blur-sm hover:bg-primary-blue rounded-full text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-primary-blue/50"
                     >
                       Explore Our Services
                       <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6 group-hover:translate-x-1 transition-transform" />
                     </Button>
                     <Button
-                      size="lg"
+                      size="xl"
                       variant="outline"
                       onClick={() => onPageChange("case-studies")}
                       className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
@@ -325,14 +366,19 @@ export function HomePage({ onPageChange }: HomePageProps) {
             </div>
           </div>
         </section>
-        {/* Partners Section - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-background">
+
+        {/* Partners Section */}
+        <section
+          ref={partnersReveal.ref}
+          style={partnersReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gray-50"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
                 Trusted <span className="text-primary-blue">Partners</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 We're proud to work with leading organizations across Kenya and
                 East Africa, delivering impactful solutions that drive real
                 change.
@@ -361,14 +407,18 @@ export function HomePage({ onPageChange }: HomePageProps) {
           </div>
         </section>
 
-        {/* Services Overview - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-white">
+        {/* Services Overview */}
+        <section className="py-16 xl:py-20 2xl:py-24 bg-white min-h-screen">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div className="text-center mb-12 xl:mb-16">
+            <div
+              ref={servicesTitle.ref}
+              style={servicesTitle.style}
+              className="text-center mb-12 xl:mb-16"
+            >
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
                 Our <span className="text-primary-blue">Expertise</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
                 Comprehensive data solutions designed to unlock insights, drive
                 innovation, and accelerate your business growth.
               </p>
@@ -376,43 +426,46 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
             <div className="grid md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {services.map((service, index) => (
-                <Card
+                <div
                   key={index}
-                  className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white"
+                  ref={(el) => servicesStagger.addRef(el, index)}
+                  style={servicesStagger.getItemStyle(index)}
                 >
-                  <div className="relative overflow-hidden">
-                    <ImageWithFallback
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </div>
-                  <CardContent className="p-6 xl:p-8 2xl:p-10">
-                    <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-primary-blue">
-                      {service.title}
-                    </CardTitle>
-                    <CardDescription className="text-muted-foreground mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                      {service.description}
-                    </CardDescription>
-                    <div className="grid grid-cols-2 gap-3 xl:gap-4">
-                      {service.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="flex items-center">
-                          <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
-                          <span className="text-sm xl:text-base text-muted-foreground">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
+                  <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
+                    <div className="relative overflow-hidden">
+                      <ImageWithFallback
+                        src={service.image}
+                        alt={service.title}
+                        className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
-                  </CardContent>
-                </Card>
+                    <CardContent className="p-6 xl:p-8 2xl:p-10">
+                      <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-primary-blue">
+                        {service.title}
+                      </CardTitle>
+                      <CardDescription className="text-gray-600 mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
+                        {service.description}
+                      </CardDescription>
+                      <div className="grid grid-cols-2 gap-3 xl:gap-4">
+                        {service.features.map((feature, featureIndex) => (
+                          <div key={featureIndex} className="flex items-center">
+                            <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
+                            <span className="text-sm xl:text-base text-gray-600">
+                              {feature}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
 
             <div className="text-center mt-12 xl:mt-16">
               <Button
-                size="lg"
+                size="2xl"
                 onClick={() => onPageChange("services")}
                 className="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
@@ -423,14 +476,18 @@ export function HomePage({ onPageChange }: HomePageProps) {
           </div>
         </section>
 
-        {/* Testimonials - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-background">
+        {/* Testimonials */}
+        <section
+          ref={testimonialsReveal.ref}
+          style={testimonialsReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gray-50 min-h-screen"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
                 What Our <span className="text-primary-blue">Partners Say</span>
               </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-muted-foreground">
+              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600">
                 Don't just take our word for it - hear from our satisfied
                 partners and clients.
               </p>
@@ -438,46 +495,53 @@ export function HomePage({ onPageChange }: HomePageProps) {
 
             <div className="grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {testimonials.map((testimonial, index) => (
-                <Card
+                <div
                   key={index}
-                  className="border-0 shadow-xl bg-white relative"
+                  ref={(el) => testimonialsStagger.addRef(el, index)}
+                  style={testimonialsStagger.getItemStyle(index)}
                 >
-                  <CardContent className="p-6 xl:p-8 2xl:p-10">
-                    <div className="flex mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="h-5 w-5 xl:h-6 xl:w-6 text-yellow-400 fill-current"
+                  <Card className="border-0 shadow-xl bg-white relative h-full">
+                    <CardContent className="p-6 xl:p-8 2xl:p-10">
+                      <div className="flex mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="h-5 w-5 xl:h-6 xl:w-6 text-yellow-400 fill-current"
+                          />
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 italic leading-relaxed text-base xl:text-lg 2xl:text-xl">
+                        "{testimonial.quote}"
+                      </p>
+                      <div className="flex items-center">
+                        <ImageWithFallback
+                          src={testimonial.image}
+                          alt={testimonial.author}
+                          className="w-16 h-16 xl:w-20 xl:h-20 rounded-full mr-4 object-cover"
                         />
-                      ))}
-                    </div>
-                    <p className="text-muted-foreground mb-6 italic leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                      "{testimonial.quote}"
-                    </p>
-                    <div className="flex items-center">
-                      <ImageWithFallback
-                        src={testimonial.image}
-                        alt={testimonial.author}
-                        className="w-16 h-16 xl:w-20 xl:h-20 rounded-full mr-4 object-cover"
-                      />
-                      <div>
-                        <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
-                          {testimonial.author}
-                        </div>
-                        <div className="text-primary-blue font-medium text-sm xl:text-base">
-                          {testimonial.role}
+                        <div>
+                          <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
+                            {testimonial.author}
+                          </div>
+                          <div className="text-primary-blue font-medium text-sm xl:text-base">
+                            {testimonial.role}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Why Choose Us - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-white">
+        {/* Why Choose Us */}
+        <section
+          ref={whyChooseReveal.ref}
+          style={whyChooseReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-white"
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div className="text-center mb-12 xl:mb-16">
               <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
@@ -486,74 +550,77 @@ export function HomePage({ onPageChange }: HomePageProps) {
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Shield className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
+              {[
+                {
+                  icon: Shield,
+                  title: "Trusted Expertise",
+                  description:
+                    "Proven track record with government agencies and leading organizations across Africa.",
+                  color: "bg-primary-blue",
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Measurable Results",
+                  description:
+                    "Data-driven solutions that deliver quantifiable business impact and ROI.",
+                  color: "bg-medium-blue",
+                },
+                {
+                  icon: Users,
+                  title: "Local Understanding",
+                  description:
+                    "Deep understanding of African markets, challenges, and opportunities.",
+                  color: "bg-blue-700",
+                },
+                {
+                  icon: Globe,
+                  title: "Global Standards",
+                  description:
+                    "International best practices combined with local expertise and insights.",
+                  color: "bg-primary-blue",
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  ref={(el) => whyChooseStagger.addRef(el, index)}
+                  style={whyChooseStagger.getItemStyle(index)}
+                >
+                  <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow h-full">
+                    <div
+                      className={`w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
+                    >
+                      <item.icon className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
+                    </div>
+                    <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm xl:text-base 2xl:text-lg">
+                      {item.description}
+                    </p>
+                  </Card>
                 </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Trusted Expertise
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Proven track record with government agencies and leading
-                  organizations across Africa.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-medium-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <TrendingUp className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Measurable Results
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Data-driven solutions that deliver quantifiable business
-                  impact and ROI.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue-dark rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Users className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Local Understanding
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  Deep understanding of African markets, challenges, and
-                  opportunities.
-                </p>
-              </Card>
-
-              <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow">
-                <div className="w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 bg-primary-blue rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <Globe className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                </div>
-                <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                  Global Standards
-                </h3>
-                <p className="text-muted-foreground text-sm xl:text-base 2xl:text-lg">
-                  International best practices combined with local expertise and
-                  insights.
-                </p>
-              </Card>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section - Full width */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue">
+        {/* CTA Section */}
+        <section
+          ref={ctaReveal.ref}
+          style={ctaReveal.style}
+          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue "
+        >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
             <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white mb-6">
               Ready to Transform Your Organization?
             </h2>
-            <p className="text-lg xl:text-xl 2xl:text-2xl text-primary-blue-light mb-8 max-w-3xl mx-auto">
+            <p className="text-lg xl:text-xl 2xl:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
               Join leading organizations across Africa who trust Statsspeak to
               unlock insights, drive innovation, and achieve sustainable growth.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
               <Button
-                size="lg"
+                size="xl"
                 onClick={() => onPageChange("contact")}
                 className="bg-white text-primary-blue hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
@@ -561,10 +628,10 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
               </Button>
               <Button
-                size="lg"
+                size="xl"
                 variant="outline"
                 onClick={() => onPageChange("about")}
-                className="border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="border-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
               >
                 Learn More About Us
               </Button>

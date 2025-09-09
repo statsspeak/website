@@ -336,7 +336,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
               size="lg"
               variant="outline"
               onClick={() => onPageChange("services")}
-              className="border-blue-300 text-blue-100 hover:bg-blue-50/10"
+              className="border-blue-300 text-black hover:bg-blue-50/10"
             >
               View Our Services
             </Button>
