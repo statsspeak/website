@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowRight,
   PlayCircle,
@@ -9,135 +9,21 @@ import {
   Globe,
   Shield,
 } from "lucide-react";
-import { useLenis } from "@studio-freight/react-lenis";
+import { useScrollReveal } from "../hooks/animations";
+import { useParallax } from "../hooks/animations";
+import { useStaggerAnimation } from "../hooks/animations";
+import { ANIMATION_PRESETS } from "../hooks/animations";
 
-// Custom Hooks for Scroll Animations
-const useScrollReveal = (options = {}) => {
-  const ref = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const {
-    threshold = 0.1,
-    delay = 0,
-    duration = 800,
-    distance = 50,
-    direction = "up",
-  } = options;
+// Animation hooks imports (you would import these from your hooks folder)
 
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setTimeout(() => setIsVisible(true), delay);
-        }
-      },
-      { threshold }
-    );
-
-    observer.observe(element);
-    return () => observer.unobserve(element);
-  }, [threshold, delay]);
-
-  const getTransform = () => {
-    if (isVisible) return "translateY(0) translateX(0)";
-
-    switch (direction) {
-      case "up":
-        return `translateY(${distance}px)`;
-      case "down":
-        return `translateY(-${distance}px)`;
-      case "left":
-        return `translateX(${distance}px)`;
-      case "right":
-        return `translateX(-${distance}px)`;
-      default:
-        return `translateY(${distance}px)`;
-    }
-  };
-
-  const style = {
-    opacity: isVisible ? 1 : 0,
-    transform: getTransform(),
-    transition: `all ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-  };
-
-  return { ref, style, isVisible };
-};
-
-const useStaggerAnimation = (options = {}) => {
-  const refs = useRef([]);
-  const [visibleItems, setVisibleItems] = useState(new Set());
-  const { stagger = 100, threshold = 0.1 } = options;
-
-  const addRef = useCallback(
-    (element, index) => {
-      if (element && !refs.current[index]) {
-        refs.current[index] = element;
-
-        const observer = new IntersectionObserver(
-          ([entry]) => {
-            if (entry.isIntersecting) {
-              setTimeout(() => {
-                setVisibleItems((prev) => new Set([...prev, index]));
-              }, index * stagger);
-            }
-          },
-          { threshold }
-        );
-
-        observer.observe(element);
-      }
-    },
-    [stagger, threshold]
-  );
-
-  const getItemStyle = (index) => ({
-    opacity: visibleItems.has(index) ? 1 : 0,
-    transform: visibleItems.has(index) ? "translateY(0)" : "translateY(30px)",
-    transition: "all 600ms cubic-bezier(0.4, 0, 0.2, 1)",
-  });
-
-  return { addRef, getItemStyle };
-};
-
-const useParallax = (speed = 0.5) => {
-  const ref = useRef(null);
-  const [offset, setOffset] = useState(0);
-
-  useLenis(({ scroll }) => {
-    if (ref.current) {
-      const element = ref.current;
-      const rect = element.getBoundingClientRect();
-      const elementTop = rect.top + scroll;
-      const elementHeight = rect.height;
-      const windowHeight = window.innerHeight;
-
-      // Calculate if element is in viewport
-      if (
-        scroll + windowHeight > elementTop &&
-        scroll < elementTop + elementHeight
-      ) {
-        const relativePos =
-          (scroll - elementTop + windowHeight) / (windowHeight + elementHeight);
-        setOffset(relativePos * speed * 100);
-      }
-    }
-  });
-
-  return {
-    ref,
-    style: {
-      transform: `translateY(${offset}px)`,
-    },
-  };
-};
-
-// Mock components (replace with your actual components)
+// Mock components for demonstration (replace with your actual imports)
 const Button = ({ children, className, onClick, variant, size, ...props }) => (
   <button
-    className={`inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors ${className}`}
+    className={`inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors ${
+      variant === "outline"
+        ? "border border-current bg-transparent hover:bg-current hover:text-white"
+        : "bg-blue-600 text-white hover:bg-blue-700"
+    } ${size === "lg" ? "px-8 py-3 text-lg" : ""} ${className}`}
     onClick={onClick}
     {...props}
   >
@@ -146,149 +32,32 @@ const Button = ({ children, className, onClick, variant, size, ...props }) => (
 );
 
 const Card = ({ children, className }) => (
-  <div className={`rounded-lg border bg-white shadow-sm ${className}`}>
+  <div className={`rounded-lg border bg-white shadow-sm ${className || ""}`}>
     {children}
   </div>
 );
 
 const CardContent = ({ children, className }) => (
-  <div className={`p-6 ${className}`}>{children}</div>
+  <div className={`p-6 ${className || ""}`}>{children}</div>
 );
 
 const CardTitle = ({ children, className }) => (
   <h3
-    className={`text-2xl font-semibold leading-none tracking-tight ${className}`}
+    className={`text-2xl font-semibold leading-none tracking-tight ${
+      className || ""
+    }`}
   >
     {children}
   </h3>
 );
 
 const CardDescription = ({ children, className }) => (
-  <p className={`text-sm text-muted-foreground ${className}`}>{children}</p>
+  <p className={`text-sm text-gray-600 ${className || ""}`}>{children}</p>
 );
 
 const ImageWithFallback = ({ src, alt, className }) => (
   <img src={src} alt={alt} className={className} />
 );
-
-// Mock data
-const services = [
-  {
-    title: "Data Science & Analytics",
-    description:
-      "Transform raw data into actionable business insights with advanced analytics and machine learning solutions.",
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    features: [
-      "Predictive Analytics",
-      "Machine Learning",
-      "Statistical Modeling",
-      "Business Intelligence",
-    ],
-  },
-  {
-    title: "Data Engineering",
-    description:
-      "Build robust data pipelines and infrastructure for scalable data processing and real-time analytics.",
-    image:
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-    features: [
-      "ETL Pipelines",
-      "Data Warehousing",
-      "Cloud Architecture",
-      "Real-time Processing",
-    ],
-  },
-  {
-    title: "Software Development",
-    description:
-      "Custom software solutions tailored to your business needs with modern technologies and best practices.",
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    features: [
-      "Web Applications",
-      "Mobile Apps",
-      "API Development",
-      "System Integration",
-    ],
-  },
-  {
-    title: "Geospatial Engineering",
-    description:
-      "Leverage location-based data for mapping, spatial analysis, and location intelligence solutions.",
-    image:
-      "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop",
-    features: [
-      "GIS Solutions",
-      "Spatial Analysis",
-      "Remote Sensing",
-      "Location Intelligence",
-    ],
-  },
-];
-
-const partners = [
-  {
-    name: "AMREF Health Africa",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=AMREF",
-    description: "Leading health organization in Africa",
-  },
-  {
-    name: "Digitax",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=DIGITAX",
-    description: "eTims Solution",
-  },
-  {
-    name: "Lipachat",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=LIPACHAT",
-    description: "Automated marketing and customer care",
-  },
-  {
-    name: "LVCT",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=LVCT",
-    description: "Health Campaign",
-  },
-  {
-    name: "MOH",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=MOH",
-    description: "Ministry of Health, Kenya",
-  },
-  {
-    name: "Pezesha",
-    logo: "https://via.placeholder.com/120x60/1a7595/white?text=PEZESHA",
-    description: "Enabling SMEs access to credit",
-  },
-];
-
-const testimonials = [
-  {
-    quote:
-      "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
-    author: "Dr. Mary Nyong'o",
-    role: "Director, AMREF Health Africa",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
-    rating: 5,
-  },
-  {
-    quote:
-      "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
-    author: "John Konchellah",
-    role: "Director General, Kenya Wildlife Service",
-    image:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-    rating: 5,
-  },
-  {
-    quote:
-      "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
-    author: "Anne Kananu",
-    role: "Deputy Governor, Nairobi City County",
-    image:
-      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
-    rating: 5,
-  },
-];
 
 export function HomePage({ onPageChange }) {
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
@@ -300,56 +69,90 @@ export function HomePage({ onPageChange }) {
     "Geospatial Engineering",
   ];
 
-  // Scroll animation hooks
-  const heroReveal = useScrollReveal({
-    delay: 200,
-    duration: 1000,
-    distance: 80,
-  });
-  const heroParallax = useParallax(-0.3);
-  const partnersReveal = useScrollReveal({ delay: 100, threshold: 0.2 });
-  const partnersStagger = useStaggerAnimation({ stagger: 150 });
-  const servicesTitle = useScrollReveal({ delay: 0, distance: 60 });
-  const servicesStagger = useStaggerAnimation({ stagger: 200 });
-  const testimonialsReveal = useScrollReveal({ delay: 100, threshold: 0.15 });
-  const testimonialsStagger = useStaggerAnimation({ stagger: 250 });
-  const whyChooseReveal = useScrollReveal({ delay: 50, threshold: 0.2 });
-  const whyChooseStagger = useStaggerAnimation({ stagger: 120 });
-  const ctaReveal = useScrollReveal({
-    delay: 100,
-    distance: 40,
-    threshold: 0.3,
-  });
+  const services = [
+    {
+      title: "Data Science & Analytics",
+      description:
+        "Transform raw data into actionable business insights with advanced analytics and machine learning solutions.",
+      image:
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
+      features: [
+        "Predictive Analytics",
+        "Machine Learning",
+        "Statistical Modeling",
+        "Business Intelligence",
+      ],
+    },
+    {
+      title: "Data Engineering",
+      description:
+        "Build robust data pipelines and infrastructure for scalable data processing and real-time analytics.",
+      image:
+        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
+      features: [
+        "ETL Pipelines",
+        "Data Warehousing",
+        "Cloud Architecture",
+        "Real-time Processing",
+      ],
+    },
+    {
+      title: "Software Development",
+      description:
+        "Custom software solutions tailored to your business needs with modern technologies and best practices.",
+      image:
+        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
+      features: [
+        "Web Applications",
+        "Mobile Apps",
+        "API Development",
+        "System Integration",
+      ],
+    },
+    {
+      title: "Geospatial Engineering",
+      description:
+        "Leverage location-based data for mapping, spatial analysis, and location intelligence solutions.",
+      image:
+        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop",
+      features: [
+        "GIS Solutions",
+        "Spatial Analysis",
+        "Remote Sensing",
+        "Location Intelligence",
+      ],
+    },
+  ];
 
   const partners = [
     {
       name: "AMREF Health Africa",
-      logo: amref,
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=AMREF",
       description: "Leading health organization in Africa",
     },
     {
       name: "Digitax",
-      logo: digitax,
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=DIGITAX",
       description: "eTims Solution",
     },
     {
       name: "Lipachat",
-      logo: lipachat,
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=LIPACHAT",
       description: "Automated marketing and customer care",
     },
     {
-      name: "lvct",
-      logo: lvct,
+      name: "LVCT",
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=LVCT",
       description: "Health Campaign",
     },
     {
       name: "MOH",
-      logo: moh,
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=MOH",
       description: "Ministry of Health, Kenya",
     },
     {
       name: "Pezesha",
-      logo: pezesha,
+      logo: "https://via.placeholder.com/120x60/1a7595/white?text=PEZESHA",
       description: "Enabling SMEs access to credit",
     },
   ];
@@ -384,23 +187,60 @@ export function HomePage({ onPageChange }) {
     },
   ];
 
+  // Animation hooks - using your existing theme colors
+  const heroReveal = useScrollReveal(ANIMATION_PRESETS.heroTitle);
+  const heroParallax = useParallax(ANIMATION_PRESETS.backgroundParallax);
+  const partnersReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 100,
+    threshold: 0.2,
+  });
+  const partnersStagger = useStaggerAnimation({ stagger: 150, threshold: 0.1 });
+  const servicesTitle = useScrollReveal(ANIMATION_PRESETS.sectionTitle);
+  const servicesStagger = useStaggerAnimation({ stagger: 200, threshold: 0.1 });
+  const testimonialsReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 100,
+    threshold: 0.15,
+  });
+  const testimonialsStagger = useStaggerAnimation({
+    stagger: 250,
+    threshold: 0.1,
+  });
+  const whyChooseReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.sectionTitle,
+    delay: 50,
+    threshold: 0.2,
+  });
+  const whyChooseStagger = useStaggerAnimation({
+    stagger: 120,
+    threshold: 0.1,
+  });
+  const ctaReveal = useScrollReveal({
+    ...ANIMATION_PRESETS.fadeInUp,
+    delay: 100,
+    distance: 40,
+    threshold: 0.3,
+  });
+
   // Auto-rotate text - Updated to 1.5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
     }, 1500);
+
     return () => clearInterval(timer);
   }, [rotatingTexts.length]);
 
   return (
     <div className="w-full">
-      {/* Hero Section */}
+      {/* Hero Section - Full width with enhanced scaling */}
       <section className="overflow-hidden py-16 lg:py-24 xl:py-32 min-h-screen flex items-center sticky top-0 z-10">
-        {/* Background with Parallax */}
+        {/* Vibrant Background Image with Parallax - Full visibility */}
         <div
           ref={heroParallax.ref}
-          className="absolute inset-0"
           style={heroParallax.style}
+          className="absolute inset-0"
         >
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
@@ -412,16 +252,30 @@ export function HomePage({ onPageChange }) {
 
       <div className="relative z-20 bg-transparent -mt-[100vh]">
         <section className="py-16 xl:py-20 2xl:py-24 bg-none">
-          {/* Subtle overlay for text readability */}
+          {/* Subtle overlay for text readability - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
 
           <div className="relative z-10 container mx-auto">
-            {/* Animated background elements */}
+            {/* Subtle data network pattern overlay */}
+            <div className="absolute inset-0 opacity-30">
+              <div className="data-network-background w-full h-full"></div>
+            </div>
+
+            {/* Animated background elements - more vibrant */}
             <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
+              <div className="absolute top-20 left-10 w-72 h-72 bg-blue-600/30 rounded-full blur-3xl animate-pulse"></div>
               <div
-                className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/25 rounded-full blur-3xl animate-pulse"
+                className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-600/25 rounded-full blur-3xl animate-pulse"
                 style={{ animationDelay: "2s" }}
+              ></div>
+              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-blue-600/50 to-transparent rotate-45 animate-pulse"></div>
+              <div
+                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-cyan-600/50 to-transparent rotate-12 animate-pulse"
+                style={{ animationDelay: "1s" }}
+              ></div>
+              <div
+                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-blue-600/40 to-transparent rotate-75 animate-pulse"
+                style={{ animationDelay: "3s" }}
               ></div>
             </div>
 
@@ -445,6 +299,8 @@ export function HomePage({ onPageChange }) {
                     >
                       Drive Growth & Impact
                     </span>
+
+                    {/* Dynamic rotating text - Enhanced visibility */}
                     <span
                       className="block text-white drop-shadow-xl text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl mt-4 min-h-[1.2em]"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
@@ -474,6 +330,7 @@ export function HomePage({ onPageChange }) {
 
                   <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
                     <Button
+                      variant=""
                       size="lg"
                       onClick={() => onPageChange("services")}
                       className="bg-blue-600/95 backdrop-blur-sm hover:bg-blue-700 text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-blue-600/50"
@@ -486,6 +343,7 @@ export function HomePage({ onPageChange }) {
                       variant="outline"
                       onClick={() => onPageChange("case-studies")}
                       className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
+                      style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.8)" }}
                     >
                       <PlayCircle className="mr-2 h-5 w-5 xl:h-6 xl:w-6" />
                       View Case Studies
@@ -542,7 +400,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Partners Section */}
+        {/* Partners Section - Full width with animations */}
         <section
           ref={partnersReveal.ref}
           style={partnersReveal.style}
@@ -560,7 +418,7 @@ export function HomePage({ onPageChange }) {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
               {partners.map((partner, index) => (
                 <div
                   key={index}
@@ -587,7 +445,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Services Overview */}
+        {/* Services Overview - Full width with animations */}
         <section className="py-16 xl:py-20 2xl:py-24 bg-white">
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
             <div
@@ -604,7 +462,7 @@ export function HomePage({ onPageChange }) {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {services.map((service, index) => (
                 <div
                   key={index}
@@ -656,7 +514,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Testimonials */}
+        {/* Testimonials - Full width with animations */}
         <section
           ref={testimonialsReveal.ref}
           style={testimonialsReveal.style}
@@ -673,7 +531,7 @@ export function HomePage({ onPageChange }) {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
@@ -716,7 +574,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* Why Choose Us */}
+        {/* Why Choose Us - Full width with animations */}
         <section
           ref={whyChooseReveal.ref}
           style={whyChooseReveal.style}
@@ -729,7 +587,7 @@ export function HomePage({ onPageChange }) {
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
               {[
                 {
                   icon: Shield,
@@ -784,7 +642,7 @@ export function HomePage({ onPageChange }) {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA Section - Full width with animations */}
         <section
           ref={ctaReveal.ref}
           style={ctaReveal.style}
