@@ -129,28 +129,28 @@ export function HomePage({ onPageChange }: HomePageProps) {
     {
       quote:
         "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
-      author: "Dr. Mary Nyong'o",
-      role: "Director, AMREF Health Africa",
+      author: "",
+      role: "",
       image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face",
+        "",
       rating: 5,
     },
     {
       quote:
         "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
-      author: "John Konchellah",
-      role: "Director General, Kenya Wildlife Service",
+      author: "",
+      role: "",
       image:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
+        "",
       rating: 5,
     },
     {
       quote:
         "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
-      author: "Anne Kananu",
-      role: "Deputy Governor, Nairobi City County",
+      author: "",
+      role: "",
       image:
-        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop&crop=face",
+        "",
       rating: 5,
     },
   ];
