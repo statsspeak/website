@@ -411,7 +411,7 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
             <MapPin className="h-12 w-12 text-vibrant-blue mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">StatsSpeak Offices</h3>
             <p className="text-muted-foreground mb-4">
-              Westlands, Nairobi
+              Upperhill, Nairobi
               <br />
               Kenya
             </p>
