@@ -46,10 +46,10 @@ function AppContent() {
           <div className="grid md:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="h-8 w-8 rounded-lg bg-primary-blue flex items-center justify-center">
-                  <span className="text-white font-bold">S</span>
-                </div>
+             <div className="flex items-center space-x-2 mb-4">
+               <StatsSpeakLogo width={32} height={43} />
+               <h3 className="text-lg font-semibold text-white">StatsSpeak</h3>
+           </div>
                 <span className="text-xl font-bold">Statsspeak</span>
               </div>
               <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
