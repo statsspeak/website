@@ -254,7 +254,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                   style={heroReveal.style}
                   className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl"
                 >
-                  <h1 className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold leading-tight">
+                  <h1 className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold leading-tight">
                     <span
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
