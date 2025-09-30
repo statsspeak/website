@@ -210,7 +210,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           >
             <div className="flex items-center">
               {/* Use the actual StatsSpeakLogo instead of the "S" circle */}
-              <StatsSpeakLogo width={32} height={43} />
+              <StatsSpeakLogo width={28} height={37} />
               
               {/* Expanding text */}
               <motion.span
