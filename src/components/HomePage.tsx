@@ -259,13 +259,13 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      Turn Data Into Decisions,
+                      We engineer intelligent software, data, and geospatial solutions
                     </span>
                     <span
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      Drive Growth & Impact
+                      that transform businesses and drive innovation.
                     </span>
 
                     {/* Dynamic rotating text - Enhanced visibility */}
