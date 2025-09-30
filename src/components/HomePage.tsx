@@ -259,13 +259,13 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      Data and software systems that automate processes
+                      Data and software systems that automate 
                     </span>
                     <span
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      and map your path to growth.
+                      processes and map your path to growth.
                     </span>
 
                     {/* Dynamic rotating text - Enhanced visibility */}
