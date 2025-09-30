@@ -5,6 +5,7 @@ import { ServicesPage } from "./components/ServicesPage";
 import { CaseStudiesPage } from "./components/CaseStudiesPage";
 import { AboutPage } from "./components/AboutPage";
 import { ContactPage } from "./components/ContactPage";
+import StatsSpeakLogo from "./components/logo"; // Make sure this import is added
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 
@@ -46,11 +47,9 @@ function AppContent() {
           <div className="grid md:grid-cols-4 gap-8">
             {/* Company Info */}
             <div className="md:col-span-2">
-             <div className="flex items-center space-x-2 mb-4">
-               <StatsSpeakLogo width={32} height={43} />
-               <h3 className="text-lg font-semibold text-white">StatsSpeak</h3>
-           </div>
-                <span className="text-xl font-bold">Statsspeak</span>
+              <div className="flex items-center space-x-2 mb-4">
+                <StatsSpeakLogo width={32} height={43} />
+                <h3 className="text-lg font-semibold text-white">StatsSpeak</h3>
               </div>
               <p className="text-gray-300 mb-6 max-w-md leading-relaxed">
                 Transforming businesses across Kenya and East Africa through
