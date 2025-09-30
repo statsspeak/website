@@ -259,13 +259,13 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      We engineer intelligent software, data, and geospatial solutions
+                      Data and software systems that automate processes
                     </span>
                     <span
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      that transform businesses and drive innovation.
+                      and map your path to growth.
                     </span>
 
                     {/* Dynamic rotating text - Enhanced visibility */}
