@@ -140,8 +140,6 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
               animate="rest"
             >
               <div className="flex items-center">
-                {/* Circle S */}
-
                 <StatsSpeakLogo />
 
                 {/* Expanding text */}
@@ -201,57 +199,35 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         </div>
 
         {/* Mobile Layout */}
-<div className="flex md:hidden items-center justify-between h-full">
-  {/* Logo */}
-  <motion.button
-    onClick={() => onPageChange("home")}
-    className="flex items-center space-x-2 backdrop-blur-lg shadow-xl rounded-full p-2"
-  >
-    <div className="flex items-center">
-      {/* Circle S - THIS IS THE PROBLEM */}
-      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full flex items-center justify-center">
-        <span className="text-white font-bold text-sm">S</span>
-      </div>
-      
-      {/* ... */}
-    </div>
-  </motion.button>
-  {/* ... */}
-</div>
-The Fix
-Replace the mobile logo section with the actual StatsSpeakLogo component:
-
-
-{/* Mobile Layout */}
-<div className="flex md:hidden items-center justify-between h-full">
-  {/* Logo */}
-  <motion.button
-    onClick={() => onPageChange("home")}
-    className="flex items-center space-x-2 backdrop-blur-lg shadow-xl rounded-full p-2"
-    whileHover="hover"
-    initial="rest"
-    animate="rest"
-  >
-    <div className="flex items-center">
-      {/* Use the actual StatsSpeakLogo instead of the "S" circle */}
-      <StatsSpeakLogo width={32} height={43} />
-      
-      {/* Expanding text */}
-      <motion.span
-        className="ml-2 text-blue-400 text-lg font-semibold whitespace-nowrap overflow-hidden"
-        variants={{
-          rest: { width: 0, opacity: 0 },
-          hover: {
-            width: "auto",
-            opacity: 1,
-            transition: { duration: 0.4, ease: "easeInOut" },
-          },
-        }}
-      >
-        statsspeak
-      </motion.span>
-    </div>
-  </motion.button>
+        <div className="flex md:hidden items-center justify-between h-full">
+          {/* Logo */}
+          <motion.button
+            onClick={() => onPageChange("home")}
+            className="flex items-center space-x-2 backdrop-blur-lg shadow-xl rounded-full p-2"
+            whileHover="hover"
+            initial="rest"
+            animate="rest"
+          >
+            <div className="flex items-center">
+              {/* Use the actual StatsSpeakLogo instead of the "S" circle */}
+              <StatsSpeakLogo width={32} height={43} />
+              
+              {/* Expanding text */}
+              <motion.span
+                className="ml-2 text-blue-400 text-lg font-semibold whitespace-nowrap overflow-hidden"
+                variants={{
+                  rest: { width: 0, opacity: 0 },
+                  hover: {
+                    width: "auto",
+                    opacity: 1,
+                    transition: { duration: 0.4, ease: "easeInOut" },
+                  },
+                }}
+              >
+                statsspeak
+              </motion.span>
+            </div>
+          </motion.button>
 
           {/* Mobile Menu Button */}
           <button
@@ -287,7 +263,6 @@ Replace the mobile logo section with the actual StatsSpeakLogo component:
                     `}
                 >
                   <span>{item.label}</span>
-                  {/* {item.hasDropdown && <ChevronDown className="w-4 h-4" />} */}
                 </button>
               ))}
               <div className="pt-2 border-t border-slate-800/50 mt-2">
