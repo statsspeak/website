@@ -45,10 +45,20 @@ const ProcessCircle = () => {
   const sectionRef = useRef(null);
   const animationRef = useRef<number>(null);
 
-  // Responsive radius calculation
+  // Get responsive dimensions based on screen size
+  const getDimensions = () => {
+    if (typeof window === 'undefined') return { size: 400, radius: 150, center: 200 };
+    
+    const width = window.innerWidth;
+    if (width < 768) return { size: 300, radius: 100, center: 150 }; // mobile
+    if (width < 1024) return { size: 400, radius: 130, center: 200 }; // tablet
+    if (width < 1280) return { size: 500, radius: 160, center: 250 }; // small desktop
+    return { size: 600, radius: 180, center: 300 }; // large desktop
+  };
+
+  // Calculate positions for steps around a circle
   const getStepPosition = (index: number, total: number) => {
-    const radius = typeof window !== 'undefined' && window.innerWidth < 768 ? 80 : 120;
-    const center = typeof window !== 'undefined' && window.innerWidth < 768 ? 150 : 200;
+    const { radius, center } = getDimensions();
     const angle = (-90 + (360 / total) * index) * (Math.PI / 180);
     return {
       x: Math.cos(angle) * radius + center,
@@ -177,6 +187,7 @@ const ProcessCircle = () => {
   }, []);
 
   const currentStepData = processSteps[activeStep];
+  const { size, center } = getDimensions();
 
   return (
     <section
@@ -201,22 +212,22 @@ const ProcessCircle = () => {
             )}
           </div>
 
-          {/* Main Content Area - Stack on mobile, side by side on desktop */}
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-12 xl:gap-16 max-w-6xl mx-auto">
+          {/* Main Content Area */}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 md:gap-8 lg:gap-12 xl:gap-16 max-w-7xl mx-auto">
             
-            {/* SVG Circle Container - Responsive */}
-            <div className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[450px] xl:max-w-[500px] aspect-square flex-shrink-0">
+            {/* SVG Circle Container - Properly scaled for desktop */}
+            <div className="relative w-full max-w-[280px] sm:max-w-[350px] md:max-w-[450px] lg:max-w-[500px] xl:max-w-[600px] aspect-square flex-shrink-0">
               <svg
                 width="100%"
                 height="100%"
                 className="absolute inset-0"
-                viewBox="0 0 300 300"
+                viewBox={`0 0 ${size} ${size}`}
               >
                 {/* Background circle */}
                 <circle
-                  cx="150"
-                  cy="150"
-                  r="100"
+                  cx={center}
+                  cy={center}
+                  r={getDimensions().radius}
                   fill="none"
                   stroke="#e2e8f0"
                   strokeWidth="2"
@@ -290,13 +301,13 @@ const ProcessCircle = () => {
                                 cy={
                                   startPos.y + (endPos.y - startPos.y) * arrowProgress
                                 }
-                                r="4"
+                                r="6"
                                 fill="#4f46e5"
                                 className="drop-shadow-lg"
                               >
                                 <animate
                                   attributeName="r"
-                                  values="4;6;4"
+                                  values="6;8;6"
                                   dur="0.5s"
                                   repeatCount="indefinite"
                                 />
@@ -324,7 +335,7 @@ const ProcessCircle = () => {
                             key={`trail-${i}`}
                             cx={startPos.x + (endPos.x - startPos.x) * progress}
                             cy={startPos.y + (endPos.y - startPos.y) * progress}
-                            r={2 - i * 0.5}
+                            r={3 - i}
                             fill="#6366f1"
                             opacity={0.6 - i * 0.2}
                           />
@@ -349,12 +360,12 @@ const ProcessCircle = () => {
                       top: `${position.y}px`,
                     }}
                   >
-                    {/* Step Circle - Responsive sizing */}
+                    {/* Step Circle - Properly scaled for desktop */}
                     <div
                       className={`
-                        w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 xl:w-20 xl:h-20 
-                        rounded-full flex items-center justify-center font-bold 
-                        text-xs sm:text-sm md:text-base lg:text-lg shadow-xl 
+                        w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 xl:w-20 xl:h-20 
+                        2xl:w-24 2xl:h-24 rounded-full flex items-center justify-center font-bold 
+                        text-sm sm:text-base md:text-lg lg:text-xl shadow-xl 
                         transition-all duration-700 transform border-4
                         ${
                           isCurrent
@@ -371,10 +382,10 @@ const ProcessCircle = () => {
                 );
               })}
 
-              {/* Center Progress Indicator - Responsive */}
+              {/* Center Progress Indicator - Properly scaled */}
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                <div className="bg-white rounded-full p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 shadow-2xl border-4 border-indigo-100">
-                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-indigo-600 mb-1 sm:mb-2">
+                <div className="bg-white rounded-full p-4 sm:p-5 md:p-6 lg:p-7 xl:p-8 2xl:p-10 shadow-2xl border-4 border-indigo-100">
+                  <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-indigo-600 mb-1 sm:mb-2">
                     {Math.round(animationProgress * 100)}%
                   </div>
                   <div className="text-xs sm:text-sm text-gray-500 font-medium">
@@ -384,47 +395,47 @@ const ProcessCircle = () => {
               </div>
             </div>
 
-            {/* Side Panel for Description - Full width on mobile */}
-            <div className="flex-1 w-full lg:max-w-md xl:max-w-lg">
-              <div className="p-4 sm:p-6 md:p-8 min-h-[200px] sm:min-h-[250px] md:min-h-[300px] bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100">
+            {/* Side Panel for Description */}
+            <div className="flex-1 w-full lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
+              <div className="p-6 sm:p-8 md:p-10 min-h-[250px] sm:min-h-[300px] md:min-h-[350px] bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100">
                 {/* Step indicator */}
-                <div className="flex items-center gap-3 mb-4 sm:mb-5 md:mb-6">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:text-base md:text-lg">
+                <div className="flex items-center gap-4 mb-6 sm:mb-8">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold text-lg sm:text-xl md:text-2xl">
                     {currentStepData.step}
                   </div>
                   <div>
-                    <div className="text-xs sm:text-sm text-gray-500">Current Step</div>
-                    <div className="text-sm sm:text-base font-semibold text-gray-700">
+                    <div className="text-sm sm:text-base text-gray-500">Current Step</div>
+                    <div className="text-lg sm:text-xl font-semibold text-gray-700">
                       {activeStep + 1} of {processSteps.length}
                     </div>
                   </div>
                 </div>
 
                 {/* Title */}
-                <div className="mb-4 sm:mb-5 md:mb-6">
-                  <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-2 sm:mb-3 md:mb-4">
+                <div className="mb-6 sm:mb-8">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 mb-4">
                     {currentStepData.title}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <div className="mb-6 sm:mb-8">
-                  <p className="text-gray-600 leading-relaxed text-sm sm:text-base md:text-lg">
+                <div className="mb-8 sm:mb-10">
+                  <p className="text-gray-600 leading-relaxed text-lg sm:text-xl md:text-2xl">
                     {currentStepData.description}
                   </p>
                 </div>
 
                 {/* Progress bar */}
-                <div className="mb-4">
-                  <div className="flex justify-between text-xs sm:text-sm text-gray-500 mb-2">
+                <div className="mb-6">
+                  <div className="flex justify-between text-base sm:text-lg text-gray-500 mb-3">
                     <span>Overall Progress</span>
                     <span>
                       {Math.round(((activeStep + 1) / processSteps.length) * 100)}%
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div className="w-full bg-gray-200 rounded-full h-3">
                     <div
-                      className="bg-indigo-600 h-2 rounded-full transition-all duration-700 ease-out"
+                      className="bg-indigo-600 h-3 rounded-full transition-all duration-700 ease-out"
                       style={{
                         width: `${((activeStep + 1) / processSteps.length) * 100}%`,
                       }}
@@ -437,7 +448,7 @@ const ProcessCircle = () => {
                   {processSteps.map((_, index) => (
                     <div
                       key={index}
-                      className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                      className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full transition-all duration-300 ${
                         index <= activeStep ? "bg-indigo-600" : "bg-gray-300"
                       }`}
                     ></div>
