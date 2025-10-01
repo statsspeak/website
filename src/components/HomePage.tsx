@@ -131,8 +131,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
         "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
       author: "",
       role: "",
-      image:
-        "",
+      image: "",
       rating: 5,
     },
     {
@@ -140,8 +139,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
         "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
       author: "",
       role: "",
-      image:
-        "",
+      image: "",
       rating: 5,
     },
     {
@@ -149,8 +147,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
         "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
       author: "",
       role: "",
-      image:
-        "",
+      image: "",
       rating: 5,
     },
   ];
@@ -219,7 +216,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       <div className="relative z-20 bg-transparent -mt-[100vh]">
-        <section className="py-16 xl:py-20 2xl:py-24 bg-none ">
+        <section className="py-16 xl:py-20 2xl:py-24 bg-none">
           {/* Subtle overlay for text readability - much lighter */}
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
 
@@ -259,7 +256,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                       className="block text-white drop-shadow-xl"
                       style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
                     >
-                      Turn Data Into Decisions and Scalable 
+                      Turn Data Into Decisions and Scalable
                     </span>
                     <span
                       className="block text-white drop-shadow-xl"
@@ -608,7 +605,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
         <section
           ref={ctaReveal.ref}
           style={ctaReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue "
+          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue"
         >
           <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
             <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white mb-6">
