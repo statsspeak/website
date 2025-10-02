@@ -27,6 +27,11 @@ import joram from "../assets/team-photos/joram-kabach.jpeg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
 import nancy from "../assets/team-photos/Nancy.png";
 import LeadershipCarousel from "./Team";
+import innovation from "../assets/team-photos/innovation.jpeg";
+import collaboration from "../assets/team-photos/collaboration.jpeg";
+import integrity from "../assets/team-photos/integrity.jpeg";
+import excellence from "../assets/team-photos/excellence.jpeg";
+
 
 interface AboutPageProps {
   onPageChange: (page: string) => void;
@@ -35,25 +40,25 @@ interface AboutPageProps {
 export function AboutPage({ onPageChange }: AboutPageProps) {
   const values = [
     {
-      icon: Target,
+      image: excellence,
       title: "Excellence",
       description:
         "We strive for excellence in every project, delivering solutions that exceed expectations and drive real business value.",
     },
     {
-      icon: Lightbulb,
+      image: innovation,
       title: "Innovation",
       description:
         "We embrace cutting-edge technologies and innovative approaches to solve complex data challenges and create competitive advantages.",
     },
     {
-      icon: Heart,
+      image: integrity,
       title: "Integrity",
       description:
         "We maintain the highest standards of integrity, transparency, and ethical practices in all our client relationships and data handling.",
     },
     {
-      icon: Users,
+      image: collaboration,
       title: "Collaboration",
       description:
         "We believe in collaborative partnerships, working closely with our clients to understand their needs and achieve shared success.",
