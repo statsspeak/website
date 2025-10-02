@@ -32,7 +32,6 @@ import collaboration from "../assets/team-photos/collaboration.jpeg";
 import integrity from "../assets/team-photos/integrity.jpeg";
 import excellence from "../assets/team-photos/excellence.jpeg";
 
-
 interface AboutPageProps {
   onPageChange: (page: string) => void;
 }
@@ -293,7 +292,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
         </div>
       </section>
 
-      {/* Values */}
+      {/* Values - CORRECTED SECTION */}
       <section className="py-20 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -309,8 +308,12 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <Card key={index} className="border-0 shadow-lg text-center p-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
-                  <value.icon className="h-8 w-8 text-white" />
+                <div className="w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mx-auto mb-6 overflow-hidden">
+                  <ImageWithFallback
+                    src={value.image}
+                    alt={`${value.title} icon`}
+                    className="w-10 h-10 object-contain"
+                  />
                 </div>
                 <h3 className="text-xl font-semibold mb-4">{value.title}</h3>
                 <p className="text-muted-foreground leading-relaxed">
