@@ -67,7 +67,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
   const directors = [
     {
       name: "Washington Ogol",
-      role: "Chief Executive Officer & Co-Founder",
+      role: "Co-Founder & CEO",
       image: washington,
       bio: "In the realm of leadership, Washington Ogol stands out as a beacon of team collaboration. As the Chief Executive Officer, he embodies a profound affinity for team membership, exemplifying a people-focused approach that permeates our organizational culture.",
       specialties: [
@@ -104,18 +104,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
       ],
       linkedin: "#",
     },
-    {
-      name: "Anne Ngatia",
-      role: "Chief Marketing and Communications Officer",
-      image: anne,
-      bio: "Anne Ngatia brings a unique blend of marketing, storytelling, and project management skills to the table. As the Chief Marketing & Communications Officer, she leads our marketing strategies to attract and engage businesses, consumers and clients, in turn enhancing our brand's image and overall reputation.",
-      specialties: [
-        "Strategic planning ",
-        "Brand Management",
-        "Data-Driven Decision Making",
-      ],
-      linkedin: "#",
-    },
+
     {
       name: "Alloys Mila",
       role: "Chief Technology Officer",
@@ -128,14 +117,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
       ],
       linkedin: "#",
     },
-    {
-      name: "Nancy Kinyua",
-      role: "Consultant",
-      image: nancy,
-      bio: "Nancy Kinyua is a seasoned geospatial expert with a passion for driving business growth. As the Lead Geospatial Consultant, she is responsible for overseeing the geospatial health of the organization and ensuring that our geospatial strategies align with our long-term goals.",
-      specialties: ["GIS Development", "Data Analytics", "Data Storytelling"],
-      linkedin: "#",
-    },
+  
     {
       name: "Joanita Kisembo",
       role: "Head Project Manager",
