@@ -1,9 +1,6 @@
 import {
   ArrowRight,
   Users,
-  Target,
-  Lightbulb,
-  Heart,
   Award,
   Globe,
   Code,
@@ -21,11 +18,9 @@ import { ImageWithFallback } from "./figma/ImageWithFallback";
 import washington from "../assets/team-photos/washington-ogol.jpeg";
 import anthony from "../assets/team-photos/Antony.jpeg";
 import alloys from "../assets/team-photos/alloys-mila.jpeg";
-import anne from "../assets/team-photos/anne-ngatia.jpeg";
 import joan from "../assets/team-photos/Joan.jpg";
 import joram from "../assets/team-photos/joram-kabach.jpeg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
-import nancy from "../assets/team-photos/Nancy.png";
 import LeadershipCarousel from "./Team";
 import innovation from "../assets/team-photos/innovation.jpeg";
 import collaboration from "../assets/team-photos/collaboration.jpeg";
