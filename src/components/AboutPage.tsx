@@ -19,7 +19,7 @@ import washington from "../assets/team-photos/washington-ogol.jpeg";
 import anthony from "../assets/team-photos/Antony.jpeg";
 import alloys from "../assets/team-photos/alloys-mila.jpeg";
 import joan from "../assets/team-photos/Joan.jpg";
-import joram from "../assets/team-photos/joram-kabach.jpeg";
+// import joram from "../assets/team-photos/joram-kabach.jpeg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
 import LeadershipCarousel from "./Team";
 import innovation from "../assets/team-photos/innovation.jpeg";
@@ -85,21 +85,6 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
       ],
       linkedin: "#",
     },
-    {
-      name: "Joram Kabach",
-      role: "Chief Strategy Officer",
-      image: joram,
-      bio: "Joram Kabach is a seasoned operations expert with a passion for driving efficiency and excellence. As the Chief Strategy Officer, he oversees our day-to-day operations and ensures that our processes are optimized for success.",
-      specialties: [
-        "Entrepreneurship",
-        "AG-Tech",
-        "ED-Tech",
-        "E-Commerce",
-        "AI",
-      ],
-      linkedin: "#",
-    },
-
     {
       name: "Alloys Mila",
       role: "Chief Technology Officer",
