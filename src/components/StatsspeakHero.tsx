@@ -18,6 +18,7 @@ interface StatsspeakHeroProps {
  */
 function EtherealShadowScene() {
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
+  const driftRef = useRef<SVGGElement>(null);
   const rawId = useId();
   const filterId = `ether-filter-${rawId.replace(/:/g, "")}`;
   const maskId = `ether-mask-${rawId.replace(/:/g, "")}`;
@@ -25,7 +26,8 @@ function EtherealShadowScene() {
 
   useEffect(() => {
     const turbulence = turbulenceRef.current;
-    if (!turbulence) return undefined;
+    const drift = driftRef.current;
+    if (!turbulence || !drift) return undefined;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -37,11 +39,20 @@ function EtherealShadowScene() {
 
     const tick = () => {
       const elapsed = (performance.now() - startedAt) / 1000;
-      // ~40-second breath cycle. Big features (low frequency) drift
-      // slowly; the cloud morphs without ever snapping.
-      const fx = 0.0085 + Math.sin(elapsed * 0.16) * 0.0022;
-      const fy = 0.014 + Math.cos(elapsed * 0.11) * 0.0028;
+
+      // baseFrequency drift — features at ~2–4 cycles across the
+      // viewBox (visible cloud cells), swing ±45% of base, cycle ~22s.
+      const fx = 0.022 + Math.sin(elapsed * 0.28) * 0.010;
+      const fy = 0.030 + Math.cos(elapsed * 0.23) * 0.013;
       turbulence.setAttribute("baseFrequency", `${fx} ${fy}`);
+
+      // Spatial drift — the inner <g> moves through SVG-user space
+      // while the right-weighted fade mask stays anchored to the
+      // viewBox, so the cloud reads as moving through the column.
+      const tx = Math.sin(elapsed * 0.18) * 7;
+      const ty = Math.cos(elapsed * 0.15) * 5;
+      drift.setAttribute("transform", `translate(${tx} ${ty})`);
+
       frameId = window.requestAnimationFrame(tick);
     };
     tick();
@@ -52,7 +63,7 @@ function EtherealShadowScene() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
       data-testid="ethereal-shadow-scene"
     >
       <svg
@@ -64,25 +75,25 @@ function EtherealShadowScene() {
         <defs>
           <filter
             id={filterId}
-            x="-10%"
-            y="-10%"
-            width="120%"
-            height="120%"
+            x="-15%"
+            y="-15%"
+            width="130%"
+            height="130%"
             colorInterpolationFilters="sRGB"
           >
             <feTurbulence
               ref={turbulenceRef}
               type="fractalNoise"
-              baseFrequency="0.0085 0.014"
+              baseFrequency="0.022 0.030"
               numOctaves="3"
               seed="2"
               stitchTiles="stitch"
             />
             {/*
-              The matrix collapses noise → ink at variable alpha.
+              Collapse noise → --ink at variable alpha.
               RGB rows output --ink (0.04 0.04 0.05).
               Alpha row keys off the noise red channel:
-                A = 0.85 * R - 0.18  ⇒  clamped 0…0.67
+                A = 1.05 * R - 0.18  ⇒  clamped 0…0.87
             */}
             <feColorMatrix
               type="matrix"
@@ -90,13 +101,15 @@ function EtherealShadowScene() {
                 0    0 0 0 0.04
                 0    0 0 0 0.04
                 0    0 0 0 0.05
-                0.85 0 0 0 -0.18
+                1.05 0 0 0 -0.18
               "
             />
             <feGaussianBlur stdDeviation="0.6" />
           </filter>
 
-          {/* Right-weighted fade so the cloud lives in the right column. */}
+          {/* Right-weighted fade — anchored to viewBox space (not the
+              drifting cloud) so the headline column stays clean
+              regardless of cloud position. */}
           <linearGradient id={fadeId} x1="0" x2="1" y1="0" y2="0">
             <stop offset="0%" stopColor="white" stopOpacity="0" />
             <stop offset="38%" stopColor="white" stopOpacity="0.18" />
@@ -109,14 +122,20 @@ function EtherealShadowScene() {
           </mask>
         </defs>
 
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          filter={`url(#${filterId})`}
-          mask={`url(#${maskId})`}
-        />
+        <g mask={`url(#${maskId})`}>
+          {/* Inner group drifts in SVG-user space. Oversized rect
+              (-15..115) so translation up to ±10 never reveals an
+              edge. */}
+          <g ref={driftRef}>
+            <rect
+              x="-15"
+              y="-15"
+              width="130"
+              height="130"
+              filter={`url(#${filterId})`}
+            />
+          </g>
+        </g>
       </svg>
     </div>
   );
