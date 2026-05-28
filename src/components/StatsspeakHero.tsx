@@ -10,114 +10,63 @@ interface StatsspeakHeroProps {
   onExploreSolutions: () => void;
 }
 
-type SceneNode = {
-  amplitude: number;
-  base: THREE.Vector3;
-  phase: number;
-};
+// GLSL — 3D simplex noise (Ashima / Stefan Gustavson). Used to deform the
+// icosahedron vertices for organic surface motion.
+const NOISE_GLSL = /* glsl */ `
+vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+vec4 permute(vec4 x) { return mod289(((x * 34.0) + 1.0) * x); }
+vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+float snoise(vec3 v) {
+  const vec2 C = vec2(1.0 / 6.0, 1.0 / 3.0);
+  const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+  vec3 i  = floor(v + dot(v, C.yyy));
+  vec3 x0 = v - i + dot(i, C.xxx);
+  vec3 g  = step(x0.yzx, x0.xyz);
+  vec3 l  = 1.0 - g;
+  vec3 i1 = min(g.xyz, l.zxy);
+  vec3 i2 = max(g.xyz, l.zxy);
+  vec3 x1 = x0 - i1 + C.xxx;
+  vec3 x2 = x0 - i2 + C.yyy;
+  vec3 x3 = x0 - D.yyy;
+  i = mod289(i);
+  vec4 p = permute(permute(permute(
+            i.z + vec4(0.0, i1.z, i2.z, 1.0))
+          + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+          + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+  float n_ = 0.142857142857;
+  vec3 ns = n_ * D.wyz - D.xzx;
+  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+  vec4 x_ = floor(j * ns.z);
+  vec4 y_ = floor(j - 7.0 * x_);
+  vec4 x = x_ * ns.x + ns.yyyy;
+  vec4 y = y_ * ns.x + ns.yyyy;
+  vec4 h = 1.0 - abs(x) - abs(y);
+  vec4 b0 = vec4(x.xy, y.xy);
+  vec4 b1 = vec4(x.zw, y.zw);
+  vec4 s0 = floor(b0) * 2.0 + 1.0;
+  vec4 s1 = floor(b1) * 2.0 + 1.0;
+  vec4 sh = -step(h, vec4(0.0));
+  vec4 a0 = b0.xzyw + s0.xzyw * sh.xxyy;
+  vec4 a1 = b1.xzyw + s1.xzyw * sh.zzww;
+  vec3 p0 = vec3(a0.xy, h.x);
+  vec3 p1 = vec3(a0.zw, h.y);
+  vec3 p2 = vec3(a1.xy, h.z);
+  vec3 p3 = vec3(a1.zw, h.w);
+  vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3)));
+  p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+  vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0);
+  m = m * m;
+  return 42.0 * dot(m * m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3)));
+}
+`;
 
-type SceneEdge = [number, number];
-
-const seeded = (index: number) => {
-  const value = Math.sin(index * 12.9898) * 43758.5453;
-  return value - Math.floor(value);
-};
-
-const SCENE_COLUMNS = 6;
-const SCENE_ROWS = 4;
-
-const createNodes = () => {
-  const nodes: SceneNode[] = [];
-  const spacingX = 2.05;
-  const spacingY = 1.35;
-  const startX = -((SCENE_COLUMNS - 1) * spacingX) / 2;
-  const startY = -((SCENE_ROWS - 1) * spacingY) / 2;
-
-  for (let row = 0; row < SCENE_ROWS; row += 1) {
-    for (let column = 0; column < SCENE_COLUMNS; column += 1) {
-      const index = row * SCENE_COLUMNS + column;
-      const jitterX = (seeded(index) - 0.5) * 0.85;
-      const jitterY = (seeded(index + 80) - 0.5) * 0.7;
-      const z = (seeded(index + 160) - 0.5) * 1.6;
-
-      nodes.push({
-        amplitude: 0.018 + seeded(index + 240) * 0.018,
-        base: new THREE.Vector3(
-          startX + column * spacingX + jitterX,
-          startY + row * spacingY + jitterY,
-          z,
-        ),
-        phase: seeded(index + 320) * Math.PI * 2,
-      });
-    }
-  }
-
-  return nodes;
-};
-
-const createEdges = (nodes: SceneNode[]) => {
-  const edges: SceneEdge[] = [];
-
-  for (let row = 0; row < SCENE_ROWS; row += 1) {
-    for (let column = 0; column < SCENE_COLUMNS; column += 1) {
-      const index = row * SCENE_COLUMNS + column;
-
-      if (column < SCENE_COLUMNS - 1 && (column + row) % 2 === 0) {
-        edges.push([index, index + 1]);
-      }
-
-      if (row < SCENE_ROWS - 1 && (column + row) % 3 === 0) {
-        edges.push([index, index + SCENE_COLUMNS]);
-      }
-    }
-  }
-
-  return edges.filter(([start, end]) => nodes[start] && nodes[end]);
-};
-
-const updateNodePositions = (
-  nodes: SceneNode[],
-  target: Float32Array,
-  elapsed: number,
-) => {
-  nodes.forEach((node, index) => {
-    const offset = Math.sin(elapsed * 0.22 + node.phase) * node.amplitude;
-    const cursor = index * 3;
-
-    target[cursor] = node.base.x;
-    target[cursor + 1] = node.base.y + offset;
-    target[cursor + 2] = node.base.z;
-  });
-};
-
-const updateEdgePositions = (
-  edges: SceneEdge[],
-  nodePositions: Float32Array,
-  target: Float32Array,
-) => {
-  edges.forEach(([start, end], index) => {
-    const edgeCursor = index * 6;
-    const startCursor = start * 3;
-    const endCursor = end * 3;
-
-    target[edgeCursor] = nodePositions[startCursor];
-    target[edgeCursor + 1] = nodePositions[startCursor + 1];
-    target[edgeCursor + 2] = nodePositions[startCursor + 2];
-    target[edgeCursor + 3] = nodePositions[endCursor];
-    target[edgeCursor + 4] = nodePositions[endCursor + 1];
-    target[edgeCursor + 5] = nodePositions[endCursor + 2];
-  });
-};
-
-function DataIntelligenceScene() {
+function IcosahedronScene() {
   const mountRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
-
-    if (!mount) {
-      return undefined;
-    }
+    if (!mount) return undefined;
 
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -127,82 +76,97 @@ function DataIntelligenceScene() {
       alpha: true,
       antialias: true,
       powerPreference: "low-power",
-      preserveDrawingBuffer: true,
     });
     renderer.setClearColor(0xffffff, 0);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.6));
     mount.appendChild(renderer.domElement);
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-    camera.position.set(0, 0, 11);
+    const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
+    camera.position.set(0, 0, 4.5);
 
-    const nodes = createNodes();
-    const edges = createEdges(nodes);
-    const nodePositions = new Float32Array(nodes.length * 3);
-    const edgePositions = new Float32Array(edges.length * 6);
-    const highlightCount = 4;
-    const highlightPositions = new Float32Array(highlightCount * 3);
-
-    updateNodePositions(nodes, nodePositions, 0);
-    updateEdgePositions(edges, nodePositions, edgePositions);
-
-    for (let index = 0; index < highlightCount; index += 1) {
-      const nodeIndex = (index * 7 + 2) % nodes.length;
-      const nodeCursor = nodeIndex * 3;
-      const highlightCursor = index * 3;
-
-      highlightPositions[highlightCursor] = nodePositions[nodeCursor];
-      highlightPositions[highlightCursor + 1] = nodePositions[nodeCursor + 1];
-      highlightPositions[highlightCursor + 2] = nodePositions[nodeCursor + 2];
-    }
-
-    const edgeGeometry = new THREE.BufferGeometry();
-    edgeGeometry.setAttribute("position", new THREE.BufferAttribute(edgePositions, 3));
-    const edgeMaterial = new THREE.LineBasicMaterial({
-      color: 0x0a0b0d,
-      opacity: 0.22,
+    const geometry = new THREE.IcosahedronGeometry(1.35, 48);
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        pointLightPos: { value: new THREE.Vector3(0.8, 0.5, 2.4) },
+        lineColor: { value: new THREE.Color(0x0a0b0d) },
+        accentColor: { value: new THREE.Color(0x064a55) },
+      },
+      vertexShader: /* glsl */ `
+        uniform float time;
+        varying vec3 vNormal;
+        varying vec3 vWorldPos;
+        ${NOISE_GLSL}
+        void main() {
+          vNormal = normal;
+          float displacement = snoise(position * 1.4 + time * 0.18) * 0.12;
+          vec3 displaced = position + normal * displacement;
+          vWorldPos = displaced;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+        }
+      `,
+      fragmentShader: /* glsl */ `
+        uniform vec3 lineColor;
+        uniform vec3 accentColor;
+        uniform vec3 pointLightPos;
+        varying vec3 vNormal;
+        varying vec3 vWorldPos;
+        void main() {
+          vec3 normal = normalize(vNormal);
+          vec3 lightDir = normalize(pointLightPos - vWorldPos);
+          float diffuse = clamp(dot(normal, lightDir), 0.0, 1.0);
+          float fresnel = pow(1.0 - max(dot(normal, vec3(0.0, 0.0, 1.0)), 0.0), 2.0);
+          vec3 col = mix(lineColor, accentColor, fresnel * 0.55);
+          col *= 0.55 + diffuse * 0.65;
+          gl_FragColor = vec4(col, 0.92);
+        }
+      `,
+      wireframe: true,
       transparent: true,
     });
-    const edgeMesh = new THREE.LineSegments(edgeGeometry, edgeMaterial);
-    scene.add(edgeMesh);
 
-    const nodeGeometry = new THREE.BufferGeometry();
-    nodeGeometry.setAttribute("position", new THREE.BufferAttribute(nodePositions, 3));
-    const nodeMaterial = new THREE.PointsMaterial({
-      color: 0x0a0b0d,
-      opacity: 0.62,
-      size: 0.09,
-      transparent: true,
-    });
-    const nodeMesh = new THREE.Points(nodeGeometry, nodeMaterial);
-    scene.add(nodeMesh);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-    const highlightGeometry = new THREE.BufferGeometry();
-    highlightGeometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(highlightPositions, 3),
-    );
-    const highlightMaterial = new THREE.PointsMaterial({
-      color: 0x064a55,
-      opacity: 0.9,
-      size: 0.135,
-      transparent: true,
-    });
-    const highlightMesh = new THREE.Points(highlightGeometry, highlightMaterial);
-    scene.add(highlightMesh);
-
+    // The icosahedron lives in the right column (where the scrim is light).
+    // On narrow viewports we slide it back to centre so it stays visible.
     const resize = () => {
       const { clientHeight, clientWidth } = mount;
-
       renderer.setSize(clientWidth, clientHeight, true);
-      camera.aspect = clientWidth / Math.max(clientHeight, 1);
+      const aspect = clientWidth / Math.max(clientHeight, 1);
+      camera.aspect = aspect;
       camera.updateProjectionMatrix();
+      const isWide = clientWidth >= 1024;
+      mesh.position.set(isWide ? 1.55 : 0, isWide ? -0.15 : 0, 0);
     };
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(mount);
     resize();
+
+    // Cursor-tracked point light. Lerped, not snapped — a true follow reads as a
+    // mouse-trail effect, which DESIGN.md §6.6 forbids. The lerp turns it into a
+    // gentle response.
+    const targetLight = new THREE.Vector3(0.8, 0.5, 2.4);
+    const currentLight = targetLight.clone();
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const rect = mount.getBoundingClientRect();
+      if (
+        event.clientX < rect.left ||
+        event.clientX > rect.right ||
+        event.clientY < rect.top ||
+        event.clientY > rect.bottom
+      ) {
+        return;
+      }
+      const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
+      targetLight.set(x * 2.6, y * 1.8, 2.4);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
 
     let frameId = 0;
     const startedAt = performance.now();
@@ -211,22 +175,17 @@ function DataIntelligenceScene() {
       const elapsed = (performance.now() - startedAt) / 1000;
       const motionTime = prefersReducedMotion.matches ? 0 : elapsed;
 
-      updateNodePositions(nodes, nodePositions, motionTime);
-      updateEdgePositions(edges, nodePositions, edgePositions);
-
-      nodeGeometry.attributes.position.needsUpdate = true;
-      edgeGeometry.attributes.position.needsUpdate = true;
-
-      const sceneRotation = Math.sin(motionTime * 0.04) * 0.012;
-      edgeMesh.rotation.z = sceneRotation;
-      nodeMesh.rotation.z = sceneRotation;
-      highlightMesh.rotation.z = sceneRotation;
-
-      renderer.render(scene, camera);
+      material.uniforms.time.value = motionTime;
+      currentLight.lerp(targetLight, prefersReducedMotion.matches ? 1 : 0.06);
+      (material.uniforms.pointLightPos.value as THREE.Vector3).copy(currentLight);
 
       if (!prefersReducedMotion.matches) {
-        frameId = window.requestAnimationFrame(render);
+        mesh.rotation.y += 0.0008;
+        mesh.rotation.x += 0.00025;
       }
+
+      renderer.render(scene, camera);
+      frameId = window.requestAnimationFrame(render);
     };
 
     render();
@@ -234,14 +193,10 @@ function DataIntelligenceScene() {
     return () => {
       window.cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
-      edgeGeometry.dispose();
-      nodeGeometry.dispose();
-      highlightGeometry.dispose();
-      edgeMaterial.dispose();
-      nodeMaterial.dispose();
-      highlightMaterial.dispose();
+      window.removeEventListener("mousemove", handleMouseMove);
+      geometry.dispose();
+      material.dispose();
       renderer.dispose();
-
       if (renderer.domElement.parentElement === mount) {
         mount.removeChild(renderer.domElement);
       }
@@ -253,7 +208,7 @@ function DataIntelligenceScene() {
       ref={mountRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0"
-      data-testid="data-intelligence-scene"
+      data-testid="icosahedron-scene"
     />
   );
 }
@@ -270,7 +225,7 @@ export function StatsspeakHero({
       className="relative isolate overflow-hidden bg-bone pt-28 pb-16 sm:pb-20 lg:pt-32 lg:pb-20"
     >
       <div className="absolute inset-0 statsspeak-hero-data-surface" aria-hidden="true" />
-      <DataIntelligenceScene />
+      <IcosahedronScene />
       <div className="absolute inset-0 statsspeak-hero-scrim" aria-hidden="true" />
 
       <div className="relative mx-auto max-w-[1440px] px-6 lg:px-12">
@@ -307,4 +262,4 @@ export function StatsspeakHero({
   );
 }
 
-export { DataIntelligenceScene };
+export { IcosahedronScene };

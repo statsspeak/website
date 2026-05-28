@@ -401,16 +401,24 @@ Motion communicates *system quality*. It is never decorative.
 
 ### 6.7 Hero canvas — the only permitted idle motion
 
-The §6.1 "no loops" rule has **one** carve-out: a single low-density constellation in the hero, behind the headline. It is permitted because the motion is so quiet that it reads as ambient texture, not animation. To stay on brand the canvas must hold every one of these constraints:
+The §6.1 "no loops" rule has **one** carve-out: a single WebGL scene in the hero, behind the right-hand column. It is permitted because it functions as ambient texture, not animation. The canvas may take one of two forms — never both, never a mix:
 
-- **Density.** ≤ 24 nodes and ≤ 24 edges total. No flow particles or moving dots travelling along edges — those read as a tech demo, not editorial.
-- **Palette.** Nodes and edges in `--ink`; accent points in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette blues (`--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal`) are forbidden — they exist only for legacy compatibility and are scheduled for removal.
-- **Opacity.** Edges ≤ 0.25. Nodes ≤ 0.65. Accent points ≤ 0.90. The composition should sit *just above* the threshold of perception — visible texture, never spectacle. If the canvas reads as invisible, raise; if it competes with the headline, lower.
-- **Size.** Node point size ≤ 0.10 world units. Accent point size ≤ 0.14. Point sizes are anchored to world units, not pixels, so the canvas scales with the camera.
-- **Drift.** Per-node vertical sine amplitude ≤ 0.025 world units; phase multiplier ≤ 0.25 (slower than a heartbeat). Full-scene rotation, if used, ≤ ±0.015 rad with a phase multiplier ≤ 0.05.
-- **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` toward the headline column so type sits on quiet ground.
-- **Reduced motion.** When `prefers-reduced-motion: reduce` matches, the render loop renders one frame and stops. No exceptions.
-- **Cost.** WebGL renderer uses `powerPreference: "low-power"` and a pixel ratio capped at 1.6. The canvas does not earn a fan spin-up.
+- **Form A · Sculpted object.** A single noise-displaced wireframe icosahedron (current). Reads as an editorial still life.
+- **Form B · Constellation.** A sparse field of nodes and edges. Reads as a quiet field. (Kept as a documented fallback for very low-end devices or as a future variant.)
+
+Whichever form is in flight, the canvas must hold every one of these constraints:
+
+- **Palette.** Lines in `--ink`. Fresnel/accent in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` are forbidden — they exist only for legacy compatibility and are scheduled for removal (§15.3 #1).
+- **Wireframe only.** No solid surfaces, no PBR materials, no env maps, no shadows. The site is line work.
+- **Density (Form A).** A single mesh, icosahedron subdivision ≤ 64. Vertex noise displacement amplitude ≤ 0.15 world units. No additional meshes, no orbiters, no particle systems.
+- **Density (Form B).** ≤ 24 nodes and ≤ 24 edges. No flow particles or moving dots travelling along edges.
+- **Opacity.** Line/edge alpha ≤ 0.95. Background of the scene is fully transparent (renderer `alpha: true`, `setClearColor(_, 0)`); the `--bone` page surface shows through.
+- **Drift.** Mesh rotation accumulators ≤ 0.001 rad / frame (Form A). Per-node sine amplitude ≤ 0.025 world units, phase multiplier ≤ 0.25 (Form B). The motion should feel like breath, not a fan.
+- **Cursor lerp (Form A only).** A single point-light position may track the cursor, but always through a lerp factor ≤ 0.08 — never `position.copy()`. A snapped follow reads as a trail effect, which §6.6 forbids.
+- **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` under the headline column (left side ≥ 90% bone) and lets it breathe in the right column (≤ 10% bone at the far right). Type always sits on quiet ground.
+- **Position.** On viewports ≥ 1024 px, the mesh is offset to the right so it sits in the right column. On narrow viewports it returns to centre.
+- **Reduced motion.** When `prefers-reduced-motion: reduce` matches: noise time is frozen, rotation accumulators stop, and the cursor lerp factor becomes 1 (the light snaps once and stays). The scene continues to render — but the only thing that changes is the resize.
+- **Cost.** WebGL renderer uses `powerPreference: "low-power"` and `setPixelRatio(min(devicePixelRatio, 1.6))`. The canvas does not earn a fan spin-up.
 
 If a future hero variant cannot meet all of the above, the canvas is removed and the hero falls back to a typographic-only layout per §13.2 P5.
 
@@ -688,4 +696,4 @@ These are the next-pass commits, ranked. They derive directly from §15.3.
 
 ---
 
-_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
+_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim; rewrote §6.7 to cover two permitted canvas forms (Form A noise-displaced wireframe icosahedron, Form B sparse constellation) after evaluating an external generative-art hero component. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
