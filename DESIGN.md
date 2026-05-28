@@ -401,24 +401,28 @@ Motion communicates *system quality*. It is never decorative.
 
 ### 6.7 Hero canvas — the only permitted idle motion
 
-The §6.1 "no loops" rule has **one** carve-out: a single WebGL scene in the hero, behind the right-hand column. It is permitted because it functions as ambient texture, not animation. The canvas may take one of two forms — never both, never a mix:
+The §6.1 "no loops" rule has **one** carve-out: a single ambient scene in the hero, behind the right-hand column. It is permitted because it functions as ambient texture, not animation. The canvas may take one of three forms — never two side-by-side, never a mix:
 
-- **Form A · Sculpted object.** A single noise-displaced wireframe icosahedron (current). Reads as an editorial still life.
-- **Form B · Constellation.** A sparse field of nodes and edges. Reads as a quiet field. (Kept as a documented fallback for very low-end devices or as a future variant.)
+- **Form C · Ethereal SVG shadow (current).** A soft ink-toned cloud generated entirely in SVG (`feTurbulence` → `feColorMatrix` → `feGaussianBlur`), faded right-to-left with a linear mask. Pure SVG, no WebGL, no external dependencies. Reads as atmospheric mood — closer to a Pentagram editorial than to a tech demo. This is the default.
+- **Form A · Sculpted object.** A noise-displaced wireframe icosahedron in three.js. Reads as a still life. Kept as a documented alternate.
+- **Form B · Constellation.** A sparse three.js node/edge field. Reads as a quiet field. Kept as a documented fallback.
 
 Whichever form is in flight, the canvas must hold every one of these constraints:
 
-- **Palette.** Lines in `--ink`. Fresnel/accent in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` are forbidden — they exist only for legacy compatibility and are scheduled for removal (§15.3 #1).
-- **Wireframe only.** No solid surfaces, no PBR materials, no env maps, no shadows. The site is line work.
-- **Density (Form A).** A single mesh, icosahedron subdivision ≤ 64. Vertex noise displacement amplitude ≤ 0.15 world units. No additional meshes, no orbiters, no particle systems.
+- **Palette.** Cloud / lines / accents are derived from `--ink` (and, where a second tone is used, `--marine`). The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` are forbidden — they exist only for legacy compatibility and are scheduled for removal (§15.3 #1). No saturated greys, no warm hues; the cloud is ink, not gold.
+- **No external dependencies for visuals.** No `framerusercontent.com`, no Unsplash, no Pexels, no third-party CDN PNG masks or grain textures. Anything the scene needs is generated procedurally in SVG / shader code or shipped in `src/assets/`. Premium brands own their visual assets.
+- **Density (Form A).** A single mesh, icosahedron subdivision ≤ 64. Vertex noise displacement amplitude ≤ 0.15 world units.
 - **Density (Form B).** ≤ 24 nodes and ≤ 24 edges. No flow particles or moving dots travelling along edges.
-- **Opacity.** Line/edge alpha ≤ 0.95. Background of the scene is fully transparent (renderer `alpha: true`, `setClearColor(_, 0)`); the `--bone` page surface shows through.
-- **Drift.** Mesh rotation accumulators ≤ 0.001 rad / frame (Form A). Per-node sine amplitude ≤ 0.025 world units, phase multiplier ≤ 0.25 (Form B). The motion should feel like breath, not a fan.
-- **Cursor lerp (Form A only).** A single point-light position may track the cursor, but always through a lerp factor ≤ 0.08 — never `position.copy()`. A snapped follow reads as a trail effect, which §6.6 forbids.
-- **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` under the headline column (left side ≥ 90% bone) and lets it breathe in the right column (≤ 10% bone at the far right). Type always sits on quiet ground.
-- **Position.** On viewports ≥ 1024 px, the mesh is offset to the right so it sits in the right column. On narrow viewports it returns to centre.
-- **Reduced motion.** When `prefers-reduced-motion: reduce` matches: noise time is frozen, rotation accumulators stop, and the cursor lerp factor becomes 1 (the light snaps once and stays). The scene continues to render — but the only thing that changes is the resize.
-- **Cost.** WebGL renderer uses `powerPreference: "low-power"` and `setPixelRatio(min(devicePixelRatio, 1.6))`. The canvas does not earn a fan spin-up.
+- **Density (Form C).** A single `<rect>` driven by one `<filter>` pipeline. The filter chain is exactly `feTurbulence → feColorMatrix → feGaussianBlur`. No additional layers, no second cloud, no Perlin overlays.
+- **Wireframe-or-soft only.** Forms A and B render as line work — no solid surfaces, no PBR. Form C renders as a soft cloud — no hard edges, no posterisation.
+- **Opacity.** Maximum alpha at any pixel ≤ 0.7. Page `--bone` always shows through. If the cloud reads as a solid shape, the alpha matrix row is wrong.
+- **Drift.** Mesh rotation accumulators ≤ 0.001 rad / frame (Form A). Per-node sine amplitude ≤ 0.025 world units, phase multiplier ≤ 0.25 (Form B). Turbulence `baseFrequency` drift across a full cycle ≥ 30 seconds, amplitude ≤ 25% of base value (Form C). The motion should feel like breath, not a fan.
+- **No looping decoration.** No hue rotation on a monochrome cloud (it does nothing visible). No animated grain overlay. No SMIL `<animate>` tags. Only `requestAnimationFrame` driving a single attribute on a single filter element.
+- **Cursor interaction (Form A only).** A single point-light position may track the cursor, but always through a lerp factor ≤ 0.08 — never `position.copy()`. A snapped follow reads as a trail effect, which §6.6 forbids. Forms B and C do not respond to the cursor.
+- **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` under the headline column (left side ≥ 90% bone) and lets it breathe in the right column (≤ 10% bone at the far right). Form C also carries an internal SVG mask doing the same fade — a belt-and-braces guarantee that the headline never competes with the texture.
+- **Position.** On viewports ≥ 1024 px, the visual centre of the scene sits in the right column. On narrow viewports it returns to centre.
+- **Reduced motion.** When `prefers-reduced-motion: reduce` matches: WebGL forms freeze noise time and halt rotation accumulators; the cursor lerp factor becomes 1 (light snaps once and stays); Form C cancels its rAF loop after the first frame and never restarts. The visible canvas is the same as the moving one, just still.
+- **Cost.** Form A / B use `powerPreference: "low-power"` and `setPixelRatio(min(devicePixelRatio, 1.6))`. Form C does no work on the GPU beyond what the browser does for normal SVG filter rendering — it is the cheapest of the three and the default for that reason.
 
 If a future hero variant cannot meet all of the above, the canvas is removed and the hero falls back to a typographic-only layout per §13.2 P5.
 
@@ -696,4 +700,4 @@ These are the next-pass commits, ranked. They derive directly from §15.3.
 
 ---
 
-_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim; rewrote §6.7 to cover two permitted canvas forms (Form A noise-displaced wireframe icosahedron, Form B sparse constellation) after evaluating an external generative-art hero component. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
+_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the canvas direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim; iterated §6.7 across three canvas forms (Form C ethereal SVG shadow — current default; Form A noise-displaced wireframe icosahedron — documented alternate; Form B sparse constellation — documented fallback) after evaluating two external generative-art hero components. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
