@@ -161,7 +161,7 @@ function DataIntelligenceScene() {
     edgeGeometry.setAttribute("position", new THREE.BufferAttribute(edgePositions, 3));
     const edgeMaterial = new THREE.LineBasicMaterial({
       color: 0x0a0b0d,
-      opacity: 0.08,
+      opacity: 0.22,
       transparent: true,
     });
     const edgeMesh = new THREE.LineSegments(edgeGeometry, edgeMaterial);
@@ -171,8 +171,8 @@ function DataIntelligenceScene() {
     nodeGeometry.setAttribute("position", new THREE.BufferAttribute(nodePositions, 3));
     const nodeMaterial = new THREE.PointsMaterial({
       color: 0x0a0b0d,
-      opacity: 0.32,
-      size: 0.045,
+      opacity: 0.62,
+      size: 0.09,
       transparent: true,
     });
     const nodeMesh = new THREE.Points(nodeGeometry, nodeMaterial);
@@ -185,8 +185,8 @@ function DataIntelligenceScene() {
     );
     const highlightMaterial = new THREE.PointsMaterial({
       color: 0x064a55,
-      opacity: 0.6,
-      size: 0.075,
+      opacity: 0.9,
+      size: 0.135,
       transparent: true,
     });
     const highlightMesh = new THREE.Points(highlightGeometry, highlightMaterial);
@@ -259,7 +259,7 @@ function DataIntelligenceScene() {
 }
 
 export function StatsspeakHero({
-  title = "Data and software institutions can defend.",
+  title = "Data and software institutions can trust.",
   description = "StatsSpeak is a data consultancy and software development practice working with organisations across Africa. We support the path from strategy and governance to platforms, analytics, geospatial insight, AI workflows, custom software, and operational handover.",
   onScheduleConsultation,
   onExploreSolutions,
@@ -276,12 +276,12 @@ export function StatsspeakHero({
       <div className="relative mx-auto max-w-[1440px] px-6 lg:px-12">
         <div className="grid min-h-[420px] items-center gap-12 lg:min-h-[480px] lg:grid-cols-12 lg:gap-16">
           <div className="max-w-4xl animate-fade-in-up lg:col-span-8">
-            <div className="text-micro text-marine mb-6 tracking-[0.3em] md:mb-8">
-              Data consultancy · Software · Nairobi
+            <div className="text-micro text-ink-500 mb-8 md:mb-10">
+              Data consultancy · Software
             </div>
             <h1
               id="statsspeak-hero-title"
-              className="font-display text-5xl font-semibold leading-[0.96] tracking-tight text-ink sm:text-6xl md:text-7xl"
+              className="text-display-1 text-ink"
             >
               {title}
             </h1>
@@ -290,21 +290,11 @@ export function StatsspeakHero({
             </p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row sm:items-center md:mt-11">
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={onScheduleConsultation}
-                className="bg-statsspeak-navy text-white hover:bg-marine-700"
-              >
+              <Button size="lg" variant="primary" onClick={onScheduleConsultation}>
                 Book an introduction
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
-              <Button
-                size="lg"
-                variant="secondary"
-                onClick={onExploreSolutions}
-                className="border-statsspeak-blue text-statsspeak-navy hover:border-statsspeak-teal hover:bg-marine-50 hover:text-statsspeak-navy"
-              >
+              <Button size="lg" variant="secondary" onClick={onExploreSolutions}>
                 Read selected work
               </Button>
             </div>

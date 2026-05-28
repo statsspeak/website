@@ -404,8 +404,9 @@ Motion communicates *system quality*. It is never decorative.
 The §6.1 "no loops" rule has **one** carve-out: a single low-density constellation in the hero, behind the headline. It is permitted because the motion is so quiet that it reads as ambient texture, not animation. To stay on brand the canvas must hold every one of these constraints:
 
 - **Density.** ≤ 24 nodes and ≤ 24 edges total. No flow particles or moving dots travelling along edges — those read as a tech demo, not editorial.
-- **Palette.** Nodes and edges in `--ink`; accent points in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette blues are forbidden.
-- **Opacity.** Edges ≤ 0.10. Nodes ≤ 0.35. Accent points ≤ 0.65. The composition should be at the threshold of perception — present, never demanding.
+- **Palette.** Nodes and edges in `--ink`; accent points in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette blues (`--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal`) are forbidden — they exist only for legacy compatibility and are scheduled for removal.
+- **Opacity.** Edges ≤ 0.25. Nodes ≤ 0.65. Accent points ≤ 0.90. The composition should sit *just above* the threshold of perception — visible texture, never spectacle. If the canvas reads as invisible, raise; if it competes with the headline, lower.
+- **Size.** Node point size ≤ 0.10 world units. Accent point size ≤ 0.14. Point sizes are anchored to world units, not pixels, so the canvas scales with the camera.
 - **Drift.** Per-node vertical sine amplitude ≤ 0.025 world units; phase multiplier ≤ 0.25 (slower than a heartbeat). Full-scene rotation, if used, ≤ ±0.015 rad with a phase multiplier ≤ 0.05.
 - **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` toward the headline column so type sits on quiet ground.
 - **Reduced motion.** When `prefers-reduced-motion: reduce` matches, the render loop renders one frame and stops. No exceptions.
@@ -636,4 +637,55 @@ If any box is unchecked, the screen is not ready.
 
 ---
 
-_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
+## 15. Premium Positioning Audit (2026-05-28)
+
+This section is the standing answer to the question "is the site competing at the level of high-end consulting firms, premium technology companies, and award-winning agency sites?" It must be re-run before every major release. Findings live here; once a finding is resolved, it is struck and the relevant rule moves into §§1–14.
+
+### 15.1 Executive summary
+
+The visual language is correctly *editorial*: serif display, ink-on-bone, hairline rules, generous whitespace, monochrome photography, no gradients. That foundation already separates StatsSpeak from the SaaS template trap. What still leaks perceived value is **execution inconsistency**: legacy off-palette tokens that sneak into otherwise on-brand components, ad-hoc Tailwind utilities that bypass the type scale, and a hero animation tuned without a stated standard. Closing those gaps is what moves the site from "well-designed boutique consultancy" to "the brand a CIO defends in a procurement meeting."
+
+The site is not failing because it tried to do too much. It is leaking value at the seams of components that were built before the design system existed.
+
+### 15.2 Premium benchmarks
+
+The brands this site is measured against in 2026: **McKinsey & Company**, **Bain & Company**, **Palantir**, **Stripe**, **Linear**, **Vercel**, **Bruno Sancho**, **Hartmann & Forbes**, **Apple "Pro" pages**, **Pentagram**. The common signature: typography carries 60% of the perceived quality; colour is punctuation; motion confirms rather than entertains; the page does *less* than the visitor expects.
+
+### 15.3 Impact-ranked open issues
+
+| # | Severity | Issue | Why it leaks value | Fix |
+|---|---|---|---|---|
+| 1 | **P0** | Legacy off-palette tokens `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` still defined in [src/index.css](src/index.css). | Two parallel colour vocabularies guarantee components drift apart over time. McKinsey-tier sites have one. | Delete the three tokens and any `bg-statsspeak-*` / `text-statsspeak-*` / `border-statsspeak-*` references. Migrate to `--ink` / `--marine`. |
+| 2 | **P0** | Hero `<h1>` used raw `text-5xl font-semibold` instead of the `text-display-1` token. (Fixed in this revision — guard against regressions.) | Display weight 600 destroys editorial register; raw size utilities fragment the scale. | All display headings use `text-display-1`/`text-display-2`. No `font-semibold` on display. |
+| 3 | **P0** | Hero CTAs were styled with off-palette className overrides, bypassing the canonical `primary`/`secondary` Button variants. (Fixed in this revision.) | When the most prominent buttons on the site ignore the design system, every downstream component reads the system as optional. | Hero primary = `bg-ink text-bone`. Hero secondary = `bg-transparent text-ink border-ink`. No overrides. |
+| 4 | **P1** | Logo wall uses inline `style={{ filter: "grayscale(1) brightness(0.6)", opacity: 0.85 }}`. | Inline filters can't be themed and read as ad-hoc. | Move to a single `.logo-monochrome` utility in [src/index.css](src/index.css) with `filter: grayscale(1) opacity(.65)`. |
+| 5 | **P1** | Disciplines grid on the home page uses `text-h2` for every card title. | Five h2-weight headings in a grid read as shouty. The premium move is restraint — `text-h3` keeps the cards scannable. | Demote the five cards to `text-h3`. Reserve `text-h2` for section anchors. |
+| 6 | **P1** | Section CTA "See related work →" mixes a string arrow with the lucide `ArrowRight` icon used elsewhere. | Mixed icon languages signal an incomplete system. | Standardise on lucide `ArrowRight`, 16 px, inline with text. Or commit to the typographic arrow everywhere — pick one. |
+| 7 | **P1** | About page section header `How the work is held.` reads precious next to the plainspoken voice of the rest of the site. | Premium voice is confident, not poetic. The line stands out for the wrong reason. | Replace with `How we work` or fold values into a numbered "Operating values" block. |
+| 8 | **P2** | About page milestones are dateless (`Founded in Nairobi`, `Institutional work deepened`). | A milestone without a date is an adjective. McKinsey-tier sites cite years. | Either add years (`Founded · 2018`, `Public-sector practice · 2021`) or rename the block "Practice areas". |
+| 9 | **P2** | The phrase "AI workflows" appears ~5 times across the site. | Repetition of a current-moment phrase dates the page. | Substitute one or two occurrences with concrete instances (`automated reporting`, `decision-support workflows`). |
+| 10 | **P2** | The disciplines list is enumerated in three different places (hero description, home grid, services page). | Repetition reads as filler. | Keep the list authoritative on the Services page; have the home page link to it rather than repeating it. |
+
+### 15.4 Premium UX guidelines
+
+1. **Density floor, not ceiling.** Sections size to content; we never pack the page. Empty space is paid-for.
+2. **One verb per CTA, one CTA per section.** "Book an introduction" beats "Schedule a complimentary discovery consultation".
+3. **Named proof beats adjective proof.** Replace any "leading", "world-class", "innovative" with a client name, a number, or a date.
+4. **The page is read top to bottom once.** No flyouts, no mega-menus, no carousels, no on-load modals. The visitor never has to *navigate* to be persuaded.
+5. **Trust signal hierarchy:** proposition → named outcome → wordmarks → case study → CTA. If a section does not advance one of those five, it is removed.
+6. **Mobile is editorial too.** Display-1 must remain legible at 360 px; CTAs are full-width below 640 px; tap targets ≥ 44 × 44 px.
+
+### 15.5 Concrete implementation tasks
+
+These are the next-pass commits, ranked. They derive directly from §15.3.
+
+1. Delete `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` from [src/index.css](src/index.css) and the corresponding `--color-statsspeak-*` entries in `@theme inline`. Grep the codebase for `statsspeak-` colour usages and migrate to `--ink` / `--marine`.
+2. Audit all page headlines and section heads — replace any raw size utility (`text-5xl`, `text-4xl`, `text-3xl`) with the `text-display-*` / `text-h*` tokens.
+3. Demote home `disciplines` grid card titles from `text-h2` to `text-h3`.
+4. Standardise outgoing-link arrows: lucide `ArrowRight` 16 px, inline with text. Remove `→` glyph strings.
+5. Add the `.logo-monochrome` utility and refactor [HomePage.tsx:91](src/components/HomePage.tsx#L91) to use it.
+6. Revisit About copy per §15.3 issues 7 and 8.
+
+---
+
+_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._

@@ -291,15 +291,17 @@
   }
 
   .statsspeak-hero-scrim {
+    /* Keep the headline column clean; let the constellation breathe on the right. */
     background:
-      linear-gradient(90deg, var(--bone) 0%, rgba(246, 244, 238, 0.97) 36%, rgba(246, 244, 238, 0.78) 66%, rgba(246, 244, 238, 0.42) 100%),
-      linear-gradient(180deg, rgba(246, 244, 238, 0.55) 0%, rgba(246, 244, 238, 0) 44%, rgba(246, 244, 238, 0.76) 100%);
+      linear-gradient(90deg, var(--bone) 0%, rgba(246, 244, 238, 0.92) 40%, rgba(246, 244, 238, 0.42) 72%, rgba(246, 244, 238, 0.08) 100%),
+      linear-gradient(180deg, rgba(246, 244, 238, 0.32) 0%, rgba(246, 244, 238, 0) 50%, rgba(246, 244, 238, 0.52) 100%);
   }
 
   .statsspeak-hero-data-surface {
+    /* Ink + marine, never the off-palette navy/teal. */
     background:
-      linear-gradient(135deg, rgba(13, 39, 70, 0.04), rgba(0, 172, 200, 0.06)),
-      linear-gradient(180deg, rgba(248, 250, 252, 0.48), rgba(246, 244, 238, 0));
+      linear-gradient(135deg, rgba(10, 11, 13, 0.035), rgba(6, 74, 85, 0.045)),
+      linear-gradient(180deg, rgba(246, 244, 238, 0.32), rgba(246, 244, 238, 0));
   }
 }
 
