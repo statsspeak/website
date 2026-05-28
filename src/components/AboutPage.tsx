@@ -1,384 +1,245 @@
-import {
-  ArrowRight,
-  Users,
-  Award,
-  Globe,
-  Code,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import LeadershipTeam from "./Team";
 
 import washington from "../assets/team-photos/washington-ogol.jpeg";
 import anthony from "../assets/team-photos/Antony.jpeg";
 import alloys from "../assets/team-photos/alloys-mila.jpeg";
 import joan from "../assets/team-photos/Joan.jpg";
-// import joram from "../assets/team-photos/joram-kabach.jpeg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
-import LeadershipCarousel from "./Team";
-import innovation from "../assets/team-photos/innovation.jpeg";
-import collaboration from "../assets/team-photos/collaboration.jpeg";
-import integrity from "../assets/team-photos/integrity.jpeg";
-import excellence from "../assets/team-photos/excellence.jpeg";
 
 interface AboutPageProps {
   onPageChange: (page: string) => void;
 }
 
+const values = [
+  {
+    title: "Excellence",
+    description:
+      "Work is judged by whether it can survive scrutiny from operators, auditors, and senior institutional stakeholders.",
+  },
+  {
+    title: "Integrity",
+    description:
+      "We are direct about uncertainty, constraints, data quality, and the operational trade-offs behind every recommendation.",
+  },
+  {
+    title: "Collaboration",
+    description:
+      "Client teams are involved early, because systems only last when the people responsible for them can explain and operate them.",
+  },
+  {
+    title: "Innovation",
+    description:
+      "New tools are useful when they reduce friction or improve judgement. They are never a substitute for institutional context.",
+  },
+];
+
+const directors = [
+  {
+    name: "Washington Ogol",
+    role: "Co-Founder & CEO",
+    image: washington,
+    bio: "Washington leads the practice with a focus on data strategy, analytics delivery, and long-term client stewardship.",
+    specialties: [
+      "Data Strategy",
+      "Data Governance",
+      "Analytics & ML",
+      "Data Consultancy",
+    ],
+  },
+  {
+    name: "Anthony Ngatia",
+    role: "Chief Health Officer",
+    image: anthony,
+    bio: "Anthony brings public-health and health-data experience to engagements where technical design must match programme reality.",
+    specialties: [
+      "Global Health Data Science",
+      "Public Health Strategy",
+      "Health Systems",
+    ],
+  },
+  {
+    name: "Alloys Mila",
+    role: "Chief Technology Officer",
+    image: alloys,
+    bio: "Alloys leads product and engineering work, translating data requirements into dependable software and platform architecture.",
+    specialties: ["Product Engineering", "Software Development", "Platforms"],
+  },
+  {
+    name: "Joanita Kisembo",
+    role: "Head Project Manager",
+    image: joan,
+    bio: "Joanita oversees project delivery, keeping scope, stakeholder rhythm, and implementation quality aligned across engagements.",
+    specialties: ["Project Management", "Business Analysis", "Data Analysis"],
+  },
+  {
+    name: "Kelvin Adungosi",
+    role: "Head of Software & Data",
+    image: kelvin,
+    bio: "Kelvin leads software and data operations, with a focus on enterprise data strategy, DataOps, data products, and applied AI development.",
+    specialties: ["Enterprise Data Strategy", "DataOps", "Data Products"],
+  },
+];
+
+const milestones = [
+  {
+    title: "Founded in Nairobi",
+    description:
+      "StatsSpeak was established for organisations operating in East Africa that need data consultancy and software delivery under one roof.",
+  },
+  {
+    title: "Institutional work deepened",
+    description:
+      "The practice expanded its public-health and enterprise analytics work with named institutional partners.",
+  },
+  {
+    title: "Geospatial capacity expanded",
+    description:
+      "Location intelligence became a core discipline for planning, coverage, and service-delivery engagements.",
+  },
+  {
+    title: "Software and AI delivery expanded",
+    description:
+      "Software development, AI-assisted reporting, and workflow automation became part of the delivery model where they improved handover and speed.",
+  },
+];
+
 export function AboutPage({ onPageChange }: AboutPageProps) {
-  const values = [
-    {
-      image: excellence,
-      title: "Excellence",
-      description:
-        "We strive for excellence in every project, delivering solutions that exceed expectations and drive real business value.",
-    },
-    {
-      image: innovation,
-      title: "Innovation",
-      description:
-        "We embrace cutting-edge technologies and innovative approaches to solve complex data challenges and create competitive advantages.",
-    },
-    {
-      image: integrity,
-      title: "Integrity",
-      description:
-        "We maintain the highest standards of integrity, transparency, and ethical practices in all our client relationships and data handling.",
-    },
-    {
-      image: collaboration,
-      title: "Collaboration",
-      description:
-        "We believe in collaborative partnerships, working closely with our clients to understand their needs and achieve shared success.",
-    },
-  ];
-
-  const directors = [
-    {
-      name: "Washington Ogol",
-      role: "Co-Founder & CEO",
-      image: washington,
-      bio: "In the realm of leadership, Washington Ogol stands out as a beacon of team collaboration. As the Chief Executive Officer, he embodies a profound affinity for team membership, exemplifying a people-focused approach that permeates our organizational culture.",
-      specialties: [
-        "Data Strategy",
-        "Data Engineering",
-        "Data Analytics & ML",
-        "Data Consultancy",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Anthony Ngatia",
-      role: "Chief Health Officer",
-      image: anthony,
-      bio: "Anthony Ngatia is a dedicated health professional with over 15 years of experience in public health and wellness. As the Chief Health Officer, he leads our health initiatives, ensuring the well-being of our community through innovative programs and strategic health policies. Anthony's expertise in preventive healthcare and his passion for improving health outcomes make him an invaluable asset to our team.",
-      specialties: [
-        "Global Health Data Scientist",
-        "Public Health Strategist",
-        "Consultant",
-      ],
-      linkedin: "#",
-    },
-    {
-      name: "Alloys Mila",
-      role: "Chief Technology Officer",
-      image: alloys,
-      bio: "Alloys Mila is a visionary technologist with a knack for turning ideas into reality. As the Chief Technology Officer, he leads our technology team in developing innovative solutions that drive business growth and enhance customer experiences.",
-      specialties: [
-        "Product & Engineering Leader",
-        "Computer Engineering",
-        "Software Development",
-      ],
-      linkedin: "#",
-    },
-  
-    {
-      name: "Joanita Kisembo",
-      role: "Head Project Manager",
-      image: joan,
-      bio: "Joanita Kisembo is a seasoned project manager with a passion for driving business growth. As the Head Project Manager, she is responsible for overseeing the project health of the organization and ensuring that our project strategies align with our long-term goals.",
-      specialties: ["Data Analyst", "Business Analyst", "Project Management"],
-      linkedin: "#",
-    },
-    {
-      name: "Kelvin Adungosi",
-      role: "Head of Software & Data",
-      image: kelvin,
-      bio: "Kelvin Adungosi is the Head of Software & Data, a leader with a specialized background in data and technology. He focuses on three key areas: Enterprise Data Strategy, where he designs comprehensive plans for organizations to effectively use their data; Data Operations (Data Ops), where he builds and manages efficient data pipelines; and AI Development, where he creates advanced, data-driven solutions. His expertise lies in transforming raw data into powerful assets that drive innovation and business growth.",
-      specialties: ["Enterprise Data Strategy", "Data Ops", "AI Development"],
-      linkedin: "#",
-    },
-  ];
-
-  const milestones = [
-    {
-      year: "2019",
-      title: "Company Founded",
-      description:
-        "StatsSpeak was established with a vision to democratize data science in Kenya.",
-    },
-    {
-      year: "2020",
-      title: "First Major Contract",
-      description:
-        "Secured our first enterprise client and delivered a successful predictive analytics platform.",
-    },
-    {
-      year: "2021",
-      title: "Team Expansion",
-      description:
-        "Grew our team to include specialists in data engineering and geospatial analysis.",
-    },
-    {
-      year: "2022",
-      title: "Regional Recognition",
-      description:
-        "Won the East Africa Data Innovation Award for our work in agricultural technology.",
-    },
-    {
-      year: "2023",
-      title: "50+ Successful Projects",
-      description:
-        "Reached the milestone of 50 completed projects across various industries.",
-    },
-    {
-      year: "2024",
-      title: "AI Innovation Lab",
-      description:
-        "Launched our AI Innovation Lab focusing on cutting-edge research and development.",
-    },
-  ];
-
-  const stats = [
-    { icon: Award, value: "100+", label: "Projects Completed" },
-    { icon: Users, value: "50+", label: "Happy Clients" },
-    { icon: Globe, value: "3", label: "Countries Served" },
-    { icon: Code, value: "5+", label: "Years Experience" },
-  ];
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 gradient-blue">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="text-white">
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-                About{" "}
-                <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
-                  StatsSpeak
-                </span>
+    <div className="w-full bg-bone text-ink-800">
+      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <div className="text-micro text-ink-500 mb-8">About</div>
+              <h1 className="text-display-1 text-ink">
+                A Nairobi consultancy for data and software work.
               </h1>
-              <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                We're a passionate team of data scientists, engineers, and
-                developers dedicated to transforming businesses through the
-                power of data and technology.
+            </div>
+            <div className="lg:col-span-4 lg:self-end">
+              <p className="text-body-lg text-ink-500 max-w-md">
+                StatsSpeak works with ministries, NGOs, and enterprises that need
+                data strategy, governance, systems, analysis, and software to be
+                clear enough for leadership and durable enough for operations.
               </p>
               <Button
-                size="2xl"
+                size="lg"
+                variant="primary"
                 onClick={() => onPageChange("contact")}
-                className="bg-white text-deep-blue hover:bg-gray-100"
+                className="mt-10"
               >
-                Work With Us
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Book an introduction
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Button>
             </div>
-            <div className="relative">
-              <ImageWithFallback
-                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop"
-                alt="Team collaboration"
-                className="rounded-2xl shadow-2xl w-full h-auto"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-transparent rounded-2xl"></div>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mb-4">
-                  <stat.icon className="h-8 w-8 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-foreground mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Mission & Vision */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Our Mission</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                To empower businesses across Kenya and East Africa with
-                cutting-edge data solutions that drive growth, innovation, and
-                competitive advantage in the digital economy.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                We believe that every organization, regardless of size, should
-                have access to the transformative power of data science and
-                modern technology solutions.
+      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <div className="text-micro text-ink-500 mb-8">Position</div>
+              <p className="text-display-2 text-ink">
+                We are a data consultancy and software development partner for
+                institutions that need judgement and durable implementation.
               </p>
             </div>
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Our Vision</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                To be the leading data science and technology consulting firm in
-                East Africa, known for delivering exceptional solutions that
-                create lasting impact for our clients and communities.
+            <div className="lg:col-span-5 lg:col-start-8 space-y-8">
+              <p className="text-body-lg text-ink-500">
+                Our clients bring us reporting bottlenecks, fragmented data,
+                planning constraints, and institutional decisions that need better
+                evidence behind them.
               </p>
-              <p className="text-muted-foreground leading-relaxed">
-                We envision a future where data-driven decision making is
-                accessible to all organizations, fostering innovation and
-                sustainable growth across the region.
+              <p className="text-body text-ink-500">
+                We bring strategic discipline, technical fluency, analytics
+                judgement, and enough local context to know that a clean dashboard
+                is only useful when the data beneath it can be trusted.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Values - CORRECTED SECTION */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Our <span className="gradient-text">Values</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              These core values guide everything we do and shape our
-              interactions with clients, partners, and each other.
-            </p>
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+            <div className="lg:col-span-4">
+              <div className="text-micro text-ink-500 mb-6">Operating values</div>
+              <h2 className="text-h2 text-ink">How the work is held.</h2>
+            </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="border-0 shadow-lg text-center p-6">
-                <div className="w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mx-auto mb-6 overflow-hidden">
-                  <ImageWithFallback
-                    src={value.image}
-                    alt={`${value.title} icon`}
-                    className="w-10 h-10 object-contain"
-                  />
-                </div>
-                <h3 className="text-xl font-semibold mb-4">{value.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">
+          <div className="grid gap-x-12 gap-y-12 md:grid-cols-2">
+            {values.map((value) => (
+              <article key={value.title} className="border-t border-line pt-8">
+                <h3 className="text-h3 text-ink">{value.title}</h3>
+                <p className="text-body text-ink-500 mt-4 max-w-xl">
                   {value.description}
                 </p>
-              </Card>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Team */}
-      <LeadershipCarousel directors={directors} />
+      <LeadershipTeam directors={directors} />
 
-      {/* Timeline */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl lg:text-5xl font-bold mb-6">
-              Our <span className="gradient-text">Journey</span>
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              Key milestones in our growth and evolution as a leading data
-              consultancy.
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+            <div className="lg:col-span-4">
+              <div className="text-micro text-ink-500 mb-6">Journey</div>
+              <h2 className="text-h2 text-ink">The practice, in context.</h2>
+            </div>
+            <p className="text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
+              The milestones matter less as marketing copy than as evidence of
+              continuity: a local team, a public-sector track record, and growing
+              delivery depth.
             </p>
           </div>
 
-          <div className="relative">
-            <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-gradient-to-b from-vibrant-blue to-vibrant-purple rounded-full"></div>
-            <div className="space-y-12">
-              {milestones.map((milestone, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center ${
-                    index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-                  }`}
-                >
-                  <div
-                    className={`flex-1 ${
-                      index % 2 === 0
-                        ? "lg:text-right lg:pr-8"
-                        : "lg:text-left lg:pl-8"
-                    }`}
-                  >
-                    <Card className="border-0 shadow-lg">
-                      <CardHeader>
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-full flex items-center justify-center text-white font-bold">
-                            {milestone.year.slice(-2)}
-                          </div>
-                          <div>
-                            <CardTitle className="text-lg">
-                              {milestone.title}
-                            </CardTitle>
-                            <CardDescription className="text-vibrant-blue font-medium">
-                              {milestone.year}
-                            </CardDescription>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {milestone.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                  <div className="w-6 h-6 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-full border-4 border-white shadow-lg z-10"></div>
-                  <div className="flex-1"></div>
-                </div>
-              ))}
-            </div>
+          <div className="divide-y divide-line border-y border-line">
+            {milestones.map((milestone) => (
+              <article
+                key={milestone.title}
+                className="py-8"
+              >
+                <h3 className="text-h3 text-ink">{milestone.title}</h3>
+                <p className="text-body text-ink-500 mt-2 max-w-3xl">
+                  {milestone.description}
+                </p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 gradient-blue">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
-            Join Our Journey
-          </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Ready to partner with us? Let's explore how we can help transform
-            your business through data and technology.
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
+          <div className="text-micro text-ink-500 mb-8">Next step</div>
+          <h2 className="text-display-2 text-ink">Read the work first.</h2>
+          <p className="text-body-lg text-ink-500 mt-8">
+            The clearest way to understand the practice is through the problems
+            we have already helped solve.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-12 flex flex-col items-center gap-6">
             <Button
               size="lg"
+              variant="primary"
+              onClick={() => onPageChange("case-studies")}
+            >
+              Read selected work
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </Button>
+            <button
               onClick={() => onPageChange("contact")}
-              className="bg-white text-deep-blue hover:bg-gray-100"
+              className="text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
             >
-              Get In Touch
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => onPageChange("services")}
-              className="border-blue-300 text-black hover:bg-blue-50/10"
-            >
-              View Our Services
-            </Button>
+              Book an introduction →
+            </button>
           </div>
         </div>
       </section>

@@ -2,12 +2,18 @@ import * as React from "react";
 
 import { cn } from "./utils";
 
+/**
+ * StatsSpeak cards — see DESIGN.md §5.2.
+ * Paper surface, 1px hairline border (--line), no shadow, hover darkens border.
+ */
 function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card"
       className={cn(
-        "bg-card text-card-foreground flex flex-col gap-6 rounded-xl border",
+        "bg-paper text-ink-800 flex flex-col gap-6 rounded border border-line",
+        "transition-colors duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
+        "hover:border-ink-300",
         className,
       )}
       {...props}
@@ -20,7 +26,7 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
     <div
       data-slot="card-header"
       className={cn(
-        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-1.5 px-6 pt-6 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-6",
+        "@container/card-header grid auto-rows-min grid-rows-[auto_auto] items-start gap-2 px-8 pt-8 has-data-[slot=card-action]:grid-cols-[1fr_auto] [.border-b]:pb-8",
         className,
       )}
       {...props}
@@ -30,9 +36,9 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
 
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
   return (
-    <h4
+    <h3
       data-slot="card-title"
-      className={cn("leading-none", className)}
+      className={cn("text-h3 leading-none", className)}
       {...props}
     />
   );
@@ -42,7 +48,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <p
       data-slot="card-description"
-      className={cn("text-muted-foreground", className)}
+      className={cn("text-body text-ink-500", className)}
       {...props}
     />
   );
@@ -65,7 +71,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-content"
-      className={cn("px-6 [&:last-child]:pb-6", className)}
+      className={cn("px-8 [&:last-child]:pb-8", className)}
       {...props}
     />
   );
@@ -75,7 +81,7 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-footer"
-      className={cn("flex items-center px-6 pb-6 [.border-t]:pt-6", className)}
+      className={cn("flex items-center px-8 pb-8 [.border-t]:pt-8", className)}
       {...props}
     />
   );

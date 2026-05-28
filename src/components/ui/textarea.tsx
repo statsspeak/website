@@ -2,12 +2,22 @@ import * as React from "react";
 
 import { cn } from "./utils";
 
+/**
+ * StatsSpeak textarea — same editorial form treatment as Input.
+ */
 function Textarea({ className, ...props }: React.ComponentProps<"textarea">) {
   return (
     <textarea
       data-slot="textarea"
       className={cn(
-        "resize-none border-input placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 flex field-sizing-content min-h-16 w-full rounded-md border bg-input-background px-3 py-2 text-base transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+        "flex field-sizing-content min-h-32 w-full bg-transparent text-ink-800 placeholder:text-ink-300",
+        "border-0 border-b border-ink-300 rounded-none px-0 py-3 resize-none",
+        "text-base font-sans leading-relaxed",
+        "transition-colors duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
+        "outline-none focus-visible:outline-none",
+        "focus-visible:border-b-2 focus-visible:border-marine focus-visible:pb-[11px]",
+        "aria-invalid:border-[color:var(--danger)]",
+        "disabled:opacity-50 disabled:pointer-events-none",
         className,
       )}
       {...props}

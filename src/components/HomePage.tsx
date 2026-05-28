@@ -1,21 +1,7 @@
-import { useState, useEffect } from "react";
-import {
-  ArrowRight,
-  PlayCircle,
-  CheckCircle,
-  Users,
-  Star,
-  TrendingUp,
-  Globe,
-  Shield,
-} from "lucide-react";
-import { useScrollReveal } from "../hooks/animations";
-import { useParallax } from "../hooks/animations";
-import { useStaggerAnimation } from "../hooks/animations";
-import { ANIMATION_PRESETS } from "../hooks/animations";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardTitle } from "./ui/card";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { StatsspeakHero } from "./StatsspeakHero";
 import amref from "../assets/logos/amref.png";
 import digitax from "../assets/logos/digitax.png";
 import lipachat from "../assets/logos/lipachat.png";
@@ -27,615 +13,212 @@ interface HomePageProps {
   onPageChange: (page: string) => void;
 }
 
+const disciplines = [
+  {
+    name: "Data Consultancy",
+    summary:
+      "Strategy, maturity, operating models, indicators, quality frameworks, and governance designed for institutional use.",
+  },
+  {
+    name: "Data Engineering & Platforms",
+    summary:
+      "Production pipelines, warehouses, integrations, and data platforms built for reliability, audit, and scale.",
+  },
+  {
+    name: "Analytics, ML & AI",
+    summary:
+      "Decision-grade analytics, dashboards, models, and AI workflows delivered with institutional rigour.",
+  },
+  {
+    name: "Geospatial Intelligence",
+    summary:
+      "Location intelligence, catchment mapping, microplanning, spatial modelling, and remote sensing.",
+  },
+  {
+    name: "Software Development",
+    summary:
+      "Custom platforms, APIs, portals, and operational tools that turn data work into durable products.",
+  },
+];
+
+const partners = [
+  { name: "AMREF Health Africa", logo: amref },
+  { name: "Ministry of Health, Kenya", logo: moh },
+  { name: "LVCT Health",          logo: lvct },
+  { name: "Pezesha",              logo: pezesha },
+  { name: "Lipachat",             logo: lipachat },
+  { name: "Digitax",              logo: digitax },
+];
+
+const approach = [
+  {
+    title: "Institutional fluency",
+    body: "We work directly with ministries, NGOs and regulated enterprises. Our deliverables are written to survive procurement and audit, not just demo day.",
+  },
+  {
+    title: "Evidence over assertion",
+    body: "Every recommendation is grounded in a documented baseline, a measured intervention, and a result we can defend.",
+  },
+  {
+    title: "Local, then regional",
+    body: "Headquartered in Nairobi. We operate where our clients operate — Kenya, the wider East African Community, and the institutions that span them.",
+  },
+  {
+    title: "Built for handover",
+    body: "Data assets, documentation and runbooks designed for your team to own. We work ourselves out of the dependency, not into it.",
+  },
+];
+
 export function HomePage({ onPageChange }: HomePageProps) {
-  const [currentTextIndex, setCurrentTextIndex] = useState(0);
-
-  // Dynamic text rotation for tagline
-  const rotatingTexts = [
-    "Data Engineering",
-    "Software Engineering",
-    "Geospatial Engineering",
-  ];
-
-  const services = [
-    {
-      title: "Data Science & Analytics",
-      description:
-        "Transform raw data into actionable business insights with advanced analytics and machine learning solutions.",
-      image:
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-      features: [
-        "Predictive Analytics",
-        "Machine Learning",
-        "Statistical Modeling",
-        "Business Intelligence",
-      ],
-    },
-    {
-      title: "Data Engineering",
-      description:
-        "Build robust data pipelines and infrastructure for scalable data processing and real-time analytics.",
-      image:
-        "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop",
-      features: [
-        "ETL Pipelines",
-        "Data Warehousing",
-        "Cloud Architecture",
-        "Real-time Processing",
-      ],
-    },
-    {
-      title: "Software Development",
-      description:
-        "Custom software solutions tailored to your business needs with modern technologies and best practices.",
-      image:
-        "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-      features: [
-        "Web Applications",
-        "Mobile Apps",
-        "API Development",
-        "System Integration",
-      ],
-    },
-    {
-      title: "Geospatial Engineering",
-      description:
-        "Leverage location-based data for mapping, spatial analysis, and location intelligence solutions.",
-      image:
-        "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=600&h=400&fit=crop",
-      features: [
-        "GIS Solutions",
-        "Spatial Analysis",
-        "Remote Sensing",
-        "Location Intelligence",
-      ],
-    },
-  ];
-
-  const partners = [
-    {
-      name: "AMREF Health Africa",
-      logo: amref,
-      description: "Leading health organization in Africa",
-    },
-    {
-      name: "Digitax",
-      logo: digitax,
-      description: "eTims Solution",
-    },
-    {
-      name: "Lipachat",
-      logo: lipachat,
-      description: "Automated marketing and customer care",
-    },
-    {
-      name: "lvct",
-      logo: lvct,
-      description: "Health Campaign",
-    },
-    {
-      name: "MOH",
-      logo: moh,
-      description: "Ministry of Health, Kenya",
-    },
-    {
-      name: "Pezesha",
-      logo: pezesha,
-      description: "Enabling SMEs access to credit",
-    },
-  ];
-
-  const testimonials = [
-    {
-      quote:
-        "Statsspeak transformed our health data systems and helped us make evidence-based decisions that save lives.",
-      author: "",
-      role: "",
-      image: "",
-      rating: 5,
-    },
-    {
-      quote:
-        "Their geospatial solutions revolutionized our wildlife conservation efforts across Kenya's national parks.",
-      author: "",
-      role: "",
-      image: "",
-      rating: 5,
-    },
-    {
-      quote:
-        "Professional, innovative, and delivered beyond our expectations. Statsspeak is our trusted technology partner.",
-      author: "",
-      role: "",
-      image: "",
-      rating: 5,
-    },
-  ];
-
-  // Animation hooks - using your existing theme colors
-  const heroReveal = useScrollReveal(ANIMATION_PRESETS.heroTitle);
-  const heroParallax = useParallax(ANIMATION_PRESETS.backgroundParallax);
-  const partnersReveal = useScrollReveal({
-    ...ANIMATION_PRESETS.sectionTitle,
-    delay: 100,
-    threshold: 0.2,
-  });
-
-  const servicesTitle = useScrollReveal(ANIMATION_PRESETS.sectionTitle);
-  const servicesStagger = useStaggerAnimation({ stagger: 200, threshold: 0.1 });
-  const testimonialsReveal = useScrollReveal({
-    ...ANIMATION_PRESETS.sectionTitle,
-    delay: 100,
-    threshold: 0.15,
-  });
-  const testimonialsStagger = useStaggerAnimation({
-    stagger: 250,
-    threshold: 0.1,
-  });
-  const whyChooseReveal = useScrollReveal({
-    ...ANIMATION_PRESETS.sectionTitle,
-    delay: 50,
-    threshold: 0.2,
-  });
-  const whyChooseStagger = useStaggerAnimation({
-    stagger: 120,
-    threshold: 0.1,
-  });
-  const ctaReveal = useScrollReveal({
-    ...ANIMATION_PRESETS.fadeInUp,
-    delay: 100,
-    distance: 40,
-    threshold: 0.3,
-  });
-
-  // Auto-rotate text - Updated to 1.5 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
-    }, 1500);
-
-    return () => clearInterval(timer);
-  }, [rotatingTexts.length]);
-
   return (
-    <div className="w-full">
-      {/* Hero Section - Full width with enhanced scaling */}
-      <section className="overflow-hidden py-16 lg:py-24 xl:py-32 min-h-screen flex items-center sticky top-0 z-10">
-        {/* Vibrant Background Image with Parallax - Full visibility */}
-        <div
-          ref={heroParallax.ref}
-          style={heroParallax.style}
-          className="absolute inset-0"
-        >
-          <ImageWithFallback
-            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&h=1080&fit=crop"
-            alt="Data network visualization over satellite map"
-            className="w-full h-full object-cover"
-          />
+    <div className="w-full bg-bone text-ink-800">
+      <StatsspeakHero
+        onScheduleConsultation={() => onPageChange("contact")}
+        onExploreSolutions={() => onPageChange("case-studies")}
+      />
+
+      {/* ---------- Institutional clients (logo wall) ---------- */}
+      <section className="py-24 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="text-micro text-ink-500 mb-12">Institutional clients</div>
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-12 gap-y-10 items-center">
+            {partners.map((p) => (
+              <li key={p.name} className="flex items-center justify-center">
+                <ImageWithFallback
+                  src={p.logo}
+                  alt={p.name}
+                  className="h-8 w-auto max-w-[140px] object-contain"
+                  style={{ filter: "grayscale(1) brightness(0.6)", opacity: 0.85 }}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <div className="relative z-20 bg-transparent -mt-[100vh]">
-        <section className="py-16 xl:py-20 2xl:py-24 bg-none">
-          {/* Subtle overlay for text readability - much lighter */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/30 via-slate-900/20 to-slate-900/30"></div>
-
-          <div className="relative z-10 container mx-auto">
-            {/* Subtle data network pattern overlay */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="data-network-background w-full h-full"></div>
+      {/* ---------- Disciplines ---------- */}
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid lg:grid-cols-12 gap-12 mb-20">
+            <div className="lg:col-span-4">
+              <div className="text-micro text-ink-500 mb-6">Practice</div>
+              <h2 className="text-h2 text-ink">The full data lifecycle, one team.</h2>
             </div>
-
-            {/* Animated background elements - more vibrant */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-20 left-10 w-72 h-72 bg-primary-blue/30 rounded-full blur-3xl animate-pulse"></div>
-              <div
-                className="absolute bottom-20 right-10 w-96 h-96 bg-medium-blue/25 rounded-full blur-3xl animate-pulse"
-                style={{ animationDelay: "2s" }}
-              ></div>
-              <div className="absolute top-1/2 left-1/3 w-3 h-32 bg-gradient-to-b from-primary-blue/50 to-transparent rotate-45 animate-pulse"></div>
-              <div
-                className="absolute top-1/4 right-1/4 w-3 h-24 bg-gradient-to-b from-medium-blue/50 to-transparent rotate-12 animate-pulse"
-                style={{ animationDelay: "1s" }}
-              ></div>
-              <div
-                className="absolute bottom-1/4 left-1/4 w-2 h-20 bg-gradient-to-b from-primary-blue/40 to-transparent rotate-75 animate-pulse"
-                style={{ animationDelay: "3s" }}
-              ></div>
+            <div className="lg:col-span-7 lg:col-start-6">
+              <p className="text-body-lg text-ink-500 max-w-xl">
+                Most engagements span more than one part of the lifecycle. We
+                assemble the team to fit the problem — not the other way round.
+              </p>
             </div>
+          </div>
 
-            <div className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-              <div className="flex items-center justify-center min-h-[80vh]">
-                <div
-                  ref={heroReveal.ref}
-                  style={heroReveal.style}
-                  className="text-center space-y-8 xl:space-y-10 2xl:space-y-12 max-w-5xl"
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+            {disciplines.map((d) => (
+              <article
+                key={d.name}
+                className="bg-bone p-10 lg:p-14 flex flex-col gap-6 transition-colors duration-200 hover:bg-paper"
+              >
+                <h3 className="text-h2 text-ink">{d.name}</h3>
+                <p className="text-body text-ink-500 max-w-md">{d.summary}</p>
+                <button
+                  onClick={() => onPageChange("services")}
+                  className="text-caption font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 self-start mt-2"
                 >
-                  <h1 className="text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-bold leading-tight">
-                    <span
-                      className="block text-white drop-shadow-xl"
-                      style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
-                    >
-                      Turn Data Into Decisions and Scalable
-                    </span>
-                    <span
-                      className="block text-white drop-shadow-xl"
-                      style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
-                    >
-                      Systems that Drive Impact & Growth.
-                    </span>
+                  See related work →
+                </button>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-                    {/* Dynamic rotating text - Enhanced visibility */}
-                    <span
-                      className="block text-white drop-shadow-xl text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl mt-4 min-h-[1.2em]"
-                      style={{ textShadow: "3px 3px 6px rgba(0,0,0,0.8)" }}
-                    >
-                      Your partner in{" "}
-                      <span
-                        className="text-primary-blue font-bold inline-block min-w-[280px] text-left"
-                        style={{
-                          textShadow:
-                            "3px 3px 8px rgba(0,0,0,0.9), 0 0 20px rgba(26, 117, 149, 0.5)",
-                        }}
-                      >
-                        {rotatingTexts[currentTextIndex]}
-                      </span>
-                    </span>
-                  </h1>
-
-                  <p
-                    className="text-lg xl:text-xl 2xl:text-2xl text-white leading-relaxed max-w-4xl mx-auto drop-shadow-lg"
-                    style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
-                  >
-                    Statsspeak helps organizations across Africa transform
-                    complex data into clear strategies. From real-time analytics
-                    to geospatial intelligence, we deliver solutions that cut
-                    costs, accelerate growth, and create measurable impact.
-                  </p>
-
-                  <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
-                    <Button
-                      size="xl"
-                      onClick={() => onPageChange("services")}
-                      className="bg-primary-blue/95 backdrop-blur-sm hover:bg-primary-blue rounded-full text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl border border-primary-blue/50"
-                    >
-                      Explore Our Services
-                      <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                    <Button
-                      size="xl"
-                      variant="outline"
-                      onClick={() => onPageChange("case-studies")}
-                      className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl group shadow-2xl"
-                      style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.8)" }}
-                    >
-                      <PlayCircle className="mr-2 h-5 w-5 xl:h-6 xl:w-6" />
-                      View Case Studies
-                    </Button>
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-8 xl:gap-12 pt-8 border-t border-white/40 max-w-2xl mx-auto">
-                    <div className="text-center">
-                      <div
-                        className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white drop-shadow-xl"
-                        style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
-                      >
-                        100+
-                      </div>
-                      <div
-                        className="text-sm xl:text-base text-gray-100 drop-shadow-md"
-                        style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.7)" }}
-                      >
-                        Projects
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div
-                        className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white drop-shadow-xl"
-                        style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
-                      >
-                        50+
-                      </div>
-                      <div
-                        className="text-sm xl:text-base text-gray-100 drop-shadow-md"
-                        style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.7)" }}
-                      >
-                        Clients
-                      </div>
-                    </div>
-                    <div className="text-center">
-                      <div
-                        className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white drop-shadow-xl"
-                        style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.8)" }}
-                      >
-                        5+
-                      </div>
-                      <div
-                        className="text-sm xl:text-base text-gray-100 drop-shadow-md"
-                        style={{ textShadow: "1px 1px 2px rgba(0,0,0,0.7)" }}
-                      >
-                        Years
-                      </div>
-                    </div>
-                  </div>
+      {/* ---------- Proof statement ---------- */}
+      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid lg:grid-cols-12 gap-12 items-end">
+            <div className="lg:col-span-7">
+              <div className="text-micro text-ink-500 mb-8">Track record</div>
+              <p className="text-display-2 text-ink leading-[1.05]">
+                Institutional clients include AMREF Health Africa, the Kenya
+                Ministry of Health, LVCT Health, and Pezesha.
+              </p>
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9 divide-y divide-line border-y border-line">
+              <div className="py-6">
+                <div className="text-h3 text-ink">Nairobi-founded consultancy</div>
+                <div className="text-caption text-ink-500 mt-2">
+                  Built for East African institutions that need judgement, not
+                  just dashboards.
+                </div>
+              </div>
+              <div className="py-6">
+                <div className="text-h3 text-ink">Lifecycle coverage</div>
+                <div className="text-caption text-ink-500 mt-2">
+                  Lifecycle disciplines: strategy, governance, platforms,
+                  analytics, geospatial insight, AI, software, and data products.
+                </div>
+              </div>
+              <div className="py-6">
+                <div className="text-h3 text-ink">Institutional delivery</div>
+                <div className="text-caption text-ink-500 mt-2">
+                  GRID3-informed health-service planning, Ministry of Health
+                  analytics, and enterprise platform work.
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Partners Section */}
-        <section
-          ref={partnersReveal.ref}
-          style={partnersReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gray-50"
-        >
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div className="text-center mb-12 xl:mb-16">
-              <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Trusted <span className="text-primary-blue">Partners</span>
-              </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
-                We're proud to work with leading organizations across Kenya and
-                East Africa, delivering impactful solutions that drive real
-                change.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-6 xl:gap-8 2xl:gap-10 max-w-7xl mx-auto">
-              {partners.map((partner, index) => (
-                <div key={index} className="group text-center">
-                  <div className="bg-gray-50 rounded-2xl p-6 xl:p-8 mb-4 transition-all duration-300 group-hover:bg-light-blue group-hover:shadow-lg">
-                    <ImageWithFallback
-                      src={partner.logo}
-                      alt={partner.name}
-                      className="w-full h-16 xl:h-20 object-contain mx-auto filter grayscale group-hover:grayscale-0 transition-all duration-300"
-                    />
-                  </div>
-                  <h4 className="font-semibold text-sm xl:text-base text-center mb-1">
-                    {partner.name}
-                  </h4>
-                  <p className="text-xs xl:text-sm text-muted-foreground text-center">
-                    {partner.description}
-                  </p>
-                </div>
-              ))}
+      {/* ---------- Approach ---------- */}
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid lg:grid-cols-12 gap-12 mb-20">
+            <div className="lg:col-span-4">
+              <div className="text-micro text-ink-500 mb-6">Approach</div>
+              <h2 className="text-h2 text-ink">How we work.</h2>
             </div>
           </div>
-        </section>
 
-        {/* Services Overview */}
-        <section className="py-16 xl:py-20 2xl:py-24 bg-white min-h-screen">
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div
-              ref={servicesTitle.ref}
-              style={servicesTitle.style}
-              className="text-center mb-12 xl:mb-16"
-            >
-              <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Our <span className="text-primary-blue">Expertise</span>
-              </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600 max-w-4xl mx-auto">
-                Comprehensive data solutions designed to unlock insights, drive
-                innovation, and accelerate your business growth.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
-              {services.map((service, index) => (
-                <div
-                  key={index}
-                  ref={(el) => servicesStagger.addRef(el, index)}
-                  style={servicesStagger.getItemStyle(index)}
-                >
-                  <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 bg-white">
-                    <div className="relative overflow-hidden">
-                      <ImageWithFallback
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-64 xl:h-80 2xl:h-96 object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary-blue/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </div>
-                    <CardContent className="p-6 xl:p-8 2xl:p-10">
-                      <CardTitle className="text-xl xl:text-2xl 2xl:text-3xl mb-4 text-primary-blue">
-                        {service.title}
-                      </CardTitle>
-                      <CardDescription className="text-gray-600 mb-6 leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                        {service.description}
-                      </CardDescription>
-                      <div className="grid grid-cols-2 gap-3 xl:gap-4">
-                        {service.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center">
-                            <CheckCircle className="h-4 w-4 xl:h-5 xl:w-5 text-primary-blue mr-2 flex-shrink-0" />
-                            <span className="text-sm xl:text-base text-gray-600">
-                              {feature}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center mt-12 xl:mt-16">
-              <Button
-                size="2xl"
-                onClick={() => onPageChange("services")}
-                className="bg-primary-blue hover:bg-primary-blue-dark text-white px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
-              >
-                View All Services
-                <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
-              </Button>
-            </div>
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-16 max-w-5xl">
+            {approach.map((a) => (
+              <article key={a.title} className="flex flex-col gap-4">
+                <h3 className="text-h3 text-ink">{a.title}</h3>
+                <p className="text-body text-ink-500">{a.body}</p>
+              </article>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Testimonials */}
-        <section
-          ref={testimonialsReveal.ref}
-          style={testimonialsReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gray-50 min-h-screen"
-        >
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div className="text-center mb-12 xl:mb-16">
-              <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                What Our <span className="text-primary-blue">Partners Say</span>
-              </h2>
-              <p className="text-lg xl:text-xl 2xl:text-2xl text-gray-600">
-                Don't just take our word for it - hear from our satisfied
-                partners and clients.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <div
-                  key={index}
-                  ref={(el) => testimonialsStagger.addRef(el, index)}
-                  style={testimonialsStagger.getItemStyle(index)}
-                >
-                  <Card className="border-0 shadow-xl bg-white relative h-full">
-                    <CardContent className="p-6 xl:p-8 2xl:p-10">
-                      <div className="flex mb-4">
-                        {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="h-5 w-5 xl:h-6 xl:w-6 text-yellow-400 fill-current"
-                          />
-                        ))}
-                      </div>
-                      <p className="text-gray-600 mb-6 italic leading-relaxed text-base xl:text-lg 2xl:text-xl">
-                        "{testimonial.quote}"
-                      </p>
-                      <div className="flex items-center">
-                        <ImageWithFallback
-                          src={testimonial.image}
-                          alt={testimonial.author}
-                          className="w-16 h-16 xl:w-20 xl:h-20 rounded-full mr-4 object-cover"
-                        />
-                        <div>
-                          <div className="font-semibold text-base xl:text-lg 2xl:text-xl">
-                            {testimonial.author}
-                          </div>
-                          <div className="text-primary-blue font-medium text-sm xl:text-base">
-                            {testimonial.role}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose Us */}
-        <section
-          ref={whyChooseReveal.ref}
-          style={whyChooseReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-white"
-        >
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-            <div className="text-center mb-12 xl:mb-16">
-              <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold mb-6">
-                Why Choose <span className="text-primary-blue">Statsspeak</span>
-              </h2>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-8 xl:gap-12 2xl:gap-16 max-w-7xl mx-auto">
-              {[
-                {
-                  icon: Shield,
-                  title: "Trusted Expertise",
-                  description:
-                    "Proven track record with government agencies and leading organizations across Africa.",
-                  color: "bg-primary-blue",
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Measurable Results",
-                  description:
-                    "Data-driven solutions that deliver quantifiable business impact and ROI.",
-                  color: "bg-medium-blue",
-                },
-                {
-                  icon: Users,
-                  title: "Local Understanding",
-                  description:
-                    "Deep understanding of African markets, challenges, and opportunities.",
-                  color: "bg-blue-700",
-                },
-                {
-                  icon: Globe,
-                  title: "Global Standards",
-                  description:
-                    "International best practices combined with local expertise and insights.",
-                  color: "bg-primary-blue",
-                },
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  ref={(el) => whyChooseStagger.addRef(el, index)}
-                  style={whyChooseStagger.getItemStyle(index)}
-                >
-                  <Card className="border-0 shadow-lg text-center p-6 xl:p-8 2xl:p-10 hover:shadow-xl transition-shadow h-full">
-                    <div
-                      className={`w-16 h-16 xl:w-20 xl:h-20 2xl:w-24 2xl:h-24 ${item.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
-                    >
-                      <item.icon className="h-8 w-8 xl:h-10 xl:w-10 2xl:h-12 2xl:w-12 text-white" />
-                    </div>
-                    <h3 className="text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm xl:text-base 2xl:text-lg">
-                      {item.description}
-                    </p>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section
-          ref={ctaReveal.ref}
-          style={ctaReveal.style}
-          className="py-16 xl:py-20 2xl:py-24 bg-gradient-to-r from-primary-blue to-medium-blue"
-        >
-          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 text-center">
-            <h2 className="text-3xl xl:text-4xl 2xl:text-5xl font-bold text-white mb-6">
-              Ready to Transform Your Organization?
-            </h2>
-            <p className="text-lg xl:text-xl 2xl:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Join leading organizations across Africa who trust Statsspeak to
-              unlock insights, drive innovation, and achieve sustainable growth.
+      {/* ---------- Quiet CTA ---------- */}
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="max-w-2xl">
+            <div className="text-micro text-ink-500 mb-8">Engagements</div>
+            <p className="text-display-2 text-ink">
+              We take on a small number of engagements each year.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 xl:gap-6 justify-center">
-              <Button
-                size="xl"
-                onClick={() => onPageChange("contact")}
-                className="bg-white text-primary-blue hover:bg-gray-100 px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
-              >
-                Start Your Project
-                <ArrowRight className="ml-2 h-5 w-5 xl:h-6 xl:w-6" />
+            <p className="text-body-lg text-ink-500 mt-8 max-w-xl">
+              If your organisation is weighing a data, analytics, geospatial, AI,
+              or software initiative, an introductory conversation costs nothing
+              and will give you a clearer view of what we can and cannot help with.
+            </p>
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mt-12">
+              <Button size="lg" variant="primary" onClick={() => onPageChange("contact")}>
+                Book an introduction
+                <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button
-                size="xl"
-                variant="outline"
+              <button
                 onClick={() => onPageChange("about")}
-                className="border-white hover:bg-white hover:text-primary-blue px-8 py-4 xl:px-10 xl:py-5 text-lg xl:text-xl"
+                className="text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-all"
               >
-                Learn More About Us
-              </Button>
+                Read our approach →
+              </button>
             </div>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </div>
   );
 }

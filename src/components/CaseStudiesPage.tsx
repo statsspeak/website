@@ -1,23 +1,5 @@
-import {
-  ArrowRight,
-  BarChart3,
-  Database,
-  Code,
-  Map,
-  TrendingUp,
-  Users,
-  Clock,
-  Award,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
-import { Badge } from "./ui/badge";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 import amref from "../assets/case-studies/amref.jpg";
@@ -30,315 +12,269 @@ interface CaseStudiesPageProps {
   onPageChange: (page: string) => void;
 }
 
+const caseStudies = [
+  {
+    title: "Improving healthcare delivery with geospatial data",
+    client:
+      "Ministries of Health in DRC, Ethiopia, Ghana, Kenya, and Sierra Leone",
+    category: "Public health",
+    image: featured,
+    caption:
+      "GRID3-informed planning work used for health-service coverage and microplanning.",
+    duration: "Programme engagement",
+    description:
+      "Through the Exemplar Utilization of GRID3 Data project, partner countries applied geospatial data to improve health service delivery for underserved communities.",
+    challenge:
+      "Health teams needed stronger data to identify high-risk groups, disease hotspots, service gaps, and communities missed by existing programmes.",
+    solution:
+      "Geospatial data was used to understand population distribution, disease burden, and healthcare resources, then translate those findings into planning decisions.",
+    results: [
+      "DRC: identified potential community-care sites for remote populations.",
+      "Ethiopia: informed optimal locations for additional oxygen plants.",
+      "Kenya: mapped catchment areas and children missed during vaccinations.",
+      "Sierra Leone: supported HPV vaccine microplanning maps.",
+    ],
+    tools: ["Geospatial data", "GRID3", "Digital health"],
+  },
+  {
+    title: "Primary Care Networks deployment analytics",
+    client: "Ministry of Health, Kenya",
+    category: "Public health",
+    image: MoH,
+    caption:
+      "Deployment analytics for Primary Care Networks across Ministry of Health systems.",
+    duration: "National platform",
+    description:
+      "Developed a data analytics platform giving the Ministry of Health real-time visibility into the deployment of Primary Care Networks.",
+    challenge:
+      "The Ministry needed performance metrics and visibility across PCN rollout to support fast, efficient national decision-making.",
+    solution:
+      "The platform integrated HMIS sources and turned operational data into real-time reporting views for national stakeholders.",
+    results: [
+      "Integrated data from HMIS systems.",
+      "Improved visibility into PCN deployment across the country.",
+      "Presented real-time performance metrics and data stories.",
+    ],
+    tools: ["HMIS integration", "Analytics platform", "Public-sector reporting"],
+  },
+  {
+    title: "Enterprise-wide data analytics platform",
+    client: "Amref Health Africa",
+    category: "Public health",
+    image: amref,
+    caption:
+      "Enterprise analytics work supporting Amref Health Africa reporting and data use.",
+    duration: "Enterprise platform",
+    description:
+      "Supported Amref Health Africa in developing an enterprise-wide data analytics platform.",
+    challenge:
+      "The organisation needed a unified platform to analyse health data across programmes and teams.",
+    solution:
+      "Designed and implemented a consolidated analytics platform for organisation-wide reporting.",
+    results: ["Implemented an organisation-wide data platform."],
+    tools: ["Data analytics", "Enterprise platform", "Health data management"],
+  },
+  {
+    title: "E-commerce and supply-chain analytics",
+    client: "Twiga Foods",
+    category: "Data & technology",
+    image: twiga,
+    caption:
+      "Embedded analytics and warehouse architecture support for Twiga Foods.",
+    duration: "Architecture engagement",
+    description:
+      "Provided embedded analytics for Twiga Foods and supported the migration and architecture of its data warehouse.",
+    challenge:
+      "The team needed stronger analytics for digital operations and a more secure data warehouse foundation.",
+    solution:
+      "StatsSpeak provided embedded analytics and back-end architecture for migration from a PostgreSQL database into a more secure data environment.",
+    results: [
+      "Provided value-added insights through embedded analytics.",
+      "Supported migration and security improvements for the warehouse.",
+    ],
+    tools: ["PostgreSQL", "Data warehouse", "Embedded analytics"],
+  },
+  {
+    title: "Vaccine supply-chain data for decision-making",
+    client: "Clinton Health Access Initiative and GOK-MOH",
+    category: "Public health",
+    image: clinton,
+    caption:
+      "Vaccine supply-chain data support for Ministry of Health decision-making.",
+    duration: "Supply-chain support",
+    description:
+      "Supported CHAI in leveraging Ministry of Health vaccine supply-chain data for data-driven decision-making.",
+    challenge:
+      "The Ministry needed to use vaccine supply-chain data more effectively for distribution decisions.",
+    solution:
+      "StatsSpeak helped translate supply-chain data into decision-support workflows for vaccine planning.",
+    results: [
+      "Supported data-driven approaches for vaccine supply and distribution.",
+    ],
+    tools: ["Supply-chain data", "Decision support", "Public health"],
+  },
+];
+
+const proofs = [
+  "Ministries of Health supported through GRID3-informed health-service planning.",
+  "HMIS sources integrated for Kenya Ministry of Health PCN deployment analytics.",
+  "Vaccine supply-chain data used for CHAI and GOK-MOH decision support.",
+];
+
 export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
-  const caseStudies = [
-    {
-      id: 1,
-      title: "Improving Healthcare Delivery with Geospatial Data",
-      client:
-        "Democratic Republic of Congo (DRC), Ethiopia, Ghana, Kenya, and Sierra Leone Ministries of Health",
-      category: "Public Health",
-      icon: BarChart3,
-      image: featured,
-      description:
-        "Through the Exemplar Utilization of GRID3 Data project, CHAI worked with five partner countries to apply geospatial data to improve health service delivery, particularly for underserved communities.",
-      challenge:
-        "Many low- and middle-income countries lack the quality data needed to identify high-risk groups, disease hotspots, and effectively plan health service delivery, leading to many communities being missed by health programs.",
-      solution:
-        "Geospatial data, including GRID3, was used to understand the geographic distribution of populations, disease burden, and healthcare resources to inform decision-making processes, such as identifying optimal locations for services and mapping health coverage.",
-      results: [
-        "In the DRC, identified optimal locations for community care sites to serve remote populations.",
-        "In Ethiopia, helped determine optimal locations for additional oxygen plants.",
-        "In Ghana, identified potential sites for screening children with sickle cell disease.",
-        "In Kenya, mapped operational health catchment areas and identified children missed during vaccinations.",
-        "In Sierra Leone, supported the use of microplanning maps to introduce the human papillomavirus (HPV) vaccine.",
-      ],
-      technologies: ["Geospatial Data", "GRID3", "Digital Health Solutions"],
-      duration: "2 years",
-      impact: "High",
-      link: "/case-studies/improving-healthcare-delivery",
-    },
-    {
-      id: 2,
-      title: "E-commerce and Supply Chain Analytics",
-      client: "Twiga Foods",
-      category: "Data & Technology",
-      icon: Database,
-      image: twiga,
-      description:
-        "Provided embedded analytics to support the digital strategy of Twiga Foods and spearheaded the migration and architecture of their data warehouse.",
-      challenge:
-        "Twiga Foods needed to leverage data for value-added insights to support its digital platforms and required a more secure data warehouse for its operations.",
-      solution:
-        "The Statsspeak team provided embedded analytics and spearheaded the back-end design and architecture to migrate the data warehouse from a PostgreSQL database to a more secure system.",
-      results: [
-        "Provided value-added insights through embedded analytics.",
-        "Successfully migrated and secured the data warehouse.",
-      ],
-      technologies: ["PostgreSQL", "Data Warehouse", "Analytics Platforms"],
-      duration: "Not specified",
-      impact: "High",
-      link: "/case-studies/twiga-foods-analytics",
-    },
-    {
-      id: 3,
-      title: "Enterprise-wide Data Analytics Platform",
-      client: "Amref Health in Africa",
-      category: "Public Health",
-      icon: Code,
-      image: amref,
-      description:
-        "Supported Amref Health in Africa in developing an enterprise-wide data analytics platform.",
-      challenge:
-        "The need for a unified platform to analyze health data across the organization",
-      solution:
-        "Developed a comprehensive enterprise-wide data analytics platform.",
-      results: ["Successfully implemented an organization-wide data platform."],
-      technologies: [
-        "Data Analytics",
-        "Enterprise Platform",
-        "Health Data Management",
-      ],
-      duration: "5 months",
-      impact: "Medium",
-      link: "/case-studies/amref-analytics-platform",
-    },
-    {
-      id: 4,
-      title: "Primary Care Networks Deployment Analytics",
-      client: "Ministry of Health (MOH) Kenya",
-      category: "Public Health",
-      icon: Map,
-      image: MoH,
-      description:
-        "Developed a data analytics platform for the Ministry of Health in Kenya that provides real-time visibility into the deployment of Primary Care Networks (PCNs).",
-      challenge:
-        "The MOH needed real-time performance metrics and visibility into the deployment of PCNs to enable fast and efficient decision-making.",
-      solution:
-        "Created a system that integrates with four other HMIS (Health Management Information Systems) to provide real-time data stories and performance metrics.",
-      results: [
-        "Provides visibility into the deployment of Primary Care Networks.",
-        "Offers real-time performance metrics and data stories.",
-        "Aids in fast and efficient decision-making across the country.",
-      ],
-      technologies: ["HMIS Integration", "Data Analytics Platform"],
-      duration: "Not specified",
-      impact: "High",
-      link: "/case-studies/moh-kenya-pcns",
-    },
-    {
-      id: 5,
-      title: "Vaccine Supply Chain Data for Decision-Making",
-      client: "GOK-MOH (Government of Kenya - Ministry of Health)",
-      category: "Public Health",
-      icon: BarChart3,
-      image: clinton,
-      description:
-        "Supported the Clinton Health Access Initiative in leveraging the Ministry of Health’s vaccine supply chain data to inform data-driven decision-making approaches.",
-      challenge:
-        "The Ministry of Health needed to better utilize its vaccine supply chain data to make more informed and strategic decisions about vaccine distribution.",
-      solution:
-        "Statsspeak was tasked with supporting the organization to leverage the vaccine supply chain data effectively.",
-      results: [
-        "Informed data-driven decision-making approaches for vaccine supply and distribution.",
-      ],
-      technologies: [
-        "Vaccine Supply Chain Data",
-        "Data-Driven Decision Making",
-      ],
-      duration: "3 months",
-      impact: "High",
-      link: "/case-studies/vaccine-supply-chain",
-    },
-  ];
-
-  const getImpactColor = (impact: string) => {
-    switch (impact) {
-      case "High":
-        return "bg-green-100 text-green-800";
-      case "Medium":
-        return "bg-yellow-100 text-yellow-800";
-      default:
-        return "bg-blue-100 text-blue-800";
-    }
-  };
-
-  const stats = [
-    { icon: Award, value: "100+", label: "Projects Delivered" },
-    { icon: Users, value: "50+", label: "Happy Clients" },
-    { icon: TrendingUp, value: "95%", label: "Success Rate" },
-    { icon: Clock, value: "24/7", label: "Support Available" },
-  ];
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="py-20 lg:py-32 gradient-blue">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center text-white">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Case{" "}
-              <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">
-                Studies
-              </span>
-            </h1>
-            <p className="text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-              Discover how we've helped organizations across Kenya and East
-              Africa achieve remarkable results through data-driven solutions.
-            </p>
+    <div className="w-full bg-bone text-ink-800">
+      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-8">
+              <div className="text-micro text-ink-500 mb-8">Selected work</div>
+              <h1 className="text-display-1 text-ink">
+                Evidence before assertion.
+              </h1>
+            </div>
+            <div className="lg:col-span-4 lg:self-end">
+              <p className="text-body-lg text-ink-500 max-w-md">
+                A selection of strategy, governance, engineering, analytics, and
+                geospatial work, plus software delivery for public-health
+                institutions and regional enterprises.
+              </p>
+              <Button
+                size="lg"
+                variant="primary"
+                onClick={() => onPageChange("contact")}
+                className="mt-10"
+              >
+                Book an introduction
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="mx-auto w-16 h-16 bg-gradient-to-br from-vibrant-blue to-vibrant-purple rounded-2xl flex items-center justify-center mb-4">
-                  <stat.icon className="h-8 w-8 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-foreground mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-muted-foreground">{stat.label}</div>
+      <section className="py-24 lg:py-32 border-t border-line bg-paper">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="divide-y divide-line border-y border-line">
+            {proofs.map((proof) => (
+              <div key={proof} className="py-8">
+                <p className="text-body-lg text-ink-500 max-w-3xl">
+                  {proof}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Case Studies Grid */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+            <div className="lg:col-span-4">
+              <div className="text-micro text-ink-500 mb-6">Case notes</div>
+              <h2 className="text-h2 text-ink">Named clients, named problems.</h2>
+            </div>
+            <p className="text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
+              The work below is intentionally concrete: institution, problem,
+              method, and result. No star ratings, no anonymous claims.
+            </p>
+          </div>
+
+          <div className="space-y-16">
             {caseStudies.map((study) => (
-              <Card
-                key={study.id}
-                className="overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300"
+              <article
+                key={study.title}
+                className="grid gap-10 border-t border-line pt-12 lg:grid-cols-12"
               >
-                <div className="relative">
-                  <ImageWithFallback
-                    src={study.image}
-                    alt={study.title}
-                    className="w-full h-64 object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className={getImpactColor(study.impact)}>
-                      {study.impact} Impact
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-10 h-10 bg-white/90 rounded-lg flex items-center justify-center">
-                      <study.icon className="h-6 w-6 text-vibrant-blue" />
-                    </div>
-                  </div>
+                <div className="lg:col-span-5">
+                  <figure>
+                    <ImageWithFallback
+                      src={study.image}
+                      alt={study.title}
+                      className="aspect-[4/3] w-full rounded-lg object-cover"
+                      style={{ filter: "saturate(0.7) contrast(1.05)" }}
+                    />
+                    <figcaption className="mt-4 border-t border-line pt-3 text-caption text-ink-500">
+                      {study.caption}
+                    </figcaption>
+                  </figure>
                 </div>
 
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge variant="secondary">{study.category}</Badge>
-                    <span className="text-sm text-muted-foreground">
-                      {study.duration}
-                    </span>
+                <div className="lg:col-span-6 lg:col-start-7">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-micro text-ink-500">
+                    <span>{study.category}</span>
+                    <span>{study.duration}</span>
                   </div>
-                  <CardTitle className="text-xl">{study.title}</CardTitle>
-                  <CardDescription className="text-vibrant-blue font-medium">
-                    {study.client}
-                  </CardDescription>
-                </CardHeader>
-
-                <CardContent className="space-y-6">
-                  <p className="text-muted-foreground leading-relaxed">
+                  <h3 className="text-h2 text-ink mt-6">{study.title}</h3>
+                  <p className="text-body-lg text-ink mt-4">{study.client}</p>
+                  <p className="text-body text-ink-500 mt-6 max-w-2xl">
                     {study.description}
                   </p>
 
-                  <div>
-                    <h4 className="font-semibold mb-2">Challenge</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {study.challenge}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold mb-2">Solution</h4>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {study.solution}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold mb-3">Key Results</h4>
-                    <div className="grid grid-cols-2 gap-2">
-                      {study.results.map((result, resultIndex) => (
-                        <div key={resultIndex} className="flex items-start">
-                          <TrendingUp className="h-4 w-4 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-muted-foreground">
-                            {result}
-                          </span>
-                        </div>
-                      ))}
+                  <div className="mt-10 grid gap-8 md:grid-cols-2">
+                    <div>
+                      <div className="text-micro text-ink-500 mb-3">Challenge</div>
+                      <p className="text-body text-ink-500">{study.challenge}</p>
+                    </div>
+                    <div>
+                      <div className="text-micro text-ink-500 mb-3">Response</div>
+                      <p className="text-body text-ink-500">{study.solution}</p>
                     </div>
                   </div>
 
-                  <div>
-                    <h4 className="font-semibold mb-3">Technologies Used</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {study.technologies.map((tech, techIndex) => (
-                        <Badge
-                          key={techIndex}
-                          variant="outline"
-                          className="text-xs"
-                        >
-                          {tech}
-                        </Badge>
+                  <div className="mt-10 border-t border-line pt-8">
+                    <div className="text-micro text-ink-500 mb-4">Evidence</div>
+                    <ul className="grid gap-3">
+                      {study.results.map((result) => (
+                        <li key={result} className="text-body text-ink-500">
+                          {result}
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
-                  <div className="flex justify-end pt-4">
-                    <Button
-                      variant="ghost"
-                      className="text-vibrant-blue hover:bg-vibrant-blue/10"
-                      onClick={() => onPageChange(study.link)}
-                    >
-                      Read More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {study.tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="rounded-sm border border-line px-2 py-1 text-mono text-ink-500"
+                      >
+                        {tool}
+                      </span>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
+
+                  <button
+                    onClick={() => onPageChange("contact")}
+                    className="mt-10 text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+                  >
+                    Request a case note →
+                  </button>
+                </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 gradient-blue">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl lg:text-5xl font-bold text-white mb-6">
-            Ready to Create Your Success Story?
+      <section className="py-32 lg:py-40 border-t border-line">
+        <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
+          <div className="text-micro text-ink-500 mb-8">Engagements</div>
+          <h2 className="text-display-2 text-ink">
+            Bring us the problem, not the pitch deck.
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Let's discuss how we can help you achieve similar results and
-            transform your business through data.
+          <p className="text-body-lg text-ink-500 mt-8">
+            We will tell you plainly whether data consultancy, software
+            development, analytics, or geospatial work is the right instrument.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="mt-12">
             <Button
               size="lg"
+              variant="primary"
               onClick={() => onPageChange("contact")}
-              className="bg-white text-deep-blue hover:bg-gray-100"
             >
-              Start Your Project
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => onPageChange("services")}
-              className="border-blue-300 text-black hover:bg-blue-50/10"
-            >
-              View Our Services
+              Book an introduction
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
           </div>
         </div>
