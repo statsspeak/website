@@ -1,99 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Source+Sans+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
-@import "./App.css";
-
-
 
 @custom-variant dark (&:is(.dark *));
 
+/* -------------------------------------------------------------------
+ * StatsSpeak design tokens — see DESIGN.md
+ * Subtractive design language: ink, bone, restrained teal accent.
+ * Do not add saturated colours or gradients to this file.
+ * ------------------------------------------------------------------- */
+
 :root {
-  --background: #ffffff;
-  --foreground: #1a1f2e;
-  --card: #ffffff;
-  --card-foreground: #1a1f2e;
-  --popover: #ffffff;
-  --popover-foreground: #1a1f2e;
-  --primary: #1A7595;
-  --primary-foreground: #ffffff;
-  --secondary: #f8fafc;
-  --secondary-foreground: #1a1f2e;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #1A7595;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
+  /* Neutrals — the spine of the system */
+  --ink:        #0A0B0D;
+  --ink-800:    #16181C;
+  --ink-700:    #2A2D33;
+  --ink-500:    #5C6068;
+  --ink-300:    #A4A8B0;
+  --ink-200:    #D6D8DC;
+  --ink-100:    #ECEDEF;
+  --bone:       #F6F4EE;
+  --paper:      #FFFFFF;
+
+  /* Brand accent — deep teal chosen to complement the logo without feeling loud */
+  --marine:     #064A55;
+  --marine-700: #083F49;
+  --marine-50:  #E6F7F9;
+  --logo-teal:  #00ACC8;
+  --statsspeak-navy: #0D2746;
+  --statsspeak-blue: #1D5FAF;
+  --statsspeak-teal: #00ACC8;
+  --surface: #F8FAFC;
+  --gradient-primary: linear-gradient(135deg, #0D2746 0%, #1D5FAF 60%, #00ACC8 100%);
+
+  /* Punctuation — once per page maximum */
+  --ochre:      #B8893A;
+
+  /* Semantic */
+  --success:    #1F6F4A;
+  --danger:     #8B2118;
+
+  /* shadcn semantic tokens, mapped to our system */
+  --background: var(--bone);
+  --foreground: var(--ink-800);
+  --card: var(--paper);
+  --card-foreground: var(--ink-800);
+  --popover: var(--paper);
+  --popover-foreground: var(--ink-800);
+  --primary: var(--ink);
+  --primary-foreground: var(--bone);
+  --secondary: var(--ink-100);
+  --secondary-foreground: var(--ink-800);
+  --muted: var(--ink-100);
+  --muted-foreground: var(--ink-500);
+  --accent: var(--marine);
+  --accent-foreground: var(--bone);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--paper);
+  --border: var(--ink-200);
   --input: transparent;
-  --input-background: #f8fafc;
-  --switch-background: #cbd5e1;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --ring: #1A7595;
-  --chart-1: #1A7595;
-  --chart-2: #2A8BA3;
-  --chart-3: #3AA1B1;
-  --chart-4: #10b981;
-  --chart-5: #f59e0b;
-  --radius: 0.75rem;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #1a1f2e;
-  --sidebar-primary: #1A7595;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f8fafc;
-  --sidebar-accent-foreground: #1a1f2e;
-  --sidebar-border: #e2e8f0;
-  --sidebar-ring: #1A7595;
-  
-  /* Custom colors for StatsSpeak - Updated Theme */
-  --primary-blue: #1A7595;
-  --primary-blue-light: #4A9BB3;
-  --primary-blue-dark: #135A73;
-  --primary-blue-lighter: #E8F4F8;
-  --charcoal: #1a1f2e;
-  --deep-blue: #0f1729;
-  --light-blue: #F0F8FB;
-  --medium-blue: #2A8BA3;
-  --light-gray: #f8fafc;
-  --medium-gray: #64748b;
+  --ring: var(--marine);
+
+  /* Type families */
+  --font-display: "Fraunces", "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-sans:    "Inter Tight", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono:    "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+
+  /* Radii — sharp, never pill */
+  --radius-sm: 2px;
+  --radius:    4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Motion */
+  --ease-out:      cubic-bezier(0.2, 0, 0, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-expo-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --dur-3: 320ms;
+  --dur-4: 600ms;
+
+  /* Elevation — used only on transient overlays */
+  --shadow-pop: 0 1px 2px rgba(10, 11, 13, 0.04), 0 12px 32px rgba(10, 11, 13, 0.08);
 }
 
 .dark {
-  --background: #0f1729;
-  --foreground: #f8fafc;
-  --card: #1a1f2e;
-  --card-foreground: #f8fafc;
-  --popover: #1a1f2e;
-  --popover-foreground: #f8fafc;
-  --primary: #1A7595;
-  --primary-foreground: #ffffff;
-  --secondary: #1e293b;
-  --secondary-foreground: #f8fafc;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --accent: #1A7595;
-  --accent-foreground: #ffffff;
-  --destructive: #ef4444;
-  --destructive-foreground: #ffffff;
-  --border: #334155;
-  --input: #1e293b;
-  --ring: #1A7595;
-  --chart-1: #1A7595;
-  --chart-2: #2A8BA3;
-  --chart-3: #3AA1B1;
-  --chart-4: #10b981;
-  --chart-5: #f59e0b;
-  --sidebar: #1a1f2e;
-  --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #1A7595;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #1e293b;
-  --sidebar-accent-foreground: #f8fafc;
-  --sidebar-border: #334155;
-  --sidebar-ring: #1A7595;
+  --background: var(--ink);
+  --foreground: var(--bone);
+  --card: var(--ink-800);
+  --card-foreground: var(--bone);
+  --popover: var(--ink-800);
+  --popover-foreground: var(--bone);
+  --primary: var(--bone);
+  --primary-foreground: var(--ink);
+  --secondary: var(--ink-800);
+  --secondary-foreground: var(--bone);
+  --muted: var(--ink-800);
+  --muted-foreground: var(--ink-300);
+  --accent: var(--marine);
+  --accent-foreground: var(--bone);
+  --border: var(--ink-700);
+  --ring: var(--marine);
 }
 
 @theme inline {
+  /* shadcn-compatible semantic colours */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -112,175 +123,162 @@
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
-  --color-input-background: var(--input-background);
-  --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-  
-  /* Custom colors */
-  --color-primary-blue: var(--primary-blue);
-  --color-primary-blue-light: var(--primary-blue-light);
-  --color-primary-blue-dark: var(--primary-blue-dark);
-  --color-primary-blue-lighter: var(--primary-blue-lighter);
-  --color-charcoal: var(--charcoal);
-  --color-deep-blue: var(--deep-blue);
-  --color-light-blue: var(--light-blue);
-  --color-medium-blue: var(--medium-blue);
-  --color-light-gray: var(--light-gray);
-  --color-medium-gray: var(--medium-gray);
+
+  /* Brand palette — usable directly: bg-ink, text-bone, border-line, text-marine */
+  --color-ink:        var(--ink);
+  --color-ink-800:    var(--ink-800);
+  --color-ink-700:    var(--ink-700);
+  --color-ink-500:    var(--ink-500);
+  --color-ink-300:    var(--ink-300);
+  --color-ink-200:    var(--ink-200);
+  --color-ink-100:    var(--ink-100);
+  --color-bone:       var(--bone);
+  --color-paper:      var(--paper);
+  --color-line:       var(--ink-200);
+  --color-marine:     var(--marine);
+  --color-marine-700: var(--marine-700);
+  --color-marine-50:  var(--marine-50);
+  --color-logo-teal:  var(--logo-teal);
+  --color-ochre:      var(--ochre);
+  --color-statsspeak-navy: var(--statsspeak-navy);
+  --color-statsspeak-blue: var(--statsspeak-blue);
+  --color-statsspeak-teal: var(--statsspeak-teal);
+  --color-surface: var(--surface);
+
+  /* Type families */
+  --font-display: var(--font-display);
+  --font-sans:    var(--font-sans);
+  --font-mono:    var(--font-mono);
+
+  /* Radii */
+  --radius-sm: var(--radius-sm);
+  --radius:    var(--radius);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
 }
 
 @layer base {
   * {
-  @apply border-[var(--color-border)] outline-[var(--color-ring)/50];
-}
+    border-color: var(--color-border);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    background: var(--bone);
+    color: var(--ink-800);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    font-size: 1rem;
+    line-height: 1.6;
   }
-}
 
-/**
- * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
- */
-@layer base {
+  /* Editorial type scale — see DESIGN.md §2.2 */
+  .text-display-1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(3.5rem, 8vw, 5.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 144;
+  }
+  .text-display-2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.75rem, 6vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 96;
+  }
+  .text-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.25rem, 5vw, 3rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    font-optical-sizing: auto;
+  }
+  .text-h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+    font-optical-sizing: auto;
+  }
+  .text-h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .text-h4 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+  }
+  .text-body-lg {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1.125rem;
+    line-height: 1.6;
+  }
+  .text-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .text-caption {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+  .text-micro {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .text-mono {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  /* Tabular numerals for data */
+  .tnum {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  /* Default heading sizes — applied only where no .text-* class controls them */
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.025em;
-    }
-
-    h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      line-height: 1.3;
-      letter-spacing: -0.025em;
-    }
-
-    h3 {
-      font-size: 1.5rem;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    h4 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    h5 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    h6 {
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.4;
-    }
-
-    p {
-      font-size: 1rem;
-      font-weight: 400;
-      line-height: 1.6;
-    }
-
-    label {
-      font-size: 0.875rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
-
-    button {
-      font-size: 0.875rem;
-      font-weight: 500;
-      line-height: 1.5;
-    }
-
-    input {
-      font-size: 0.875rem;
-      font-weight: 400;
-      line-height: 1.5;
-    }
+    h1 { font-family: var(--font-display); font-weight: 400; font-size: 3rem; line-height: 1.08; letter-spacing: -0.015em; }
+    h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.25rem; line-height: 1.15; letter-spacing: -0.012em; }
+    h3 { font-family: var(--font-sans); font-weight: 600; font-size: 1.5rem; line-height: 1.25; }
+    h4 { font-family: var(--font-sans); font-weight: 600; font-size: 1.25rem; line-height: 1.3; }
+    p  { font-size: 1rem; line-height: 1.6; }
   }
 }
 
-html {
-  font-size: var(--font-size);
-}
-
-/* Custom gradient backgrounds with new primary blue */
-.gradient-primary-blue {
-  background: linear-gradient(135deg, var(--primary-blue-light) 0%, var(--primary-blue) 100%);
-}
-
-.gradient-blue {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
-}
-
-.gradient-accent {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--medium-blue) 100%);
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.hero-pattern {
-  background-image: 
-    radial-gradient(circle at 25% 25%, var(--primary-blue-light) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, var(--light-blue) 0%, transparent 50%);
-}
-
-/* Enhanced data network background pattern - more subtle */
-.data-network-background {
-  background-image: 
-    linear-gradient(90deg, rgba(26, 117, 149, 0.05) 1px, transparent 1px),
-    linear-gradient(rgba(26, 117, 149, 0.05) 1px, transparent 1px);
-  background-size: 80px 80px;
-  position: relative;
-}
-
-.data-network-background::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: 
-    radial-gradient(circle at 20% 80%, rgba(26, 117, 149, 0.08) 0%, transparent 70%),
-    radial-gradient(circle at 80% 20%, rgba(42, 139, 163, 0.08) 0%, transparent 70%),
-    radial-gradient(circle at 40% 40%, rgba(26, 117, 149, 0.06) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-
-/* Custom animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -288,92 +286,139 @@ html {
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 600ms var(--ease-expo-out) both;
   }
-  50% {
-    transform: translateY(-20px);
-  }
-}
 
-@keyframes rotateText {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
+  .statsspeak-hero-scrim {
+    /* Soft top/bottom editorial framing for the centred hero. The
+       cloud carries the colour; the scrim just frames the page. */
+    background: linear-gradient(
+      180deg,
+      rgba(246, 244, 238, 0.22) 0%,
+      rgba(246, 244, 238, 0) 28%,
+      rgba(246, 244, 238, 0) 72%,
+      rgba(246, 244, 238, 0.28) 100%
+    );
   }
-  10%, 90% {
-    opacity: 1;
+
+  .statsspeak-hero-data-surface {
+    /* A whisper of marine over the bone base — the cloud does the rest. */
+    background: linear-gradient(180deg, rgba(6, 74, 85, 0.025), rgba(246, 244, 238, 0));
+  }
+
+  .statsspeak-page-hero-scrim {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(246, 244, 238, 0.35), transparent 34%),
+      linear-gradient(
+        180deg,
+        rgba(246, 244, 238, 0.54) 0%,
+        rgba(246, 244, 238, 0.08) 42%,
+        rgba(246, 244, 238, 0.64) 100%
+      );
+  }
+
+  .statsspeak-footer-scrim {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(0, 172, 200, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(10, 11, 13, 0.2), rgba(10, 11, 13, 0.92));
+  }
+
+  .link-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--marine);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.5em;
+    transition:
+      color 200ms var(--ease-out),
+      text-decoration-thickness 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+  }
+
+  .link-action:hover {
+    color: var(--marine-700);
+    text-decoration-thickness: 2px;
+    transform: translateY(-1px);
+  }
+
+  .link-action:active {
     transform: translateY(0);
   }
-  100% {
-    opacity: 0;
-    transform: translateY(-20px);
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink-300);
+    transition:
+      color 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
   }
-}
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-rotate-text {
-  animation: rotateText 3s ease-in-out infinite;
-}
-
-/* Pulse animation for primary blue elements */
-@keyframes pulse-primary-blue {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(26, 117, 149, 0.7);
+  .footer-link:hover {
+    color: var(--bone);
+    transform: translateY(-1px);
   }
-  70% {
-    box-shadow: 0 0 0 10px rgba(26, 117, 149, 0);
+
+  .footer-link:active {
+    transform: translateY(0);
   }
-}
 
-.animate-pulse-primary-blue {
-  animation: pulse-primary-blue 2s infinite;
-}
-
-/* Enhanced glowing data lines animation */
-@keyframes glowingLines {
-  0%, 100% {
-    opacity: 0.4;
-    box-shadow: 0 0 8px rgba(26, 117, 149, 0.4);
+  [data-slot="button"] svg {
+    transition: transform 200ms var(--ease-out);
   }
-  50% {
-    opacity: 0.9;
-    box-shadow: 0 0 25px rgba(26, 117, 149, 0.7), 0 0 35px rgba(26, 117, 149, 0.4);
+
+  [data-slot="button"]:hover svg {
+    transform: translateX(2px);
   }
-}
 
-.animate-glowing-lines {
-  animation: glowingLines 4s ease-in-out infinite;
-}
+  [data-slot="button"]:active svg {
+    transform: translateX(0);
+  }
 
-/* Glass morphism effect */
-.glass-morphism {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-@layer utilities {
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  @media (prefers-reduced-motion: reduce) {
+    .link-action,
+    .footer-link,
+    [data-slot="button"],
+    [data-slot="button"] svg {
+      transform: none !important;
+      transition-duration: 0.01ms !important;
     }
   }
+}
 
-  .animate-fadeIn {
-    animation: fadeIn 0.5s ease-out;
+/* Editorial pull quote — single utility */
+.pullquote {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  border-left: 2px solid var(--ink);
+  padding-left: 1.5rem;
+}
+
+/* Focus rings — visible on every interactive element */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--marine);
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

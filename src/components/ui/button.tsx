@@ -4,34 +4,51 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "./utils";
 
+/**
+ * StatsSpeak buttons — see DESIGN.md §5.1.
+ * Sharp radius, weight 500, no gradient.
+ * Motion is a slight lift on hover and an immediate settle on press.
+ */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  [
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap",
+    "font-sans font-medium tracking-normal",
+    "rounded-[4px] border border-transparent",
+    "transition-[background-color,border-color,color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
+    "hover:-translate-y-0.5 active:translate-y-0",
+    "disabled:pointer-events-none disabled:opacity-40",
+    "outline-none focus-visible:outline-2 focus-visible:outline-marine focus-visible:outline-offset-2",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        default:
+          "bg-ink text-bone shadow-[0_10px_30px_rgba(0,172,200,0.08)] hover:bg-marine hover:shadow-[0_16px_34px_rgba(0,172,200,0.16)]",
+        primary:
+          "bg-ink text-bone shadow-[0_10px_30px_rgba(0,172,200,0.08)] hover:bg-marine hover:shadow-[0_16px_34px_rgba(0,172,200,0.16)]",
         outline:
-          "border bg-background text-foreground hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+          "bg-transparent text-ink border-ink hover:border-marine hover:bg-marine hover:text-bone",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+          "bg-transparent text-ink border-ink/70 hover:border-marine hover:bg-marine-50 hover:text-marine-700",
         ghost:
-          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-transparent text-ink hover:text-marine-700 underline-offset-8 hover:underline decoration-1 shadow-none",
+        link:
+          "bg-transparent text-marine underline underline-offset-4 decoration-1 hover:text-marine-700 px-0 h-auto shadow-none hover:translate-y-0",
+        destructive:
+          "bg-[color:var(--danger)] text-paper hover:opacity-90 shadow-[0_10px_30px_rgba(139,33,24,0.1)]",
       },
       size: {
-        sm: "h-8 rounded-2xl gap-1.5 px-3 has-[>svg]:px-2.5 text-xs",
-        default: "h-9 px-4 py-2 has-[>svg]:px-3 text-sm",
-        lg: "h-10 rounded-2xl px-6 has-[>svg]:px-4 text-sm",
-        xl: "h-12 rounded-2xl px-8 has-[>svg]:px-6 text-base",
-        "2xl": "h-14 rounded-2xl px-10 has-[>svg]:px-8 text-lg",
-        icon: "size-9 rounded-2xl",
+        default: "h-11 px-5 text-[0.9375rem]",
+        sm: "h-9 px-4 text-[0.875rem]",
+        md: "h-11 px-5 text-[0.9375rem]",
+        lg: "h-[52px] px-6 text-[1rem]",
+        icon: "h-11 w-11 p-0",
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: "primary",
+      size: "md",
     },
   }
 );
