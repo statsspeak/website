@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
@@ -124,34 +125,21 @@ const proofs = [
 export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
   return (
     <div className="w-full bg-bone text-ink-800">
-      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="text-micro text-ink-500 mb-8">Selected work</div>
-              <h1 className="text-display-1 text-ink">
-                Evidence before assertion.
-              </h1>
-            </div>
-            <div className="lg:col-span-4 lg:self-end">
-              <p className="text-body-lg text-ink-500 max-w-md">
-                A selection of strategy, governance, engineering, analytics, and
-                geospatial work, plus software delivery for public-health
-                institutions and regional enterprises.
-              </p>
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => onPageChange("contact")}
-                className="mt-10"
-              >
-                Book an introduction
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Selected work"
+        title="Evidence before assertion."
+        description="A selection of strategy, governance, engineering, analytics, and geospatial work, plus software delivery for public-health institutions and regional enterprises."
+      >
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={() => onPageChange("contact")}
+          className="mt-10"
+        >
+          Book an introduction
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Button>
+      </PageHero>
 
       <section className="py-24 lg:py-32 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -246,7 +234,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
 
                   <button
                     onClick={() => onPageChange("contact")}
-                    className="mt-10 text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+                    className="link-action mt-10 text-body"
                   >
                     Request a case note →
                   </button>

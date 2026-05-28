@@ -1,6 +1,6 @@
-import { useId } from "react";
 import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
+import { Component as EtheralShadow } from "./ui/etheral-shadow";
 
 interface StatsspeakHeroProps {
   title?: string;
@@ -9,78 +9,24 @@ interface StatsspeakHeroProps {
   onExploreSolutions: () => void;
 }
 
-/**
- * Ethereal shadow — a soft teal cloud generated entirely in SVG.
- * Motion is CSS keyframes (no rAF), two stacked orbits at non-harmonic
- * periods. Linear timing, closed-loop keyframes ⇒ no zero-velocity
- * moments, no abrupt start/stop. Reduced-motion media query disables
- * both orbits — the static cloud is the still version of the moving one.
- * Constraints in DESIGN.md §6.7 (Form C).
- */
 function EtherealShadowScene() {
-  const rawId = useId();
-  const filterId = `ether-filter-${rawId.replace(/:/g, "")}`;
-
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 overflow-hidden statsspeak-ether-mask"
+      className="pointer-events-none absolute inset-0 overflow-hidden"
       data-testid="ethereal-shadow-scene"
     >
-      <div className="absolute inset-0 statsspeak-ether-orbit-slow">
-        <div className="absolute inset-0 statsspeak-ether-orbit-fast">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="xMidYMid slice"
-            viewBox="0 0 100 100"
-            className="absolute h-[130%] w-[130%]"
-            style={{ left: "-15%", top: "-15%" }}
-          >
-            <defs>
-              <filter
-                id={filterId}
-                x="-10%"
-                y="-10%"
-                width="120%"
-                height="120%"
-                colorInterpolationFilters="sRGB"
-              >
-                <feTurbulence
-                  type="fractalNoise"
-                  baseFrequency="0.018 0.028"
-                  numOctaves="3"
-                  seed="2"
-                  stitchTiles="stitch"
-                />
-                {/*
-                  Interpolate noise → colour:
-                    noise = 0  →  --marine     (deep teal, valleys)
-                    noise = 1  →  --logo-teal  (bright cyan, peaks)
-                  Alpha: A = 0.85 * R - 0.20, clamped 0…0.65 — the
-                  cloud is present but never dominates type.
-                */}
-                <feColorMatrix
-                  type="matrix"
-                  values="
-                    -0.024 0 0 0  0.024
-                     0.384 0 0 0  0.290
-                     0.451 0 0 0  0.333
-                     0.85  0 0 0 -0.20
-                  "
-                />
-                <feGaussianBlur stdDeviation="0.8" />
-              </filter>
-            </defs>
-            <rect
-              x="0"
-              y="0"
-              width="100"
-              height="100"
-              filter={`url(#${filterId})`}
-            />
-          </svg>
-        </div>
-      </div>
+      <EtheralShadow
+        color="rgba(0, 172, 200, 0.72)"
+        animation={{ scale: 84, speed: 72 }}
+        noise={{ opacity: 0.22, scale: 1.1 }}
+        sizing="fill"
+        showContent={false}
+        style={{
+          opacity: 0.82,
+          mixBlendMode: "multiply",
+        }}
+      />
     </div>
   );
 }

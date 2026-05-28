@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ArrowRight, CheckCircle, Clock, Mail, MapPin, Phone, Send } from "lucide-react";
+import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
 import {
   Card,
@@ -90,24 +91,11 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
 
   return (
     <div className="w-full bg-bone text-ink-800">
-      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="text-micro text-ink-500 mb-8">Contact</div>
-              <h1 className="text-display-1 text-ink">
-                Send the brief. We will be direct.
-              </h1>
-            </div>
-            <div className="lg:col-span-4 lg:self-end">
-              <p className="text-body-lg text-ink-500 max-w-md">
-                Tell us what decision, system, or reporting problem is in front
-                of you. We will respond with the clearest next step.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Contact"
+        title="Send the brief. We will be direct."
+        description="Tell us what decision, system, or reporting problem is in front of you. We will respond with the clearest next step."
+      />
 
       <section className="py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -217,7 +205,7 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                         {info.link ? (
                           <a
                             href={info.link}
-                            className="text-body text-marine underline underline-offset-4 decoration-1 hover:decoration-2"
+                            className="link-action text-body"
                           >
                             {info.detail}
                           </a>
@@ -239,7 +227,7 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                 </p>
                 <button
                   onClick={() => onPageChange("case-studies")}
-                  className="mt-8 text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+                  className="link-action mt-8 text-body"
                 >
                   Read selected work →
                 </button>
@@ -280,7 +268,7 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
           <div className="mt-12">
             <a
               href="https://maps.app.goo.gl/i6kMjyubUxgYWPqa8"
-              className="inline-flex items-center gap-2 text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2"
+              className="link-action text-body"
             >
               Open map
               <ArrowRight className="h-4 w-4" aria-hidden="true" />

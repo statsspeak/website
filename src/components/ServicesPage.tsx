@@ -1,4 +1,5 @@
 import { ArrowRight, CheckCircle } from "lucide-react";
+import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
 
 interface ServicesPageProps {
@@ -86,35 +87,21 @@ const engagementModel = [
 export function ServicesPage({ onPageChange }: ServicesPageProps) {
   return (
     <div className="w-full bg-bone text-ink-800">
-      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="text-micro text-ink-500 mb-8">Services</div>
-              <h1 className="text-display-1 text-ink">
-                Data consultancy and software development.
-              </h1>
-            </div>
-            <div className="lg:col-span-4 lg:self-end">
-              <p className="text-body-lg text-ink-500 max-w-md">
-                We help ministries, NGOs, and growth-stage enterprises make data
-                dependable from strategy and collection through governance,
-                platforms, analytics, geospatial insight, AI, software, and
-                handover.
-              </p>
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => onPageChange("case-studies")}
-                className="mt-10"
-              >
-                See relevant work
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="Services"
+        title="Data consultancy and software development."
+        description="We help ministries, NGOs, and growth-stage enterprises make data dependable from strategy and collection through governance, platforms, analytics, geospatial insight, AI, software, and handover."
+      >
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={() => onPageChange("case-studies")}
+          className="mt-10"
+        >
+          See relevant work
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Button>
+      </PageHero>
 
       <section className="py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -169,7 +156,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
 
                 <button
                   onClick={() => onPageChange("case-studies")}
-                  className="mt-10 text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+                  className="link-action mt-10 text-body"
                 >
                   See related work →
                 </button>
@@ -245,7 +232,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
             </Button>
             <button
               onClick={() => onPageChange("contact")}
-              className="text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+              className="link-action text-body"
             >
               Book an introduction →
             </button>

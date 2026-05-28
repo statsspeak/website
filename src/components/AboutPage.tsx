@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
 import LeadershipTeam from "./Team";
 
@@ -108,34 +109,21 @@ const milestones = [
 export function AboutPage({ onPageChange }: AboutPageProps) {
   return (
     <div className="w-full bg-bone text-ink-800">
-      <section className="pt-40 lg:pt-56 pb-32 lg:pb-40">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-8">
-              <div className="text-micro text-ink-500 mb-8">About</div>
-              <h1 className="text-display-1 text-ink">
-                A Nairobi consultancy for data and software work.
-              </h1>
-            </div>
-            <div className="lg:col-span-4 lg:self-end">
-              <p className="text-body-lg text-ink-500 max-w-md">
-                StatsSpeak works with ministries, NGOs, and enterprises that need
-                data strategy, governance, systems, analysis, and software to be
-                clear enough for leadership and durable enough for operations.
-              </p>
-              <Button
-                size="lg"
-                variant="primary"
-                onClick={() => onPageChange("contact")}
-                className="mt-10"
-              >
-                Book an introduction
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About"
+        title="A Nairobi consultancy for data and software work."
+        description="StatsSpeak works with ministries, NGOs, and enterprises that need data strategy, governance, systems, analysis, and software to be clear enough for leadership and durable enough for operations."
+      >
+        <Button
+          size="lg"
+          variant="primary"
+          onClick={() => onPageChange("contact")}
+          className="mt-10"
+        >
+          Book an introduction
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </Button>
+      </PageHero>
 
       <section className="py-32 lg:py-40 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -236,7 +224,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
             </Button>
             <button
               onClick={() => onPageChange("contact")}
-              className="text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-colors"
+              className="link-action text-body"
             >
               Book an introduction →
             </button>

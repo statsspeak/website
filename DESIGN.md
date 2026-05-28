@@ -6,7 +6,7 @@
 
 ## 0. Mandate
 
-StatsSpeak is a data consultancy and software development practice serving ministries, NGOs, and growth-stage enterprises across East Africa. The practice spans data strategy, governance, engineering, analytics, geospatial intelligence, AI workflows, software development, and data products. The visual identity must read the way a McKinsey or Palantir presentation reads in a procurement meeting: *quiet, exact, and unmistakably expensive.*
+StatsSpeak is a data consultancy and software development practice serving organisations across East Africa. The practice spans data strategy, governance, engineering, analytics, geospatial intelligence, AI workflows, software development, and data products. The visual identity must read the way a McKinsey or Palantir presentation reads in a procurement meeting: *quiet, exact, and unmistakably expensive.*
 
 The site is not selling software. It is selling judgement.
 
@@ -27,21 +27,21 @@ Therefore the design is **subtractive** — we remove decoration until only what
 
 ### 1.2 Visual character
 
-Editorial, not promotional. Closer to a financial-quarterly cover than a SaaS landing page. Generous whitespace, large serif display type, monochrome photography, restrained colour, hairline rules. The reader should feel they have opened a publication, not a brochure.
+Editorial, not promotional. Closer to a financial-quarterly cover than a SaaS landing page. Generous whitespace, large serif display type, monochrome photography, restrained colour, hairline rules, and a soft teal atmospheric layer that ties the interface back to the logo. The reader should feel they have opened a publication, not a brochure.
 
 ### 1.3 Design principles
 
 1. **Restraint over reach.** If a component or animation does not earn its place, it is removed.
 2. **Typography is the brand.** Layout decisions defer to type.
 3. **Whitespace is paid-for.** Empty space signals confidence; we use it liberally.
-4. **One accent, one role.** Colour is punctuation, not decoration.
-5. **Motion confirms; it does not entertain.** No loops, no bounces, no marquees.
+4. **One accent, one atmosphere.** Teal carries the logo, links, focus, and the ethereal shadow field — never random card tinting.
+5. **Motion confirms; it does not entertain.** No bounces, no marquees, no idle systems beyond the ethereal shadow carve-out in §6.7.
 6. **Specificity beats superlatives.** Numbers, names, and dates over adjectives.
 7. **Never decorate what content alone can carry.** If a section works in plain HTML, it works.
 
 ### 1.4 What we forbid
 
-Pulsing blur orbs · rotating taglines · gradient banner CTAs · stock photography from Unsplash · italicised pull quotes · 5-star rating icons · pill buttons · drop shadows on hero text · `min-h-screen` per section · emoji as icons · "Learn more" buttons · animated counters · parallax effects on text · saturated cyan-blue as a primary fill.
+Uncontrolled blur orbs · rotating taglines · gradient banner CTAs · stock photography from Unsplash · italicised pull quotes · 5-star rating icons · pill buttons · drop shadows on hero text · `min-h-screen` per section · emoji as icons · "Learn more" buttons · animated counters · parallax effects on text · saturated cyan-blue as a primary fill.
 
 ---
 
@@ -111,7 +111,7 @@ Perfect fourth (1.333) scale, anchored at 16 px base. All sizes use `rem` and cl
 
 ### 3.1 Philosophy
 
-The palette is **ink + bone + one restrained teal accent**. The site is monochrome with a single brand accent calibrated to complement the teal logo without making the interface feel loud. Saturation is intentionally low across the board. We do not gradient.
+The palette is **ink + bone + one restrained teal accent**. The site is monochrome with a single brand accent calibrated to complement the teal logo without making the interface feel loud. Saturation is intentionally low across the board. We do not use multi-colour decorative gradients; soft scrims and the ethereal shadow field are the only approved atmospheric colour treatments.
 
 ### 3.2 Tokens
 
@@ -138,7 +138,7 @@ All tokens are CSS variables on `:root`. Tailwind exposes them via `@theme inlin
 | `--marine` | `#064A55` | Deep teal accent. Used for links and focus states; primary CTAs remain ink. |
 | `--marine-700` | `#083F49` | Hover state for `--marine`. |
 | `--marine-50` | `#E6F7F9` | Subtle teal tint — used sparingly as a section accent. |
-| `--logo-teal` | `#00ACC8` | Logo mark, and the high-noise endpoint of the hero canvas colour gradient (§6.7 Form C, alpha-capped at 0.65). Everywhere else: forbidden. |
+| `--logo-teal` | `#00ACC8` | Logo mark, ethereal shadow highlight, dark-footer CTA hover, and mobile drawer active state. Everywhere else: ask whether `--marine` is enough first. |
 
 **Punctuation (rare — once per page maximum)**
 
@@ -158,7 +158,7 @@ All tokens are CSS variables on `:root`. Tailwind exposes them via `@theme inlin
 
 - The previous `#1A7595` saturated cyan-blue.
 - Tailwind's default `blue-*`, `sky-*`, `cyan-*`, `indigo-*` palettes.
-- Any gradient with more than one ink stop (gradients are forbidden except hairline shadows).
+- Decorative gradient fills. Linear/radial scrims are allowed only when they protect type over the ethereal shadow system.
 - Yellow / amber / lime / pink / purple for any decorative purpose.
 - Colour to differentiate cards. Cards differentiate by content, not by tint.
 
@@ -250,12 +250,12 @@ Tracking:  0
 Icon size: 16px (sm/md), 18px (lg)
 ```
 
-- **Primary** — `bg-ink text-bone`, hover `bg-ink-700`. Use once per section. Never two primaries side-by-side.
-- **Secondary** — `bg-transparent text-ink border border-ink`, hover `bg-ink text-bone`. Slow transition (200ms, ease-out).
+- **Primary** — `bg-ink text-bone`, hover `bg-marine`, with a restrained teal-tinted shadow. Use once per section. Never two primaries side-by-side.
+- **Secondary** — `bg-transparent text-ink border border-ink/70`, hover `border-marine bg-marine-50 text-marine-700`. Slow transition (200ms, ease-out).
 - **Ghost** — text-only with a 1 px underline-offset-8 underline that appears on hover.
 - **Link** — inline link, `text-marine`, underline always present at `underline-offset-4 decoration-1`.
 
-No shadows. No gradient fills. No glow on hover. No scale on hover. Hover changes are limited to `background-color`, `color`, and `border-color`.
+Motion: buttons lift `-2px` on hover and settle immediately on press. Icons translate `2px` on hover. No gradient fills, no glow, no scale transforms.
 
 ### 5.2 Cards
 
@@ -285,7 +285,7 @@ Forms are the most over-decorated component on most sites. Ours are the quietest
 
 - Background: `--bone` (or transparent over hero, with a 1 px hairline on scroll).
 - Logo: `--ink` at 24 px height.
-- Links: `text-caption`, weight 500, `text-ink-700`. Active page: `text-ink` with a 1 px underline at `underline-offset-8`.
+- Links: `text-caption`, weight 500, `text-ink-700`. Active page: `text-marine` with a 1 px underline at `underline-offset-8`.
 - Mobile: slide-in drawer from the right, `--ink` surface, `--bone` text. No hamburger animation gimmicks.
 - Scroll behaviour: top bar collapses from 80 px → 64 px height with a hairline appearing below it. 200 ms transition.
 
@@ -298,7 +298,7 @@ Forms are the most over-decorated component on most sites. Ours are the quietest
 
 ### 5.7 CTAs (section-level)
 
-The CTA section is a quiet block, not a coloured banner.
+The CTA section is a quiet block, not a coloured banner. Footer CTAs may sit on the ink surface, but still use restrained type, a single action, and the ethereal shadow as atmosphere rather than decoration.
 
 ```
 Layout:    Single column, centred, max-w 720px
@@ -360,7 +360,7 @@ Motion communicates *system quality*. It is never decorative.
 2. **One axis at a time.** Translate OR fade OR scale, never combined as a "burst".
 3. **Short and ease-out.** Default 200 ms, `cubic-bezier(0.2, 0, 0, 1)`.
 4. **Reduced motion is honoured.** All animation respects `prefers-reduced-motion: reduce`.
-5. **No loops.** Nothing pulses, breathes, floats, or rotates on idle.
+5. **No loops outside §6.7.** Nothing pulses, breathes, floats, or rotates on idle except the approved ethereal shadow layer.
 
 ### 6.2 Durations & easings
 
@@ -390,44 +390,32 @@ Motion communicates *system quality*. It is never decorative.
 
 ### 6.5 Hover
 
-- Buttons: background-colour transition only, 120 ms.
+- Buttons: colour, border, shadow, and `translateY(-2px)` transition, 200 ms. Icons may translate `2px` on the x-axis.
 - Cards: 1 px border colour transition, 200 ms.
 - Images in editorial cards: a 200 ms `filter: brightness(0.96)` darken — never a scale.
 - Links: underline thickens from 1 px to 2 px, 120 ms.
 
 ### 6.6 Forbidden motion
 
-`animate-pulse`, `animate-bounce`, `animate-float`, `animate-rotate-text`, `animate-glowing-lines`, `animate-pulse-primary-blue`, `.shutter-effect`, blob/orb pulses, mouse-trail effects, hero parallax on text, on-scroll counters, marquees of any kind.
+`animate-pulse`, `animate-bounce`, `animate-float`, `animate-rotate-text`, `animate-glowing-lines`, `animate-pulse-primary-blue`, `.shutter-effect`, uncontrolled blob/orb pulses, mouse-trail effects, hero parallax on text, on-scroll counters, marquees of any kind.
 
-### 6.7 Hero canvas — the only permitted idle motion
+### 6.7 Ethereal shadow system — the only permitted idle motion
 
-The §6.1 "no loops" rule has **one** carve-out: a single ambient scene in the hero, behind the right-hand column. It is permitted because it functions as ambient texture, not animation. The canvas may take one of three forms — never two side-by-side, never a mix:
+The §6.1 "no loops" rule has **one** carve-out: the ethereal teal shadow system used in the home hero, inner page heroes, and footer. It is permitted because it functions as ambient brand texture, not as a standalone animation.
 
-- **Form C · Ethereal SVG shadow (current).** A soft ink-toned cloud generated entirely in SVG (`feTurbulence` → `feColorMatrix` → `feGaussianBlur`), faded right-to-left with a linear mask. Pure SVG, no WebGL, no external dependencies. Reads as atmospheric mood — closer to a Pentagram editorial than to a tech demo. This is the default.
-- **Form A · Sculpted object.** A noise-displaced wireframe icosahedron in three.js. Reads as a still life. Kept as a documented alternate.
-- **Form B · Constellation.** A sparse three.js node/edge field. Reads as a quiet field. Kept as a documented fallback.
+The implementation of record is [src/components/ui/etheral-shadow.tsx](src/components/ui/etheral-shadow.tsx). It uses a masked colour field, optional SVG turbulence/displacement, optional noise texture, and `framer-motion` only for the slow hue-rotation control inside the SVG filter. It is mounted directly in the home hero, through [src/components/PageHero.tsx](src/components/PageHero.tsx) for inner page headers, and as a static atmospheric layer in the footer.
 
-Whichever form is in flight, the canvas must hold every one of these constraints:
+Constraints:
 
-- **Palette.** Cloud / lines / accents are drawn from `--ink`, `--marine`, and (Form C only) `--logo-teal` as the high-noise endpoint of a colour gradient. The teal is what carries the brand connection — the cloud must reference the logo, not float in ink alone. Off-palette `--statsspeak-navy`, `--statsspeak-blue`, `--statsspeak-teal` are forbidden — they exist only for legacy compatibility and are scheduled for removal (§15.3 #1). No saturated greys, no warm hues; the cloud is teal, not gold.
-- **No external dependencies for visuals.** No `framerusercontent.com`, no Unsplash, no Pexels, no third-party CDN PNG masks or grain textures. Anything the scene needs is generated procedurally in SVG / shader code or shipped in `src/assets/`. Premium brands own their visual assets.
-- **Density (Form A).** A single mesh, icosahedron subdivision ≤ 64. Vertex noise displacement amplitude ≤ 0.15 world units.
-- **Density (Form B).** ≤ 24 nodes and ≤ 24 edges. No flow particles or moving dots travelling along edges.
-- **Density (Form C).** A single `<rect>` driven by one `<filter>` pipeline. The filter chain is exactly `feTurbulence → feColorMatrix → feGaussianBlur`. No additional layers, no second cloud, no Perlin overlays. The rect is oversized to 130 % of the viewBox so layered translation never reveals an edge.
-- **Feature scale (Form C).** `baseFrequency` is tuned so 2–4 cloud cells are visible across the viewBox (a sub-1-cycle frequency reads as a flat gradient and is forbidden — that was the failure mode in revision N+2).
-- **Wireframe-or-soft only.** Forms A and B render as line work — no solid surfaces, no PBR. Form C renders as a soft cloud — no hard edges, no posterisation.
-- **Opacity.** Maximum alpha at any pixel ≤ 0.65. Page `--bone` always shows through. If the cloud reads as a solid shape, the alpha matrix row is wrong.
-- **Colour gradient (Form C).** The colour matrix interpolates noise → colour: noise = 0 maps to `--marine` (deep teal valleys), noise = 1 maps to `--logo-teal` (bright cyan peaks). Anywhere else, including hover or interaction states, the cloud renders these two colours and only these two. Saturated greys, warm hues, and intermediate blues are forbidden.
-- **Motion model (Form C).** CSS keyframes only — no `requestAnimationFrame`, no `setAttribute` on filter primitives in a hot loop. Two stacked wrapping elements run a closed-loop 8-point orbit keyframe at non-harmonic periods (e.g. 48 s and 29 s), one in `reverse`. Timing function is `linear`; closed-loop keyframes (start position = end position) guarantee no boundary discontinuity. Both wrappers carry `will-change: transform` so the browser keeps them on the compositor. **No sine-shaped CSS easing on a single axis** — `cubic-bezier` ease-in-out has zero-velocity moments at the extremes, which read as the cloud pausing and reads as "start/stop". The orbit shape avoids this by always changing direction tangentially.
-- **Drift amplitudes.** Form A: mesh rotation accumulators ≤ 0.001 rad / frame. Form B: per-node sine amplitude ≤ 0.025 world units, phase multiplier ≤ 0.25. Form C: orbit radius 3 % of the viewBox per layer (combined ≈ 6 %); both orbit periods ≥ 25 s; combined least-common-multiple ≥ 15 minutes so the pattern doesn't visibly repeat.
-- **No looping decoration.** No hue rotation on a monochrome cloud (it does nothing visible). No animated grain overlay. No SMIL `<animate>` tags.
-- **Cursor interaction (Form A only).** A single point-light position may track the cursor, but always through a lerp factor ≤ 0.08 — never `position.copy()`. A snapped follow reads as a trail effect, which §6.6 forbids. Forms B and C do not respond to the cursor.
-- **Mask (Form C).** A radial CSS `mask-image` on the outer wrapper — transparent at centre (so the type sits on clean ground), opaque at the corners (so the cloud frames the page). The mask is on the wrapper, not inside the SVG, so as the inner orbits translate, the mask anchoring stays fixed to the viewport.
-- **Position.** Forms A and B place the visual centre of the scene in the right column on viewports ≥ 1024 px. Form C is symmetric (radial mask, centred type) — the cloud is the same on both sides.
-- **Reduced motion.** When `prefers-reduced-motion: reduce` matches: WebGL forms freeze noise time and halt rotation accumulators; the cursor lerp factor becomes 1 (light snaps once and stays); Form C disables both orbit animations via `@media (prefers-reduced-motion: reduce)`. The visible canvas is the same as the moving one, just still.
-- **Cost.** Form A / B use `powerPreference: "low-power"` and `setPixelRatio(min(devicePixelRatio, 1.6))`. Form C does no work on the GPU beyond compositing two translated layers and rendering a static SVG filter — it is the cheapest of the three and the default for that reason. No `requestAnimationFrame` means no main-thread work after first paint.
+- **Palette.** The field uses `--logo-teal` / `--marine` family values over `--bone` or `--ink`. No warm hues, purple-blue gradients, or unrelated blues.
+- **Type safety.** The component remains a shadcn-style TypeScript UI primitive under `src/components/ui/`. Consumers pass colour, sizing, animation, and noise props; page copy is not hard-coded into the background layer.
+- **Motion scope.** Home and inner page heroes may animate. Footer usage is static by default to keep the final CTA calm and inexpensive to render.
+- **Reduced motion.** `prefers-reduced-motion` disables the animated filter and leaves the same visual field still.
+- **Opacity.** Ambient colour must never compete with headline legibility. Scrims in `statsspeak-hero-scrim`, `statsspeak-page-hero-scrim`, and `statsspeak-footer-scrim` are responsible for preserving readable ground.
+- **No cursor chasing.** The shadow never responds to pointer movement.
+- **No additional idle systems.** Do not add second animated backgrounds, particle fields, marquees, looping counters, or decorative WebGL scenes alongside this system.
 
-If a future hero variant cannot meet all of the above, the canvas is removed and the hero falls back to a typographic-only layout per §13.2 P5.
+If a future variant cannot meet these constraints, remove the shadow and fall back to a typographic-only hero.
 
 ---
 
@@ -534,7 +522,7 @@ The site is *intentionally low-density*. We do not pack the page. A premium page
 
 - 4 items max in the top bar (Services, Work, About, Contact). "Home" is the logo.
 - No mega-menus. No flyouts. If a section is too complex for a link, it is too complex for the nav.
-- Footer is a sitemap, not a billboard. Three columns max.
+- Footer is a final trust surface: one concise brand block, one high-value CTA, then a compact sitemap/contact/discipline grid. It may use the static ethereal shadow on ink, but it must not become a marketing banner.
 
 ### 11.4 Trust hierarchy
 
@@ -559,6 +547,8 @@ If a section does not serve one of these five purposes, it is removed.
 | [src/lib/utils.ts](src/lib/utils.ts) | `cn()` helper |
 | [components.json](components.json) | shadcn registry config |
 | [src/components/ui/](src/components/ui/) | shadcn primitives — extend in place, do not wrap |
+| [src/components/ui/etheral-shadow.tsx](src/components/ui/etheral-shadow.tsx) | Ethereal shadow primitive used by hero/header/footer atmosphere |
+| [src/components/PageHero.tsx](src/components/PageHero.tsx) | Shared inner-page header shell with the ethereal shadow treatment |
 | [DESIGN.md](DESIGN.md) | This document |
 
 ### 12.2 Tailwind theme mapping
@@ -575,6 +565,7 @@ All semantic tokens are exposed through `@theme inline` in [src/index.css](src/i
 --color-line:         var(--ink-200);
 --color-marine:       var(--marine);
 --color-marine-hover: var(--marine-700);
+--color-logo-teal:    var(--logo-teal);
 --color-ochre:        var(--ochre);
 ```
 
@@ -586,46 +577,30 @@ Tailwind classes resolve to `bg-bone`, `text-ink`, `border-line`, `text-marine`,
 
 ---
 
-## 13. Migration Plan — From Current Site to This System
+## 13. Current Implementation Map
 
-This document is the *destination*. The current site needs the following surgery to reach it.
+This section records the shipped structure as of 2026-05-28. It replaces the old migration checklist.
 
-### 13.1 P0 — Brand-damaging fixes (ship this week)
+### 13.1 Page structure
 
-1. **Delete the anonymous testimonials block** from [HomePage.tsx:128-153](src/components/HomePage.tsx#L128). Replace with one attributed quote, or remove the section until real attribution is collected.
-2. **Replace emoji in footer** ([App.tsx:60-62](src/App.tsx#L60)) with `lucide-react` icons (`Mail`, `Phone`, `MapPin`).
-3. **Dynamic copyright year** in [App.tsx:130](src/App.tsx#L130): `© {new Date().getFullYear()} StatsSpeak Limited. Nairobi, Kenya.` (`StatsSpeak`, camel case — see §9.5.)
-4. **Replace vanity counters** ([HomePage.tsx:317-360](src/components/HomePage.tsx#L317)) with attributed proof statements per §9.3.
+- Home uses [src/components/StatsspeakHero.tsx](src/components/StatsspeakHero.tsx): centred editorial type, two CTAs, and the animated ethereal shadow background.
+- Services, Work, About, and Contact use [src/components/PageHero.tsx](src/components/PageHero.tsx): shared page-header layout, matching teal atmosphere, one page-level CTA where appropriate.
+- Content sections remain full-width editorial bands with `py-32 lg:py-40`, hairline rules, and restrained `--bone` / `--paper` alternation.
+- Footer uses an ink surface, static ethereal shadow, a final CTA, then contact/sitemap/disciplines.
 
-### 13.2 P1 — Brand uplift (next sprint)
+### 13.2 Interaction system
 
-5. **Rip out the photo-overlay hero.** Replace with a typographic hero on `--bone`: `display-1` headline + `body-lg` description + one primary CTA + one secondary link. No subtitle line, no background image, no glow orbs, no rotating word, no text shadow. Delete the sticky `-mt-[100vh]` overlap trick. The only permitted background is the §6.7 hero canvas — a low-density ink constellation that reads as ambient texture. If the canvas cannot meet §6.7 constraints, ship the typographic-only fallback.
-6. **Strip all Unsplash imagery** from service cards in [HomePage.tsx](src/components/HomePage.tsx) and [ServicesPage.tsx](src/components/ServicesPage.tsx). Replace with type-only cards bearing the service name as `display-2`, a description, and a "→ See related work" link.
-7. **Adopt the new palette.** Edit [src/index.css](src/index.css) to replace the `--primary-blue*` / `--charcoal` / `--medium-blue` / chart palette with §3 tokens. Find/replace `bg-primary-blue` → `bg-ink`, `text-primary-blue` → `text-ink`, etc.
-8. **Replace Google Fonts import** in [src/index.css](src/index.css):
-   ```css
-   @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
-   ```
-9. **Rebuild the button variants** in [src/components/ui/button.tsx](src/components/ui/button.tsx): `rounded-2xl` → `rounded`, drop the `xl` / `2xl` sizes, redefine `default` / `outline` / `ghost` / `link` per §5.1.
-10. **Replace the gradient CTA banner** ([HomePage.tsx:604-637](src/components/HomePage.tsx#L604)) with the §5.7 quiet CTA pattern.
-11. **Remove `min-h-screen`** from every section. Replace with `py-32 lg:py-40` (default) or `py-24 lg:py-32` (compact).
-12. **Reduce scroll progress bar** ([App.tsx:181](src/App.tsx#L181)) to `h-px` and `bg-ink` (no gradient).
+- Primary buttons lift slightly, shift icons forward, and use a restrained teal shadow on hover.
+- Inline text actions use `.link-action`: marine text, 1px underline, 2px underline on hover, slight upward motion.
+- Footer links use `.footer-link`: muted bone/ink text, lift on hover, no underline clutter.
+- Navigation active state uses `--marine` on desktop and `--logo-teal` in the mobile drawer.
 
-### 13.3 P2 — Motion & detail cleanup
+### 13.3 Remaining cleanup
 
-13. **Delete decorative keyframes** from [src/index.css](src/index.css): `.animate-rotate-text`, `.animate-glowing-lines`, `.animate-pulse-primary-blue`, `.animate-float`, `.shutter-effect`, `.data-network-background`, `.hero-pattern`, all `.gradient-*` utilities.
-14. **Delete the rotating-text useEffect** in [HomePage.tsx:192-198](src/components/HomePage.tsx#L192) and the `rotatingTexts` array.
-15. **Disable hover scale** on images: search `group-hover:scale-105` → remove. Replace with a `brightness-95` filter transition per §6.5.
-16. **Strip the 4-colour "Why Choose Us" tiles** ([HomePage.tsx:550-600](src/components/HomePage.tsx#L550)) — uniform card surface, no coloured icon tile, content-only differentiation.
-17. **Logo wall:** remove `grayscale group-hover:grayscale-0`. Set logos to a single monochrome treatment (`filter: grayscale(1) opacity(0.7)`) and leave them there.
-18. **Contact form** ([ContactPage.tsx](src/components/ContactPage.tsx)): reduce to Name / Work email / Organisation / Brief. Remove budget and service-type selectors.
-
-### 13.4 P3 — Editorial polish
-
-19. **Captions on imagery.** Every figure gets a 1-line caption per §8.3.
-20. **`prefers-reduced-motion` guards** wrap every animation. Add a single media query block in [src/index.css](src/index.css).
-21. **Tabular numerals** on metrics: add `font-variant-numeric: tabular-nums lining-nums` to a `.metric` utility class.
-22. **Audit headings**: one `<h1>` per page, sequential order downward. Currently [HomePage.tsx](src/components/HomePage.tsx) has multiple h2s with no clear hierarchy.
+1. Remove legacy compatibility tokens `--statsspeak-navy`, `--statsspeak-blue`, and `--statsspeak-teal` once no imported asset or historical component needs them.
+2. Move the logo-wall inline grayscale filter into a `.logo-monochrome` utility.
+3. Standardise typographic arrows versus lucide `ArrowRight`; the current site still uses both.
+4. Add dates or rename the About milestones so they do not read as timeline claims without chronology.
 
 ---
 
@@ -636,13 +611,13 @@ A 30-second self-check before shipping any new screen:
 - [ ] No colour outside the §3 palette
 - [ ] No font outside Fraunces / Inter Tight / JetBrains Mono
 - [ ] No `rounded-full` except avatars and the brand mark
-- [ ] No drop shadow except `--shadow-pop` on transient overlays
-- [ ] No gradient anywhere
+- [ ] No drop shadow except transient overlays and the restrained button shadow in §5.1
+- [ ] No decorative gradient fills; scrims only where they protect type over the ethereal shadow
 - [ ] No stock photo
 - [ ] No emoji as icon
 - [ ] No `min-h-screen` forcing layout
 - [ ] One primary CTA in this section, not two
-- [ ] No animation that loops on idle
+- [ ] No idle animation outside the ethereal shadow system
 - [ ] Every metric has a citation; every testimonial has a name
 - [ ] Body copy ≤ 4 lines per paragraph; line length 60–72 ch
 - [ ] Focus rings visible on every interactive element

@@ -139,6 +139,7 @@
   --color-marine:     var(--marine);
   --color-marine-700: var(--marine-700);
   --color-marine-50:  var(--marine-50);
+  --color-logo-teal:  var(--logo-teal);
   --color-ochre:      var(--ochre);
   --color-statsspeak-navy: var(--statsspeak-navy);
   --color-statsspeak-blue: var(--statsspeak-blue);
@@ -307,57 +308,86 @@
     background: linear-gradient(180deg, rgba(6, 74, 85, 0.025), rgba(246, 244, 238, 0));
   }
 
-  /* Hero canvas (DESIGN.md §6.7 Form C) -------------------------- */
-
-  /* Radial mask — invisible at centre (where the type sits), full at
-     the corners. The cloud frames the page rather than fighting it. */
-  .statsspeak-ether-mask {
-    -webkit-mask-image: radial-gradient(
-      ellipse 65% 80% at center,
-      transparent 0%,
-      rgba(0, 0, 0, 0.18) 38%,
-      black 80%
-    );
-            mask-image: radial-gradient(
-      ellipse 65% 80% at center,
-      transparent 0%,
-      rgba(0, 0, 0, 0.18) 38%,
-      black 80%
-    );
+  .statsspeak-page-hero-scrim {
+    background:
+      radial-gradient(circle at 18% 22%, rgba(246, 244, 238, 0.35), transparent 34%),
+      linear-gradient(
+        180deg,
+        rgba(246, 244, 238, 0.54) 0%,
+        rgba(246, 244, 238, 0.08) 42%,
+        rgba(246, 244, 238, 0.64) 100%
+      );
   }
 
-  /* Closed-loop 8-point orbit. Linear timing + identical start/end
-     keyframes ⇒ no zero-velocity moments, no boundary discontinuity,
-     no abrupt start/stop. The 2.121 values are 3 · sin(45°). */
-  @keyframes statsspeak-ether-orbit {
-    0%    { transform: translate( 3%,    0%); }
-    12.5% { transform: translate( 2.121%, -2.121%); }
-    25%   { transform: translate( 0%,   -3%); }
-    37.5% { transform: translate(-2.121%, -2.121%); }
-    50%   { transform: translate(-3%,    0%); }
-    62.5% { transform: translate(-2.121%,  2.121%); }
-    75%   { transform: translate( 0%,    3%); }
-    87.5% { transform: translate( 2.121%,  2.121%); }
-    100%  { transform: translate( 3%,    0%); }
+  .statsspeak-footer-scrim {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(0, 172, 200, 0.16), transparent 34%),
+      linear-gradient(180deg, rgba(10, 11, 13, 0.2), rgba(10, 11, 13, 0.92));
   }
 
-  /* Two stacked orbits at non-harmonic periods (gcd(48, 29) = 1).
-     The apparent morphing comes from the relative slide between the
-     two layers — combined cycle ≈ 23 minutes, effectively
-     non-repeating to a reader. */
-  .statsspeak-ether-orbit-slow {
-    animation: statsspeak-ether-orbit 48s linear infinite;
-    will-change: transform;
+  .link-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--marine);
+    font-weight: 500;
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.5em;
+    transition:
+      color 200ms var(--ease-out),
+      text-decoration-thickness 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
   }
-  .statsspeak-ether-orbit-fast {
-    animation: statsspeak-ether-orbit 29s linear infinite reverse;
-    will-change: transform;
+
+  .link-action:hover {
+    color: var(--marine-700);
+    text-decoration-thickness: 2px;
+    transform: translateY(-1px);
+  }
+
+  .link-action:active {
+    transform: translateY(0);
+  }
+
+  .footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ink-300);
+    transition:
+      color 200ms var(--ease-out),
+      transform 200ms var(--ease-out);
+  }
+
+  .footer-link:hover {
+    color: var(--bone);
+    transform: translateY(-1px);
+  }
+
+  .footer-link:active {
+    transform: translateY(0);
+  }
+
+  [data-slot="button"] svg {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  [data-slot="button"]:hover svg {
+    transform: translateX(2px);
+  }
+
+  [data-slot="button"]:active svg {
+    transform: translateX(0);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .statsspeak-ether-orbit-slow,
-    .statsspeak-ether-orbit-fast {
-      animation: none;
+    .link-action,
+    .footer-link,
+    [data-slot="button"],
+    [data-slot="button"] svg {
+      transform: none !important;
+      transition-duration: 0.01ms !important;
     }
   }
 }

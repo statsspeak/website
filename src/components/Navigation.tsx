@@ -57,7 +57,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         {/* Brand → Home */}
         <button
           onClick={() => navigate("home")}
-          className="flex items-center gap-3 text-ink"
+          className="flex items-center gap-3 text-ink transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0"
           aria-label="StatsSpeak — Home"
         >
           <StatsSpeakLogo width={24} height={32} />
@@ -75,10 +75,10 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                 <button
                   onClick={() => navigate(item.id)}
                   className={[
-                    "text-caption font-medium transition-colors duration-150",
+                    "text-caption font-medium transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0",
                     active
-                      ? "text-ink underline underline-offset-8 decoration-1 decoration-ink"
-                      : "text-ink-700 hover:text-ink",
+                      ? "text-marine underline underline-offset-8 decoration-1 decoration-marine"
+                      : "text-ink-700 hover:text-marine-700",
                   ].join(" ")}
                   aria-current={active ? "page" : undefined}
                 >
@@ -92,7 +92,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         {/* Mobile toggle */}
         <button
           onClick={() => setIsMenuOpen((o) => !o)}
-          className="md:hidden p-2 -mr-2 text-ink"
+          className="md:hidden p-2 -mr-2 text-ink transition-[color,transform] duration-200 hover:-translate-y-0.5 hover:text-marine active:translate-y-0"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMenuOpen}
         >
@@ -107,7 +107,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
             <div className="mb-10 flex items-center justify-between">
               <button
                 onClick={() => navigate("home")}
-                className="flex items-center gap-3 text-bone"
+                className="flex items-center gap-3 text-bone transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
                 aria-label="StatsSpeak — Home"
               >
                 <StatsSpeakLogo width={24} height={32} />
@@ -115,7 +115,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
               </button>
               <button
                 onClick={() => setIsMenuOpen(false)}
-                className="p-2 -mr-2 text-bone"
+                className="p-2 -mr-2 text-bone transition-[color,transform] duration-200 hover:-translate-y-0.5 hover:text-logo-teal active:translate-y-0"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
@@ -130,8 +130,8 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                   <button
                     onClick={() => navigate(item.id)}
                     className={[
-                      "block w-full text-left py-4 text-h3 transition-colors",
-                      active ? "text-bone underline underline-offset-8" : "text-ink-300 hover:text-bone",
+                      "block w-full py-4 text-left text-h3 transition-[color,transform] duration-200 hover:translate-x-1 active:translate-x-0",
+                      active ? "text-logo-teal underline underline-offset-8" : "text-ink-300 hover:text-bone",
                     ].join(" ")}
                     aria-current={active ? "page" : undefined}
                   >

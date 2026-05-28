@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { ArrowRight, Mail, Phone, MapPin } from "lucide-react";
 import { Navigation } from "./components/Navigation";
 import { HomePage } from "./components/HomePage";
 import { ServicesPage } from "./components/ServicesPage";
@@ -7,6 +7,8 @@ import { CaseStudiesPage } from "./components/CaseStudiesPage";
 import { AboutPage } from "./components/AboutPage";
 import { ContactPage } from "./components/ContactPage";
 import StatsSpeakLogo from "./components/logo";
+import { Button } from "./components/ui/button";
+import { Component as EtheralShadow } from "./components/ui/etheral-shadow";
 
 import { ReactLenis, useLenis } from "@studio-freight/react-lenis";
 
@@ -33,11 +35,20 @@ function AppContent() {
         <main className="w-full">{renderPage()}</main>
       </PageTransition>
 
-      {/* Footer — see DESIGN.md §11.3. Three columns, ink surface, no decoration. */}
-      <footer className="bg-ink text-bone">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 py-24 lg:py-32">
-          <div className="grid gap-16 lg:grid-cols-12">
-            {/* Brand block */}
+      <footer className="relative isolate overflow-hidden bg-ink text-bone">
+        <div className="pointer-events-none absolute inset-0 opacity-35" aria-hidden="true">
+          <EtheralShadow
+            color="rgba(0, 172, 200, 0.48)"
+            noise={{ opacity: 0.14, scale: 1.2 }}
+            sizing="fill"
+            showContent={false}
+            style={{ mixBlendMode: "screen" }}
+          />
+        </div>
+        <div className="absolute inset-0 statsspeak-footer-scrim" aria-hidden="true" />
+
+        <div className="relative mx-auto max-w-[1280px] px-6 py-24 lg:px-12 lg:py-32">
+          <div className="grid gap-16 border-b border-bone/10 pb-16 lg:grid-cols-12 lg:pb-24">
             <div className="lg:col-span-5">
               <div className="flex items-center gap-3 mb-8">
                 <StatsSpeakLogo width={28} height={38} />
@@ -46,17 +57,40 @@ function AppContent() {
               <p className="text-body text-ink-300 max-w-md">
                 A data consultancy and software development practice serving ministries, NGOs, and growth-stage enterprises across East Africa.
               </p>
+            </div>
 
+            <div className="lg:col-span-6 lg:col-start-7">
+              <div className="text-micro text-logo-teal mb-8">Next engagement</div>
+              <p className="max-w-2xl text-display-2 text-bone">
+                Bring us the problem. We will help find the right instrument.
+              </p>
+              <div className="mt-10">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  onClick={() => setCurrentPage("contact")}
+                  className="border-bone/50 text-bone hover:border-logo-teal hover:bg-logo-teal hover:text-ink"
+                >
+                  Start a conversation
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid gap-16 pt-16 lg:grid-cols-12 lg:pt-20">
+            <div className="lg:col-span-5">
+              <div className="text-micro text-ink-300 mb-6">Contact</div>
               <ul className="mt-10 space-y-4 text-caption text-ink-300">
                 <li className="flex items-start gap-3">
                   <Mail className="h-4 w-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
-                  <a href="mailto:info@statsspeak.co.ke" className="hover:text-bone transition-colors">
+                  <a href="mailto:info@statsspeak.co.ke" className="footer-link">
                     info@statsspeak.co.ke
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
                   <Phone className="h-4 w-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
-                  <a href="tel:+254715644881" className="hover:text-bone transition-colors">
+                  <a href="tel:+254715644881" className="footer-link">
                     +254 715 644 881
                   </a>
                 </li>
@@ -80,7 +114,7 @@ function AppContent() {
                   <li key={item.id}>
                     <button
                       onClick={() => setCurrentPage(item.id)}
-                      className="text-body text-bone hover:text-ink-300 transition-colors"
+                      className="footer-link text-body"
                     >
                       {item.label}
                     </button>
@@ -107,8 +141,8 @@ function AppContent() {
               © {year} StatsSpeak Limited. Nairobi, Kenya.
             </p>
             <div className="flex gap-8 text-caption text-ink-300">
-              <a href="#" className="hover:text-bone transition-colors">Privacy</a>
-              <a href="#" className="hover:text-bone transition-colors">Terms</a>
+              <a href="#" className="footer-link">Privacy</a>
+              <a href="#" className="footer-link">Terms</a>
             </div>
           </div>
         </div>

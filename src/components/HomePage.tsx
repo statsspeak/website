@@ -122,7 +122,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 <p className="text-body text-ink-500 max-w-md">{d.summary}</p>
                 <button
                   onClick={() => onPageChange("services")}
-                  className="text-caption font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 self-start mt-2"
+                  className="link-action self-start text-caption mt-2"
                 >
                   See related work →
                 </button>
@@ -211,7 +211,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
               </Button>
               <button
                 onClick={() => onPageChange("about")}
-                className="text-body font-medium text-marine underline underline-offset-8 decoration-1 hover:decoration-2 transition-all"
+                className="link-action text-body"
               >
                 Read our approach →
               </button>
