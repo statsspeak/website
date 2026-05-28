@@ -399,6 +399,20 @@ Motion communicates *system quality*. It is never decorative.
 
 `animate-pulse`, `animate-bounce`, `animate-float`, `animate-rotate-text`, `animate-glowing-lines`, `animate-pulse-primary-blue`, `.shutter-effect`, blob/orb pulses, mouse-trail effects, hero parallax on text, on-scroll counters, marquees of any kind.
 
+### 6.7 Hero canvas — the only permitted idle motion
+
+The §6.1 "no loops" rule has **one** carve-out: a single low-density constellation in the hero, behind the headline. It is permitted because the motion is so quiet that it reads as ambient texture, not animation. To stay on brand the canvas must hold every one of these constraints:
+
+- **Density.** ≤ 24 nodes and ≤ 24 edges total. No flow particles or moving dots travelling along edges — those read as a tech demo, not editorial.
+- **Palette.** Nodes and edges in `--ink`; accent points in `--marine`. The brighter `--logo-teal` is reserved for the logo mark and never appears in the canvas. Off-palette blues are forbidden.
+- **Opacity.** Edges ≤ 0.10. Nodes ≤ 0.35. Accent points ≤ 0.65. The composition should be at the threshold of perception — present, never demanding.
+- **Drift.** Per-node vertical sine amplitude ≤ 0.025 world units; phase multiplier ≤ 0.25 (slower than a heartbeat). Full-scene rotation, if used, ≤ ±0.015 rad with a phase multiplier ≤ 0.05.
+- **Scrim.** A CSS overlay (`statsspeak-hero-scrim`) fades the canvas into `--bone` toward the headline column so type sits on quiet ground.
+- **Reduced motion.** When `prefers-reduced-motion: reduce` matches, the render loop renders one frame and stops. No exceptions.
+- **Cost.** WebGL renderer uses `powerPreference: "low-power"` and a pixel ratio capped at 1.6. The canvas does not earn a fan spin-up.
+
+If a future hero variant cannot meet all of the above, the canvas is removed and the hero falls back to a typographic-only layout per §13.2 P5.
+
 ---
 
 ## 7. Iconography
@@ -441,7 +455,9 @@ Every meaningful image has a caption set in `text-caption`, `--ink-500`, with a 
 - Declarative, not interrogative.
 - Single sentence, ≤ 12 words.
 - No marquee rotators. No "we are X. we are Y. we are Z."
-- Subject is concrete: *"We help East African institutions use data and software end to end."* — not *"Transforming organisations through data."*
+- Subject is concrete: *"Data and software institutions can defend."* — not *"Transforming organisations through data."*
+- The headline carries both disciplines (data **and** software). A data-only headline misrepresents the practice.
+- No three-word triadic taglines (`Data. Intelligence. Impact.`-style). They read as boilerplate consultancy speak.
 
 ### 9.2 Body copy
 
@@ -462,7 +478,13 @@ Replace adjectives with attributed numbers.
 ### 9.4 CTA copy
 
 - One verb + one noun. *"See the case study"*, *"Book an introduction"*, *"Read our approach"*.
+- Sentence case throughout — not Title Case. (`Book an introduction`, not `Book An Introduction`.)
+- The same action uses the same label across the site. The hero primary CTA is `Book an introduction` — not `Schedule Consultation`, not `Contact us`.
 - No "Learn more". No "Get started". No "Discover".
+
+### 9.5 Brand mark in copy
+
+The only correct spelling in prose is **StatsSpeak** (camel case, capital S in both syllables). `Statsspeak`, `statsspeak`, and `STATSSPEAK` are bugs. The lowercase form is reserved for URLs (`statsspeak.co.ke`) and code identifiers (`StatsspeakHero`).
 
 ---
 
@@ -556,12 +578,12 @@ This document is the *destination*. The current site needs the following surgery
 
 1. **Delete the anonymous testimonials block** from [HomePage.tsx:128-153](src/components/HomePage.tsx#L128). Replace with one attributed quote, or remove the section until real attribution is collected.
 2. **Replace emoji in footer** ([App.tsx:60-62](src/App.tsx#L60)) with `lucide-react` icons (`Mail`, `Phone`, `MapPin`).
-3. **Dynamic copyright year** in [App.tsx:130](src/App.tsx#L130): `© {new Date().getFullYear()} Statsspeak.`
+3. **Dynamic copyright year** in [App.tsx:130](src/App.tsx#L130): `© {new Date().getFullYear()} StatsSpeak Limited. Nairobi, Kenya.` (`StatsSpeak`, camel case — see §9.5.)
 4. **Replace vanity counters** ([HomePage.tsx:317-360](src/components/HomePage.tsx#L317)) with attributed proof statements per §9.3.
 
 ### 13.2 P1 — Brand uplift (next sprint)
 
-5. **Rip out the photo-overlay hero.** Replace with a typographic hero on `--bone`: `display-1` headline + `body-lg` sub + one primary CTA. No background image, no glow orbs, no rotating word, no text shadow. Delete the sticky `-mt-[100vh]` overlap trick.
+5. **Rip out the photo-overlay hero.** Replace with a typographic hero on `--bone`: `display-1` headline + `body-lg` description + one primary CTA + one secondary link. No subtitle line, no background image, no glow orbs, no rotating word, no text shadow. Delete the sticky `-mt-[100vh]` overlap trick. The only permitted background is the §6.7 hero canvas — a low-density ink constellation that reads as ambient texture. If the canvas cannot meet §6.7 constraints, ship the typographic-only fallback.
 6. **Strip all Unsplash imagery** from service cards in [HomePage.tsx](src/components/HomePage.tsx) and [ServicesPage.tsx](src/components/ServicesPage.tsx). Replace with type-only cards bearing the service name as `display-2`, a description, and a "→ See related work" link.
 7. **Adopt the new palette.** Edit [src/index.css](src/index.css) to replace the `--primary-blue*` / `--charcoal` / `--medium-blue` / chart palette with §3 tokens. Find/replace `bg-primary-blue` → `bg-ink`, `text-primary-blue` → `text-ink`, etc.
 8. **Replace Google Fonts import** in [src/index.css](src/index.css):
@@ -614,4 +636,4 @@ If any box is unchecked, the screen is not ready.
 
 ---
 
-_Last revised: 2026-05-28. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
+_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the constellation direction. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._

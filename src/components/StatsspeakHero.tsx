@@ -5,7 +5,6 @@ import { Button } from "./ui/button";
 
 interface StatsspeakHeroProps {
   title?: string;
-  subtitle?: string;
   description?: string;
   onScheduleConsultation: () => void;
   onExploreSolutions: () => void;
@@ -24,24 +23,25 @@ const seeded = (index: number) => {
   return value - Math.floor(value);
 };
 
+const SCENE_COLUMNS = 6;
+const SCENE_ROWS = 4;
+
 const createNodes = () => {
   const nodes: SceneNode[] = [];
-  const columns = 8;
-  const rows = 5;
-  const spacingX = 1.62;
-  const spacingY = 1.08;
-  const startX = -((columns - 1) * spacingX) / 2;
-  const startY = -((rows - 1) * spacingY) / 2;
+  const spacingX = 2.05;
+  const spacingY = 1.35;
+  const startX = -((SCENE_COLUMNS - 1) * spacingX) / 2;
+  const startY = -((SCENE_ROWS - 1) * spacingY) / 2;
 
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const index = row * columns + column;
-      const jitterX = (seeded(index) - 0.5) * 0.34;
-      const jitterY = (seeded(index + 80) - 0.5) * 0.28;
-      const z = (seeded(index + 160) - 0.5) * 1.35;
+  for (let row = 0; row < SCENE_ROWS; row += 1) {
+    for (let column = 0; column < SCENE_COLUMNS; column += 1) {
+      const index = row * SCENE_COLUMNS + column;
+      const jitterX = (seeded(index) - 0.5) * 0.85;
+      const jitterY = (seeded(index + 80) - 0.5) * 0.7;
+      const z = (seeded(index + 160) - 0.5) * 1.6;
 
       nodes.push({
-        amplitude: 0.035 + seeded(index + 240) * 0.035,
+        amplitude: 0.018 + seeded(index + 240) * 0.018,
         base: new THREE.Vector3(
           startX + column * spacingX + jitterX,
           startY + row * spacingY + jitterY,
@@ -57,23 +57,17 @@ const createNodes = () => {
 
 const createEdges = (nodes: SceneNode[]) => {
   const edges: SceneEdge[] = [];
-  const columns = 8;
-  const rows = 5;
 
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const index = row * columns + column;
+  for (let row = 0; row < SCENE_ROWS; row += 1) {
+    for (let column = 0; column < SCENE_COLUMNS; column += 1) {
+      const index = row * SCENE_COLUMNS + column;
 
-      if (column < columns - 1) {
+      if (column < SCENE_COLUMNS - 1 && (column + row) % 2 === 0) {
         edges.push([index, index + 1]);
       }
 
-      if (row < rows - 1 && (column + row) % 2 === 0) {
-        edges.push([index, index + columns]);
-      }
-
-      if (column < columns - 1 && row < rows - 1 && (column + row) % 3 === 0) {
-        edges.push([index, index + columns + 1]);
+      if (row < SCENE_ROWS - 1 && (column + row) % 3 === 0) {
+        edges.push([index, index + SCENE_COLUMNS]);
       }
     }
   }
@@ -87,7 +81,7 @@ const updateNodePositions = (
   elapsed: number,
 ) => {
   nodes.forEach((node, index) => {
-    const offset = Math.sin(elapsed * 0.55 + node.phase) * node.amplitude;
+    const offset = Math.sin(elapsed * 0.22 + node.phase) * node.amplitude;
     const cursor = index * 3;
 
     target[cursor] = node.base.x;
@@ -113,33 +107,6 @@ const updateEdgePositions = (
     target[edgeCursor + 4] = nodePositions[endCursor + 1];
     target[edgeCursor + 5] = nodePositions[endCursor + 2];
   });
-};
-
-const updateFlowPositions = (
-  edges: SceneEdge[],
-  nodePositions: Float32Array,
-  target: Float32Array,
-  elapsed: number,
-) => {
-  const flowCount = target.length / 3;
-
-  for (let index = 0; index < flowCount; index += 1) {
-    const edge = edges[(index * 7 + Math.floor(elapsed * 0.22)) % edges.length];
-    const progress = (elapsed * (0.1 + index * 0.018) + index * 0.22) % 1;
-    const startCursor = edge[0] * 3;
-    const endCursor = edge[1] * 3;
-    const flowCursor = index * 3;
-
-    target[flowCursor] =
-      nodePositions[startCursor] +
-      (nodePositions[endCursor] - nodePositions[startCursor]) * progress;
-    target[flowCursor + 1] =
-      nodePositions[startCursor + 1] +
-      (nodePositions[endCursor + 1] - nodePositions[startCursor + 1]) * progress;
-    target[flowCursor + 2] =
-      nodePositions[startCursor + 2] +
-      (nodePositions[endCursor + 2] - nodePositions[startCursor + 2]) * progress;
-  }
 };
 
 function DataIntelligenceScene() {
@@ -174,15 +141,14 @@ function DataIntelligenceScene() {
     const edges = createEdges(nodes);
     const nodePositions = new Float32Array(nodes.length * 3);
     const edgePositions = new Float32Array(edges.length * 6);
-    const flowPositions = new Float32Array(18 * 3);
-    const highlightPositions = new Float32Array(8 * 3);
+    const highlightCount = 4;
+    const highlightPositions = new Float32Array(highlightCount * 3);
 
     updateNodePositions(nodes, nodePositions, 0);
     updateEdgePositions(edges, nodePositions, edgePositions);
-    updateFlowPositions(edges, nodePositions, flowPositions, 0);
 
-    for (let index = 0; index < highlightPositions.length / 3; index += 1) {
-      const nodeIndex = (index * 5 + 3) % nodes.length;
+    for (let index = 0; index < highlightCount; index += 1) {
+      const nodeIndex = (index * 7 + 2) % nodes.length;
       const nodeCursor = nodeIndex * 3;
       const highlightCursor = index * 3;
 
@@ -194,8 +160,8 @@ function DataIntelligenceScene() {
     const edgeGeometry = new THREE.BufferGeometry();
     edgeGeometry.setAttribute("position", new THREE.BufferAttribute(edgePositions, 3));
     const edgeMaterial = new THREE.LineBasicMaterial({
-      color: 0x0d2746,
-      opacity: 0.14,
+      color: 0x0a0b0d,
+      opacity: 0.08,
       transparent: true,
     });
     const edgeMesh = new THREE.LineSegments(edgeGeometry, edgeMaterial);
@@ -204,9 +170,9 @@ function DataIntelligenceScene() {
     const nodeGeometry = new THREE.BufferGeometry();
     nodeGeometry.setAttribute("position", new THREE.BufferAttribute(nodePositions, 3));
     const nodeMaterial = new THREE.PointsMaterial({
-      color: 0x0d2746,
-      opacity: 0.58,
-      size: 0.06,
+      color: 0x0a0b0d,
+      opacity: 0.32,
+      size: 0.045,
       transparent: true,
     });
     const nodeMesh = new THREE.Points(nodeGeometry, nodeMaterial);
@@ -218,24 +184,13 @@ function DataIntelligenceScene() {
       new THREE.BufferAttribute(highlightPositions, 3),
     );
     const highlightMaterial = new THREE.PointsMaterial({
-      color: 0x00acc8,
-      opacity: 0.76,
-      size: 0.105,
+      color: 0x064a55,
+      opacity: 0.6,
+      size: 0.075,
       transparent: true,
     });
     const highlightMesh = new THREE.Points(highlightGeometry, highlightMaterial);
     scene.add(highlightMesh);
-
-    const flowGeometry = new THREE.BufferGeometry();
-    flowGeometry.setAttribute("position", new THREE.BufferAttribute(flowPositions, 3));
-    const flowMaterial = new THREE.PointsMaterial({
-      color: 0x1d5faf,
-      opacity: 0.72,
-      size: 0.075,
-      transparent: true,
-    });
-    const flowMesh = new THREE.Points(flowGeometry, flowMaterial);
-    scene.add(flowMesh);
 
     const resize = () => {
       const { clientHeight, clientWidth } = mount;
@@ -258,16 +213,14 @@ function DataIntelligenceScene() {
 
       updateNodePositions(nodes, nodePositions, motionTime);
       updateEdgePositions(edges, nodePositions, edgePositions);
-      updateFlowPositions(edges, nodePositions, flowPositions, motionTime);
 
       nodeGeometry.attributes.position.needsUpdate = true;
       edgeGeometry.attributes.position.needsUpdate = true;
-      flowGeometry.attributes.position.needsUpdate = true;
 
-      edgeMesh.rotation.z = Math.sin(motionTime * 0.08) * 0.02;
-      nodeMesh.rotation.z = edgeMesh.rotation.z;
-      highlightMesh.rotation.z = edgeMesh.rotation.z;
-      flowMesh.rotation.z = edgeMesh.rotation.z;
+      const sceneRotation = Math.sin(motionTime * 0.04) * 0.012;
+      edgeMesh.rotation.z = sceneRotation;
+      nodeMesh.rotation.z = sceneRotation;
+      highlightMesh.rotation.z = sceneRotation;
 
       renderer.render(scene, camera);
 
@@ -284,11 +237,9 @@ function DataIntelligenceScene() {
       edgeGeometry.dispose();
       nodeGeometry.dispose();
       highlightGeometry.dispose();
-      flowGeometry.dispose();
       edgeMaterial.dispose();
       nodeMaterial.dispose();
       highlightMaterial.dispose();
-      flowMaterial.dispose();
       renderer.dispose();
 
       if (renderer.domElement.parentElement === mount) {
@@ -308,9 +259,8 @@ function DataIntelligenceScene() {
 }
 
 export function StatsspeakHero({
-  title = "Data work institutions can defend.",
-  subtitle = "A Nairobi consultancy for ministries, NGOs, and growth-stage enterprises across East Africa.",
-  description = "StatsSpeak is a data consultancy and software development practice. Strategy, governance, platforms, analytics, geospatial intelligence, AI, and software — delivered for handover.",
+  title = "Data and software institutions can defend.",
+  description = "StatsSpeak is a data consultancy and software development practice working with organisations across Africa. We support the path from strategy and governance to platforms, analytics, geospatial insight, AI workflows, custom software, and operational handover.",
   onScheduleConsultation,
   onExploreSolutions,
 }: StatsspeakHeroProps) {
@@ -335,10 +285,7 @@ export function StatsspeakHero({
             >
               {title}
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed font-medium text-statsspeak-navy md:mt-8 md:text-xl">
-              {subtitle}
-            </p>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-500 md:mt-5 md:text-lg">
+            <p className="mt-8 max-w-2xl text-base leading-relaxed text-ink-500 md:mt-10 md:text-lg">
               {description}
             </p>
 
