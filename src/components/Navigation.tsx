@@ -36,16 +36,35 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
     setIsMenuOpen(false);
   };
 
+  useEffect(() => {
+    // Prevent body scroll when the mobile menu is open
+    if (typeof document !== "undefined") {
+      document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    }
+    return () => {
+      if (typeof document !== "undefined") document.body.style.overflow = "";
+    };
+  }, [isMenuOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isMenuOpen) setIsMenuOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isMenuOpen]);
+
   return (
-    <header
-      className={[
-        "fixed top-0 left-0 right-0 z-40",
-        "transition-[background-color,border-color,height] duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
-        scrolled
-          ? "bg-bone/95 backdrop-blur-sm border-b border-line"
-          : "bg-transparent border-b border-transparent",
-      ].join(" ")}
-    >
+    <>
+      <header
+        className={[
+          "fixed top-0 left-0 right-0 z-40",
+          "transition-[background-color,border-color,height] duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
+          scrolled
+            ? "bg-bone/95 backdrop-blur-sm border-b border-line"
+            : "bg-transparent border-b border-transparent",
+        ].join(" ")}
+      >
       <nav
         className={[
           "mx-auto max-w-[1280px] px-6 lg:px-12",
@@ -101,10 +120,19 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
         </button>
       </nav>
 
-      {/* Mobile drawer */}
+      </header>
+
+      {/* Mobile drawer rendered as a sibling so it isn't trapped inside header's stacking context */}
       {isMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-50 bg-ink/60">
-          <div className="ml-auto h-full w-[min(88vw,360px)] bg-ink px-6 py-6 text-bone">
+        <div
+          className="md:hidden fixed inset-0 z-50 bg-ink/60"
+          onClick={() => setIsMenuOpen(false)}
+          role="presentation"
+        >
+          <div
+            className="ml-auto h-full w-[min(88vw,360px)] bg-ink px-6 py-6 text-bone"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="mb-10 flex items-center justify-between">
               <button
                 onClick={() => navigate("home")}
@@ -145,6 +173,6 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }
