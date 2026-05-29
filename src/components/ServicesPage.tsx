@@ -1,9 +1,10 @@
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
+import type { PageChangeHandler } from "../pages";
 
 interface ServicesPageProps {
-  onPageChange: (page: string) => void;
+  onPageChange: PageChangeHandler;
 }
 
 const services = [

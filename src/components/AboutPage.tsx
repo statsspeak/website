@@ -1,7 +1,8 @@
 import { ArrowRight } from "lucide-react";
 import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
-import LeadershipTeam from "./Team";
+import { LeadershipTeam, type Director } from "./Team";
+import type { PageChangeHandler } from "../pages";
 
 import washington from "../assets/team-photos/washington-ogol.jpeg";
 import anthony from "../assets/team-photos/Antony.jpeg";
@@ -10,7 +11,7 @@ import joan from "../assets/team-photos/Joan.jpg";
 import kelvin from "../assets/team-photos/kelvin-adungosi.jpeg";
 
 interface AboutPageProps {
-  onPageChange: (page: string) => void;
+  onPageChange: PageChangeHandler;
 }
 
 const values = [
@@ -36,7 +37,7 @@ const values = [
   },
 ];
 
-const directors = [
+const directors: Director[] = [
   {
     name: "Washington Ogol",
     role: "Co-Founder & CEO",

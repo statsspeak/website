@@ -1,4 +1,10 @@
-const StatsSpeakLogo = ({ width = 36, height = 48, className = "" }) => {
+interface StatsSpeakLogoProps {
+  width?: number;
+  height?: number;
+  className?: string;
+}
+
+const StatsSpeakLogo = ({ width = 36, height = 48, className = "" }: StatsSpeakLogoProps) => {
   return (
     <svg
       width={width}

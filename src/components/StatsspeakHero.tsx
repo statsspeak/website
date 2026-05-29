@@ -75,5 +75,3 @@ export function StatsspeakHero({
     </section>
   );
 }
-
-export { EtherealShadowScene };

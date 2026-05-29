@@ -1,6 +1,6 @@
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-interface Director {
+export interface Director {
   name: string;
   role: string;
   image: string;
@@ -8,7 +8,11 @@ interface Director {
   specialties: string[];
 }
 
-const LeadershipTeam = ({ directors }: { directors: Director[] }) => {
+interface LeadershipTeamProps {
+  directors: Director[];
+}
+
+export function LeadershipTeam({ directors }: LeadershipTeamProps) {
   return (
     <section className="py-32 lg:py-40 border-t border-line bg-paper">
       <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
@@ -60,6 +64,4 @@ const LeadershipTeam = ({ directors }: { directors: Director[] }) => {
       </div>
     </section>
   );
-};
-
-export default LeadershipTeam;
+}
