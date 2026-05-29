@@ -96,11 +96,12 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
         eyebrow="Contact"
         title="Send the brief. We will be direct."
         description="Tell us what decision, system, or reporting problem is in front of you. We will respond with the clearest next step."
+        mobileDescription="Send the brief. We will respond with the clearest next step."
       />
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-16 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
+          <div className="grid gap-10 md:gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <Card>
                 <CardHeader>
@@ -219,7 +220,7 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
                 ))}
               </div>
 
-              <div className="mt-12 border-t border-line pt-8">
+              <div className="hidden md:block mt-12 border-t border-line pt-8">
                 <div className="text-micro text-ink-500 mb-6">Working fit</div>
                 <p className="text-body text-ink-500">
                   We are best suited to engagements where the organisation has a
@@ -238,35 +239,35 @@ export function ContactPage({ onPageChange }: ContactPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Questions</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Questions</div>
               <h2 className="text-h2 text-ink">Before the first call.</h2>
             </div>
           </div>
 
-          <div className="grid gap-10 md:grid-cols-3">
+          <div className="grid gap-8 md:gap-10 md:grid-cols-3">
             {faqs.map((faq) => (
-              <article key={faq.question} className="border-t border-line pt-8">
-                <h3 className="text-h3 text-ink">{faq.question}</h3>
-                <p className="text-body text-ink-500 mt-4">{faq.answer}</p>
+              <article key={faq.question} className="border-t border-line pt-6 md:pt-8">
+                <h3 className="text-h4 md:text-h3 text-ink">{faq.question}</h3>
+                <p className="text-body text-ink-500 mt-3 md:mt-4">{faq.answer}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
-          <div className="text-micro text-ink-500 mb-8">Office</div>
+          <div className="text-micro text-ink-500 mb-6 md:mb-8">Office</div>
           <h2 className="text-display-2 text-ink">Upper Hill, Nairobi.</h2>
-          <p className="text-body-lg text-ink-500 mt-8">
+          <p className="hidden md:block text-body-lg text-ink-500 mt-8">
             We meet by appointment at 10th Floor, Mercure, Upperhill, Nairobi,
             Monday to Friday.
           </p>
-          <div className="mt-12">
+          <div className="mt-6 md:mt-12">
             <a
               href="https://maps.app.goo.gl/i6kMjyubUxgYWPqa8"
               className="link-action text-body"

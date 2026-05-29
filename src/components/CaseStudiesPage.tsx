@@ -130,19 +130,20 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
         eyebrow="Selected work"
         title="Evidence before assertion."
         description="A selection of strategy, governance, engineering, analytics, and geospatial work, plus software delivery for public-health institutions and regional enterprises."
+        mobileDescription="Strategy, analytics, geospatial, and software for public-health institutions and regional enterprises."
       >
         <Button
           size="lg"
           variant="primary"
           onClick={() => onPageChange("contact")}
-          className="mt-10"
+          className="mt-8 md:mt-10"
         >
           Book an introduction
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Button>
       </PageHero>
 
-      <section className="py-24 lg:py-32 border-t border-line bg-paper">
+      <section className="hidden md:block py-24 lg:py-32 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
           <div className="divide-y divide-line border-y border-line">
             {proofs.map((proof) => (
@@ -156,24 +157,24 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Case notes</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Case notes</div>
               <h2 className="text-h2 text-ink">Named clients, named problems.</h2>
             </div>
-            <p className="text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
+            <p className="hidden md:block text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
               The work below is intentionally concrete: institution, problem,
               method, and result. No star ratings, no anonymous claims.
             </p>
           </div>
 
-          <div className="space-y-16">
+          <div className="space-y-12 md:space-y-16">
             {caseStudies.map((study) => (
               <article
                 key={study.title}
-                className="grid gap-10 border-t border-line pt-12 lg:grid-cols-12"
+                className="grid gap-6 md:gap-10 border-t border-line pt-8 md:pt-12 lg:grid-cols-12"
               >
                 <div className="lg:col-span-5">
                   <figure>
@@ -183,7 +184,7 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                       className="aspect-[4/3] w-full rounded-lg object-cover"
                       style={{ filter: "saturate(0.7) contrast(1.05)" }}
                     />
-                    <figcaption className="mt-4 border-t border-line pt-3 text-caption text-ink-500">
+                    <figcaption className="hidden md:block mt-4 border-t border-line pt-3 text-caption text-ink-500">
                       {study.caption}
                     </figcaption>
                   </figure>
@@ -192,15 +193,15 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                 <div className="lg:col-span-6 lg:col-start-7">
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-micro text-ink-500">
                     <span>{study.category}</span>
-                    <span>{study.duration}</span>
+                    <span className="hidden md:inline">{study.duration}</span>
                   </div>
-                  <h3 className="text-h2 text-ink mt-6">{study.title}</h3>
-                  <p className="text-body-lg text-ink mt-4">{study.client}</p>
-                  <p className="text-body text-ink-500 mt-6 max-w-2xl">
+                  <h3 className="text-h3 md:text-h2 text-ink mt-4 md:mt-6">{study.title}</h3>
+                  <p className="text-body md:text-body-lg text-ink mt-2 md:mt-4">{study.client}</p>
+                  <p className="text-body text-ink-500 mt-4 md:mt-6 max-w-2xl">
                     {study.description}
                   </p>
 
-                  <div className="mt-10 grid gap-8 md:grid-cols-2">
+                  <div className="hidden md:grid mt-10 gap-8 md:grid-cols-2">
                     <div>
                       <div className="text-micro text-ink-500 mb-3">Challenge</div>
                       <p className="text-body text-ink-500">{study.challenge}</p>
@@ -211,18 +212,24 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                     </div>
                   </div>
 
-                  <div className="mt-10 border-t border-line pt-8">
-                    <div className="text-micro text-ink-500 mb-4">Evidence</div>
+                  <div className="mt-6 md:mt-10 border-t border-line pt-6 md:pt-8">
+                    <div className="text-micro text-ink-500 mb-3 md:mb-4">Evidence</div>
                     <ul className="grid gap-3">
-                      {study.results.map((result) => (
-                        <li key={result} className="text-body text-ink-500">
+                      {study.results.map((result, idx) => (
+                        <li
+                          key={result}
+                          className={[
+                            "text-body text-ink-500",
+                            idx >= 2 ? "hidden md:list-item" : "",
+                          ].join(" ")}
+                        >
                           {result}
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="mt-8 flex flex-wrap gap-2">
+                  <div className="hidden md:flex mt-8 flex-wrap gap-2">
                     {study.tools.map((tool) => (
                       <span
                         key={tool}
@@ -233,12 +240,14 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
                     ))}
                   </div>
 
-                  <button
-                    onClick={() => onPageChange("contact")}
-                    className="link-action mt-10 text-body"
-                  >
-                    Request a case note →
-                  </button>
+                  <span className="hidden md:inline-block mt-10">
+                    <button
+                      onClick={() => onPageChange("contact")}
+                      className="link-action text-body"
+                    >
+                      Request a case note →
+                    </button>
+                  </span>
                 </div>
               </article>
             ))}
@@ -246,17 +255,17 @@ export function CaseStudiesPage({ onPageChange }: CaseStudiesPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
-          <div className="text-micro text-ink-500 mb-8">Engagements</div>
+          <div className="text-micro text-ink-500 mb-6 md:mb-8">Engagements</div>
           <h2 className="text-display-2 text-ink">
             Bring us the problem, not the pitch deck.
           </h2>
-          <p className="text-body-lg text-ink-500 mt-8">
+          <p className="hidden md:block text-body-lg text-ink-500 mt-8">
             We will tell you plainly whether data consultancy, software
             development, analytics, or geospatial work is the right instrument.
           </p>
-          <div className="mt-12">
+          <div className="mt-8 md:mt-12">
             <Button
               size="lg"
               variant="primary"

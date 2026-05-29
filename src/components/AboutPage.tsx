@@ -114,35 +114,36 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
         eyebrow="About"
         title="A Nairobi consultancy for data and software work."
         description="StatsSpeak works with ministries, NGOs, and enterprises that need data strategy, governance, systems, analysis, and software to be clear enough for leadership and durable enough for operations."
+        mobileDescription="Data strategy, governance, analysis, and software for institutions across East Africa."
       >
         <Button
           size="lg"
           variant="primary"
           onClick={() => onPageChange("contact")}
-          className="mt-10"
+          className="mt-8 md:mt-10"
         >
           Book an introduction
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Button>
       </PageHero>
 
-      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
+          <div className="grid gap-10 md:gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <div className="text-micro text-ink-500 mb-8">Position</div>
+              <div className="text-micro text-ink-500 mb-6 md:mb-8">Position</div>
               <p className="text-display-2 text-ink">
                 We are a data consultancy and software development partner for
                 institutions that need judgement and durable implementation.
               </p>
             </div>
-            <div className="lg:col-span-5 lg:col-start-8 space-y-8">
+            <div className="lg:col-span-5 lg:col-start-8 space-y-6 md:space-y-8">
               <p className="text-body-lg text-ink-500">
                 Our clients bring us reporting bottlenecks, fragmented data,
                 planning constraints, and institutional decisions that need better
                 evidence behind them.
               </p>
-              <p className="text-body text-ink-500">
+              <p className="hidden md:block text-body text-ink-500">
                 We bring strategic discipline, technical fluency, analytics
                 judgement, and enough local context to know that a clean dashboard
                 is only useful when the data beneath it can be trusted.
@@ -152,20 +153,20 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Operating values</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Operating values</div>
               <h2 className="text-h2 text-ink">How the work is held.</h2>
             </div>
           </div>
 
-          <div className="grid gap-x-12 gap-y-12 md:grid-cols-2">
+          <div className="grid gap-x-12 gap-y-10 md:gap-y-12 md:grid-cols-2">
             {values.map((value) => (
-              <article key={value.title} className="border-t border-line pt-8">
-                <h3 className="text-h3 text-ink">{value.title}</h3>
-                <p className="text-body text-ink-500 mt-4 max-w-xl">
+              <article key={value.title} className="border-t border-line pt-6 md:pt-8">
+                <h3 className="text-h4 md:text-h3 text-ink">{value.title}</h3>
+                <p className="text-body text-ink-500 mt-3 md:mt-4 max-w-xl">
                   {value.description}
                 </p>
               </article>
@@ -176,14 +177,14 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
 
       <LeadershipTeam directors={directors} />
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Journey</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Journey</div>
               <h2 className="text-h2 text-ink">The practice, in context.</h2>
             </div>
-            <p className="text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
+            <p className="hidden md:block text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
               The milestones matter less as marketing copy than as evidence of
               continuity: a local team, a public-sector track record, and growing
               delivery depth.
@@ -194,10 +195,10 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
             {milestones.map((milestone) => (
               <article
                 key={milestone.title}
-                className="py-8"
+                className="py-6 md:py-8"
               >
-                <h3 className="text-h3 text-ink">{milestone.title}</h3>
-                <p className="text-body text-ink-500 mt-2 max-w-3xl">
+                <h3 className="text-h4 md:text-h3 text-ink">{milestone.title}</h3>
+                <p className="hidden md:block text-body text-ink-500 mt-2 max-w-3xl">
                   {milestone.description}
                 </p>
               </article>
@@ -206,15 +207,15 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
-          <div className="text-micro text-ink-500 mb-8">Next step</div>
+          <div className="text-micro text-ink-500 mb-6 md:mb-8">Next step</div>
           <h2 className="text-display-2 text-ink">Read the work first.</h2>
-          <p className="text-body-lg text-ink-500 mt-8">
+          <p className="hidden md:block text-body-lg text-ink-500 mt-8">
             The clearest way to understand the practice is through the problems
             we have already helped solve.
           </p>
-          <div className="mt-12 flex flex-col items-center gap-6">
+          <div className="mt-8 md:mt-12 flex flex-col items-center gap-5 md:gap-6">
             <Button
               size="lg"
               variant="primary"

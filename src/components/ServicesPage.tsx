@@ -92,26 +92,27 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
         eyebrow="Services"
         title="Data consultancy and software development."
         description="We help ministries, NGOs, and growth-stage enterprises make data dependable from strategy and collection through governance, platforms, analytics, geospatial insight, AI, software, and handover."
+        mobileDescription="Strategy, governance, platforms, analytics, AI, and software — built for institutional use."
       >
         <Button
           size="lg"
           variant="primary"
           onClick={() => onPageChange("case-studies")}
-          className="mt-10"
+          className="mt-8 md:mt-10"
         >
           See relevant work
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Button>
       </PageHero>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Disciplines</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Disciplines</div>
               <h2 className="text-h2 text-ink">Lifecycle practices, one delivery team.</h2>
             </div>
-            <p className="text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
+            <p className="hidden md:block text-body-lg text-ink-500 max-w-xl lg:col-span-6 lg:col-start-7">
               Serious work crosses the boundary between data strategy,
               governance, engineering, analysis, software, product, and field
               reality. Our services are structured around that overlap.
@@ -120,17 +121,23 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
 
           <div className="grid gap-px bg-line border border-line md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <article key={service.title} className="bg-bone p-8 lg:p-12">
-                <h3 className="text-h2 text-ink max-w-md">{service.title}</h3>
-                <p className="text-body text-ink-500 max-w-xl mt-6">
+              <article key={service.title} className="bg-bone p-6 md:p-8 lg:p-12">
+                <h3 className="text-h3 md:text-h2 text-ink max-w-md">{service.title}</h3>
+                <p className="text-body text-ink-500 max-w-xl mt-4 md:mt-6">
                   {service.description}
                 </p>
 
-                <div className="mt-10 border-t border-line pt-8">
-                  <div className="text-micro text-ink-500 mb-5">Typical work</div>
+                <div className="mt-8 md:mt-10 border-t border-line pt-6 md:pt-8">
+                  <div className="hidden md:block text-micro text-ink-500 mb-5">Typical work</div>
                   <ul className="grid gap-3">
-                    {service.features.map((feature) => (
-                      <li key={feature} className="flex gap-3 text-body text-ink-700">
+                    {service.features.map((feature, idx) => (
+                      <li
+                        key={feature}
+                        className={[
+                          "flex gap-3 text-body text-ink-700",
+                          idx >= 2 ? "hidden md:flex" : "",
+                        ].join(" ")}
+                      >
                         <CheckCircle
                           className="h-4 w-4 mt-1 flex-shrink-0"
                           aria-hidden="true"
@@ -141,7 +148,7 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
                   </ul>
                 </div>
 
-                <div className="mt-10 border-t border-line pt-8">
+                <div className="hidden md:block mt-10 border-t border-line pt-8">
                   <div className="text-micro text-ink-500 mb-5">Tools</div>
                   <div className="flex flex-wrap gap-2">
                     {service.tools.map((tool) => (
@@ -155,29 +162,31 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => onPageChange("case-studies")}
-                  className="link-action mt-10 text-body"
-                >
-                  See related work →
-                </button>
+                <span className="hidden md:inline-block mt-10">
+                  <button
+                    onClick={() => onPageChange("case-studies")}
+                    className="link-action text-body"
+                  >
+                    See related work →
+                  </button>
+                </span>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12">
+          <div className="grid gap-10 md:gap-12 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <div className="text-micro text-ink-500 mb-8">Named proof</div>
+              <div className="text-micro text-ink-500 mb-6 md:mb-8">Named proof</div>
               <p className="text-display-2 text-ink">
                 Kenya Ministry of Health deployment analytics connected HMIS
                 sources into real-time PCN visibility.
               </p>
             </div>
-            <div className="lg:col-span-6 lg:col-start-7">
+            <div className="hidden md:block lg:col-span-6 lg:col-start-7">
               <div className="divide-y divide-line border-y border-line">
                 {[
                   "HMIS sources connected for national reporting visibility.",
@@ -194,35 +203,35 @@ export function ServicesPage({ onPageChange }: ServicesPageProps) {
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-12 mb-20">
+          <div className="grid gap-8 md:gap-12 lg:grid-cols-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Engagement model</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Engagement model</div>
               <h2 className="text-h2 text-ink">Designed for handover.</h2>
             </div>
           </div>
 
-          <div className="grid gap-12 md:grid-cols-3">
+          <div className="grid gap-8 md:gap-12 md:grid-cols-3">
             {engagementModel.map((step) => (
-              <article key={step.title} className="border-t border-line pt-8">
-                <h3 className="text-h3 text-ink">{step.title}</h3>
-                <p className="text-body text-ink-500 mt-4">{step.body}</p>
+              <article key={step.title} className="border-t border-line pt-6 md:pt-8">
+                <h3 className="text-h4 md:text-h3 text-ink">{step.title}</h3>
+                <p className="text-body text-ink-500 mt-3 md:mt-4">{step.body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[720px] px-6 lg:px-12 text-center">
-          <div className="text-micro text-ink-500 mb-8">Next step</div>
+          <div className="text-micro text-ink-500 mb-6 md:mb-8">Next step</div>
           <h2 className="text-display-2 text-ink">Start with the evidence.</h2>
-          <p className="text-body-lg text-ink-500 mt-8">
+          <p className="hidden md:block text-body-lg text-ink-500 mt-8">
             Review the work first. Then we can talk about whether your data,
             analytics, geospatial, AI, or software initiative is a fit.
           </p>
-          <div className="mt-12 flex flex-col items-center gap-6">
+          <div className="mt-8 md:mt-12 flex flex-col items-center gap-5 md:gap-6">
             <Button
               size="lg"
               variant="primary"
