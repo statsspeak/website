@@ -140,6 +140,8 @@ export function Component({
           position: "absolute",
           inset: -displacementScale,
           filter: animationEnabled ? `url(#${id}) blur(4px)` : "none",
+          willChange: animationEnabled ? "transform, filter" : undefined,
+          transform: "translateZ(0)",
         }}
       >
         {animationEnabled && (

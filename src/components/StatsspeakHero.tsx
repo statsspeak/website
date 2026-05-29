@@ -16,6 +16,9 @@ function EtherealShadowScene() {
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
       data-testid="ethereal-shadow-scene"
+      // contain + GPU promotion so the constantly-repainting SVG filter
+      // doesn't invalidate paint outside this box on every scroll frame.
+      style={{ contain: "paint", willChange: "transform", transform: "translateZ(0)" }}
     >
       <EtheralShadow
         color="rgba(0, 172, 200, 0.72)"

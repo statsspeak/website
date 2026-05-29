@@ -44,7 +44,18 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ReactLenis root options={{ lerp: 0.08 }}>
+    <ReactLenis
+      root
+      options={{
+        // Snappier than 0.08 — converges to target faster, less perceived lag.
+        lerp: 0.1,
+        // Smooth wheel only; touch is best left to native momentum.
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 1,
+        touchMultiplier: 1.5,
+      }}
+    >
       <AppContent />
     </ReactLenis>
   );
