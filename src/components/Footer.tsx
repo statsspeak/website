@@ -37,24 +37,24 @@ export function Footer({ onPageChange }: FooterProps) {
       </div>
       <div className="absolute inset-0 statsspeak-footer-scrim" aria-hidden="true" />
 
-      <div className="relative mx-auto max-w-[1280px] px-6 py-24 lg:px-12 lg:py-32">
-        <div className="grid gap-16 border-b border-bone/10 pb-16 lg:grid-cols-12 lg:pb-24">
+      <div className="relative mx-auto max-w-[1280px] px-6 py-16 md:py-24 lg:px-12 lg:py-32">
+        <div className="grid gap-10 md:gap-16 border-b border-bone/10 pb-10 md:pb-16 lg:grid-cols-12 lg:pb-24">
           <div className="lg:col-span-5">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6 md:mb-8">
               <StatsSpeakLogo width={28} height={38} />
               <span className="text-h4 font-sans text-bone">StatsSpeak</span>
             </div>
-            <p className="text-body text-ink-300 max-w-md">
+            <p className="hidden md:block text-body text-ink-300 max-w-md">
               A data consultancy and software development practice serving ministries, NGOs, and growth-stage enterprises across East Africa.
             </p>
           </div>
 
           <div className="lg:col-span-6 lg:col-start-7">
-            <div className="text-micro text-logo-teal mb-8">Next engagement</div>
+            <div className="text-micro text-logo-teal mb-6 md:mb-8">Next engagement</div>
             <p className="max-w-2xl text-display-2 text-bone">
               Bring us the problem. We will help find the right instrument.
             </p>
-            <div className="mt-10">
+            <div className="mt-8 md:mt-10">
               <Button
                 size="lg"
                 variant="secondary"
@@ -68,10 +68,10 @@ export function Footer({ onPageChange }: FooterProps) {
           </div>
         </div>
 
-        <div className="grid gap-16 pt-16 lg:grid-cols-12 lg:pt-20">
+        <div className="grid gap-10 md:gap-16 pt-10 md:pt-16 lg:grid-cols-12 lg:pt-20">
           <div className="lg:col-span-5">
-            <div className="text-micro text-ink-300 mb-6">Contact</div>
-            <ul className="mt-10 space-y-4 text-caption text-ink-300">
+            <div className="text-micro text-ink-300 mb-4 md:mb-6">Contact</div>
+            <ul className="mt-4 md:mt-10 space-y-4 text-caption text-ink-300">
               <li className="flex items-start gap-3">
                 <Mail className="h-4 w-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
                 <a href="mailto:info@statsspeak.co.ke" className="footer-link">
@@ -93,7 +93,7 @@ export function Footer({ onPageChange }: FooterProps) {
 
           {/* Sitemap */}
           <div className="lg:col-span-3 lg:col-start-7">
-            <div className="text-micro text-ink-300 mb-6">Index</div>
+            <div className="text-micro text-ink-300 mb-4 md:mb-6">Index</div>
             <ul className="space-y-3">
               {FOOTER_PAGES.map((item) => (
                 <li key={item.id}>
@@ -108,8 +108,8 @@ export function Footer({ onPageChange }: FooterProps) {
             </ul>
           </div>
 
-          {/* Disciplines */}
-          <div className="lg:col-span-3">
+          {/* Disciplines — desktop only; redundant on mobile (mirrors Services) */}
+          <div className="hidden md:block lg:col-span-3">
             <div className="text-micro text-ink-300 mb-6">Disciplines</div>
             <ul className="space-y-3 text-body text-bone">
               {DISCIPLINES.map((discipline) => (
@@ -119,11 +119,11 @@ export function Footer({ onPageChange }: FooterProps) {
           </div>
         </div>
 
-        <div className="mt-24 pt-8 border-t border-ink-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="mt-12 md:mt-24 pt-6 md:pt-8 border-t border-ink-700 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
           <p className="text-caption text-ink-300">
             © {year} StatsSpeak Limited. Nairobi, Kenya.
           </p>
-          <div className="flex gap-8 text-caption text-ink-300">
+          <div className="flex gap-6 md:gap-8 text-caption text-ink-300">
             <a href="#" className="footer-link">Privacy</a>
             <a href="#" className="footer-link">Terms</a>
           </div>

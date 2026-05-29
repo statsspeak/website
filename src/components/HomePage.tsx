@@ -79,16 +79,16 @@ export function HomePage({ onPageChange }: HomePageProps) {
       />
 
       {/* ---------- Institutional clients (logo wall) ---------- */}
-      <section className="py-24 border-t border-line">
+      <section className="py-16 md:py-24 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="text-micro text-ink-500 mb-12">Institutional clients</div>
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-12 gap-y-10 items-center">
+          <div className="text-micro text-ink-500 mb-8 md:mb-12">Institutional clients</div>
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-8 md:gap-x-12 md:gap-y-10 items-center">
             {partners.map((p) => (
               <li key={p.name} className="flex items-center justify-center">
                 <ImageWithFallback
                   src={p.logo}
                   alt={p.name}
-                  className="h-8 w-auto max-w-[140px] object-contain"
+                  className="h-7 md:h-8 w-auto max-w-[120px] md:max-w-[140px] object-contain"
                   style={{ filter: "grayscale(1) brightness(0.6)", opacity: 0.85 }}
                 />
               </li>
@@ -98,14 +98,14 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       {/* ---------- Disciplines ---------- */}
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid lg:grid-cols-12 gap-12 mb-20">
+          <div className="grid lg:grid-cols-12 gap-8 md:gap-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Practice</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Practice</div>
               <h2 className="text-h2 text-ink">The full data lifecycle, one team.</h2>
             </div>
-            <div className="lg:col-span-7 lg:col-start-6">
+            <div className="hidden md:block lg:col-span-7 lg:col-start-6">
               <p className="text-body-lg text-ink-500 max-w-xl">
                 Most engagements span more than one part of the lifecycle. We
                 assemble the team to fit the problem — not the other way round.
@@ -117,16 +117,18 @@ export function HomePage({ onPageChange }: HomePageProps) {
             {disciplines.map((d) => (
               <article
                 key={d.name}
-                className="bg-bone p-10 lg:p-14 flex flex-col gap-6 transition-colors duration-200 hover:bg-paper"
+                className="bg-bone p-6 md:p-10 lg:p-14 flex flex-col gap-4 md:gap-6 transition-colors duration-200 hover:bg-paper"
               >
-                <h3 className="text-h2 text-ink">{d.name}</h3>
+                <h3 className="text-h3 md:text-h2 text-ink">{d.name}</h3>
                 <p className="text-body text-ink-500 max-w-md">{d.summary}</p>
-                <button
-                  onClick={() => onPageChange("services")}
-                  className="link-action self-start text-caption mt-2"
-                >
-                  See related work →
-                </button>
+                <span className="hidden md:inline-block self-start mt-2">
+                  <button
+                    onClick={() => onPageChange("services")}
+                    className="link-action text-caption"
+                  >
+                    See related work →
+                  </button>
+                </span>
               </article>
             ))}
           </div>
@@ -134,34 +136,34 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       {/* ---------- Proof statement ---------- */}
-      <section className="py-32 lg:py-40 border-t border-line bg-paper">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line bg-paper">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid lg:grid-cols-12 gap-12 items-end">
+          <div className="grid lg:grid-cols-12 gap-10 md:gap-12 items-end">
             <div className="lg:col-span-7">
-              <div className="text-micro text-ink-500 mb-8">Track record</div>
+              <div className="text-micro text-ink-500 mb-6 md:mb-8">Track record</div>
               <p className="text-display-2 text-ink leading-[1.05]">
                 Institutional clients include AMREF Health Africa, the Kenya
                 Ministry of Health, LVCT Health, and Pezesha.
               </p>
             </div>
             <div className="lg:col-span-4 lg:col-start-9 divide-y divide-line border-y border-line">
-              <div className="py-6">
-                <div className="text-h3 text-ink">Nairobi-founded consultancy</div>
-                <div className="text-caption text-ink-500 mt-2">
+              <div className="py-5 md:py-6">
+                <div className="text-h4 md:text-h3 text-ink">Nairobi-founded consultancy</div>
+                <div className="hidden md:block text-caption text-ink-500 mt-2">
                   Built for East African institutions that need judgement, not
                   just dashboards.
                 </div>
               </div>
-              <div className="py-6">
-                <div className="text-h3 text-ink">Lifecycle coverage</div>
-                <div className="text-caption text-ink-500 mt-2">
+              <div className="py-5 md:py-6">
+                <div className="text-h4 md:text-h3 text-ink">Lifecycle coverage</div>
+                <div className="hidden md:block text-caption text-ink-500 mt-2">
                   Lifecycle disciplines: strategy, governance, platforms,
                   analytics, geospatial insight, AI, software, and data products.
                 </div>
               </div>
-              <div className="py-6">
-                <div className="text-h3 text-ink">Institutional delivery</div>
-                <div className="text-caption text-ink-500 mt-2">
+              <div className="py-5 md:py-6">
+                <div className="text-h4 md:text-h3 text-ink">Institutional delivery</div>
+                <div className="hidden md:block text-caption text-ink-500 mt-2">
                   GRID3-informed health-service planning, Ministry of Health
                   analytics, and enterprise platform work.
                 </div>
@@ -172,19 +174,19 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       {/* ---------- Approach ---------- */}
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="grid lg:grid-cols-12 gap-12 mb-20">
+          <div className="grid lg:grid-cols-12 gap-8 md:gap-12 mb-12 md:mb-20">
             <div className="lg:col-span-4">
-              <div className="text-micro text-ink-500 mb-6">Approach</div>
+              <div className="text-micro text-ink-500 mb-4 md:mb-6">Approach</div>
               <h2 className="text-h2 text-ink">How we work.</h2>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-x-16 gap-y-16 max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-10 md:gap-y-16 max-w-5xl">
             {approach.map((a) => (
-              <article key={a.title} className="flex flex-col gap-4">
-                <h3 className="text-h3 text-ink">{a.title}</h3>
+              <article key={a.title} className="flex flex-col gap-3 md:gap-4">
+                <h3 className="text-h4 md:text-h3 text-ink">{a.title}</h3>
                 <p className="text-body text-ink-500">{a.body}</p>
               </article>
             ))}
@@ -193,19 +195,19 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       {/* ---------- Quiet CTA ---------- */}
-      <section className="py-32 lg:py-40 border-t border-line">
+      <section className="py-20 md:py-32 lg:py-40 border-t border-line">
         <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
           <div className="max-w-2xl">
-            <div className="text-micro text-ink-500 mb-8">Engagements</div>
+            <div className="text-micro text-ink-500 mb-6 md:mb-8">Engagements</div>
             <p className="text-display-2 text-ink">
               We take on a small number of engagements each year.
             </p>
-            <p className="text-body-lg text-ink-500 mt-8 max-w-xl">
+            <p className="hidden md:block text-body-lg text-ink-500 mt-8 max-w-xl">
               If your organisation is weighing a data, analytics, geospatial, AI,
               or software initiative, an introductory conversation costs nothing
               and will give you a clearer view of what we can and cannot help with.
             </p>
-            <div className="flex flex-wrap items-center gap-x-8 gap-y-4 mt-12">
+            <div className="flex flex-wrap items-center gap-x-6 md:gap-x-8 gap-y-4 mt-8 md:mt-12">
               <Button size="lg" variant="primary" onClick={() => onPageChange("contact")}>
                 Book an introduction
                 <ArrowRight className="h-4 w-4" />
