@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { PageHero } from "./PageHero";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
+import type { PageChangeHandler } from "../pages";
 
 import amref from "../assets/case-studies/amref.jpg";
 import twiga from "../assets/case-studies/twiga.png";
@@ -10,7 +11,7 @@ import featured from "../assets/case-studies/featured-post.jpg";
 import MoH from "../assets/case-studies/MoH (1).png";
 
 interface CaseStudiesPageProps {
-  onPageChange: (page: string) => void;
+  onPageChange: PageChangeHandler;
 }
 
 const caseStudies = [

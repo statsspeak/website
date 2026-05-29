@@ -12,9 +12,10 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
+import type { PageChangeHandler } from "../pages";
 
 interface ContactPageProps {
-  onPageChange: (page: string) => void;
+  onPageChange: PageChangeHandler;
 }
 
 const contactInfo = [

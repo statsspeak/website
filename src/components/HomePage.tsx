@@ -2,6 +2,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
 import { StatsspeakHero } from "./StatsspeakHero";
+import type { PageChangeHandler } from "../pages";
 import amref from "../assets/logos/amref.png";
 import digitax from "../assets/logos/digitax.png";
 import lipachat from "../assets/logos/lipachat.png";
@@ -10,7 +11,7 @@ import moh from "../assets/logos/moh.png";
 import pezesha from "../assets/logos/pezesha.png";
 
 interface HomePageProps {
-  onPageChange: (page: string) => void;
+  onPageChange: PageChangeHandler;
 }
 
 const disciplines = [

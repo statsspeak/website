@@ -49,7 +49,7 @@ export function StatsspeakHero({
       <div className="relative mx-auto max-w-[1280px] px-6 lg:px-12">
         <div className="flex min-h-[420px] flex-col items-center justify-center text-center animate-fade-in-up lg:min-h-[520px]">
           <div className="text-micro text-ink-500 mb-8 md:mb-10">
-            Data consultancy · Software
+            Data infrastructure · Software Development
           </div>
           <h1
             id="statsspeak-hero-title"
@@ -75,5 +75,3 @@ export function StatsspeakHero({
     </section>
   );
 }
-
-export { EtherealShadowScene };
