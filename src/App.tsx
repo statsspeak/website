@@ -28,7 +28,7 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-bone text-ink-800">
+    <div className="min-h-screen bg-bone text-ink-800 pb-[calc(env(safe-area-inset-bottom)+56px)] md:pb-0">
       <ScrollProgressBar />
       <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
       <PageTransition pageKey={currentPage}>

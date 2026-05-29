@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
 import StatsSpeakLogo from "./logo";
 
 interface NavigationProps {
@@ -8,12 +7,11 @@ interface NavigationProps {
 }
 
 /**
- * Top navigation — see DESIGN.md §5.5.
- * Bone surface (transparent at top, bone with hairline on scroll).
- * Logo (acts as Home) + 4 items. No pills, no shadows.
+ * Navigation — see DESIGN.md §5.5.
+ * Desktop: top bar with brand + horizontal items.
+ * Mobile: top bar with brand only; a fixed bottom tab bar carries the items.
  */
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -33,26 +31,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
 
   const navigate = (id: string) => {
     onPageChange(id);
-    setIsMenuOpen(false);
   };
-
-  useEffect(() => {
-    // Prevent body scroll when the mobile menu is open
-    if (typeof document !== "undefined") {
-      document.body.style.overflow = isMenuOpen ? "hidden" : "";
-    }
-    return () => {
-      if (typeof document !== "undefined") document.body.style.overflow = "";
-    };
-  }, [isMenuOpen]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isMenuOpen) setIsMenuOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [isMenuOpen]);
 
   return (
     <>
@@ -65,40 +44,69 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
             : "bg-transparent border-b border-transparent",
         ].join(" ")}
       >
+        <nav
+          className={[
+            "mx-auto max-w-[1280px] px-6 lg:px-12",
+            "flex items-center justify-between",
+            scrolled ? "h-16" : "h-20",
+            "transition-[height] duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
+          ].join(" ")}
+          aria-label="Primary"
+        >
+          {/* Brand → Home */}
+          <button
+            onClick={() => navigate("home")}
+            className="flex items-center gap-3 text-ink transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0"
+            aria-label="StatsSpeak — Home"
+          >
+            <StatsSpeakLogo width={24} height={32} />
+            <span className="text-h4 font-sans font-semibold text-ink tracking-tight">
+              Statsspeak
+            </span>
+          </button>
+
+          {/* Desktop nav */}
+          <ul className="hidden md:flex items-center gap-10">
+            {menuItems.map((item) => {
+              const active = currentPage === item.id;
+              return (
+                <li key={item.id}>
+                  <button
+                    onClick={() => navigate(item.id)}
+                    className={[
+                      "text-caption font-medium transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0",
+                      active
+                        ? "text-marine underline underline-offset-8 decoration-1 decoration-marine"
+                        : "text-ink-700 hover:text-marine-700",
+                    ].join(" ")}
+                    aria-current={active ? "page" : undefined}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      </header>
+
+      {/* Mobile bottom tab bar */}
       <nav
-        className={[
-          "mx-auto max-w-[1280px] px-6 lg:px-12",
-          "flex items-center justify-between",
-          scrolled ? "h-16" : "h-20",
-          "transition-[height] duration-200 ease-[cubic-bezier(0.2,0,0,1)]",
-        ].join(" ")}
+        className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-bone/95 backdrop-blur-sm border-t border-line pb-[env(safe-area-inset-bottom)]"
         aria-label="Primary"
       >
-        {/* Brand → Home */}
-        <button
-          onClick={() => navigate("home")}
-          className="flex items-center gap-3 text-ink transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0"
-          aria-label="StatsSpeak — Home"
-        >
-          <StatsSpeakLogo width={24} height={32} />
-          <span className="text-h4 font-sans font-semibold text-ink tracking-tight">
-            Statsspeak
-          </span>
-        </button>
-
-        {/* Desktop nav */}
-        <ul className="hidden md:flex items-center gap-10">
+        <ul className="flex items-stretch justify-between px-2">
           {menuItems.map((item) => {
             const active = currentPage === item.id;
             return (
-              <li key={item.id}>
+              <li key={item.id} className="flex-1">
                 <button
                   onClick={() => navigate(item.id)}
                   className={[
-                    "text-caption font-medium transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-0.5 active:translate-y-0",
+                    "w-full py-3 text-caption font-medium transition-[color,transform] duration-200 ease-[cubic-bezier(0.2,0,0,1)] active:translate-y-0",
                     active
                       ? "text-marine underline underline-offset-8 decoration-1 decoration-marine"
-                      : "text-ink-700 hover:text-marine-700",
+                      : "text-ink-700",
                   ].join(" ")}
                   aria-current={active ? "page" : undefined}
                 >
@@ -108,71 +116,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
             );
           })}
         </ul>
-
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setIsMenuOpen((o) => !o)}
-          className="md:hidden p-2 -mr-2 text-ink transition-[color,transform] duration-200 hover:-translate-y-0.5 hover:text-marine active:translate-y-0"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={isMenuOpen}
-        >
-          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
       </nav>
-
-      </header>
-
-      {/* Mobile drawer rendered as a sibling so it isn't trapped inside header's stacking context */}
-      {isMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 z-50 bg-ink/60"
-          onClick={() => setIsMenuOpen(false)}
-          role="presentation"
-        >
-          <div
-            className="ml-auto h-full w-[min(88vw,360px)] bg-ink px-6 py-6 text-bone"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="mb-10 flex items-center justify-between">
-              <button
-                onClick={() => navigate("home")}
-                className="flex items-center gap-3 text-bone transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0"
-                aria-label="StatsSpeak — Home"
-              >
-                <StatsSpeakLogo width={24} height={32} />
-                <span className="text-h4 font-sans font-semibold">Statsspeak</span>
-              </button>
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="p-2 -mr-2 text-bone transition-[color,transform] duration-200 hover:-translate-y-0.5 hover:text-logo-teal active:translate-y-0"
-                aria-label="Close menu"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <ul className="space-y-1">
-            {menuItems.map((item) => {
-              const active = currentPage === item.id;
-              return (
-                <li key={item.id}>
-                  <button
-                    onClick={() => navigate(item.id)}
-                    className={[
-                      "block w-full py-4 text-left text-h3 transition-[color,transform] duration-200 hover:translate-x-1 active:translate-x-0",
-                      active ? "text-logo-teal underline underline-offset-8" : "text-ink-300 hover:text-bone",
-                    ].join(" ")}
-                    aria-current={active ? "page" : undefined}
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              );
-            })}
-            </ul>
-          </div>
-        </div>
-      )}
     </>
   );
 }
