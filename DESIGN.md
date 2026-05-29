@@ -213,6 +213,8 @@ We use a strict 4-px scale with a tight inventory. **Do not invent intermediate 
 
 Section spacing follows a 3-step cadence: **compact (96) · default (128) · editorial (160)**. We never use `min-h-screen` to force-fill. Sections size to content.
 
+On mobile the cadence is **compressed by roughly one step**: a section that is `py-32` (128 px) at the `md` breakpoint and `py-40` (160 px) at `lg` runs at `py-20` (80 px) below `md`. The canonical Tailwind expression is `py-20 md:py-32 lg:py-40`. The rhythm survives — there is still hairline → whitespace → heading → content — but at a register that fits a 5-inch phone. See §13.4.
+
 ### 4.4 Radii
 
 | Token | px | Use |
@@ -286,7 +288,7 @@ Forms are the most over-decorated component on most sites. Ours are the quietest
 - Background: `--bone` (or transparent over hero, with a 1 px hairline on scroll).
 - Logo: `--ink` at 24 px height.
 - Links: `text-caption`, weight 500, `text-ink-700`. Active page: `text-marine` with a 1 px underline at `underline-offset-8`.
-- Mobile: slide-in drawer from the right, `--ink` surface, `--bone` text. No hamburger animation gimmicks.
+- Mobile: the top bar carries the brand only; nav items move to a **fixed bottom tab bar** (`--bone/95` with backdrop blur, hairline top rule, `safe-area-inset-bottom` padding). The active item gets the same `--marine` underline as desktop. No hamburger, no drawer, no animation gimmicks. The page reserves `pb-[calc(env(safe-area-inset-bottom)+56px)]` below `md` so the tab bar never covers content.
 - Scroll behaviour: top bar collapses from 80 px → 64 px height with a hairline appearing below it. 200 ms transition.
 
 ### 5.6 Modals / Dialogs
@@ -583,10 +585,10 @@ This section records the shipped structure as of 2026-05-28. It replaces the old
 
 ### 13.1 Page structure
 
-- Home uses [src/components/StatsspeakHero.tsx](src/components/StatsspeakHero.tsx): centred editorial type, two CTAs, and the animated ethereal shadow background.
+- Home uses [src/components/StatsspeakHero.tsx](src/components/StatsspeakHero.tsx): centred editorial type, two CTAs, and the animated ethereal shadow background. Both heroes accept a `mobileDescription` prop so the long desktop body sentence can be replaced with a single declarative line below `md`.
 - Services, Work, About, and Contact use [src/components/PageHero.tsx](src/components/PageHero.tsx): shared page-header layout, matching teal atmosphere, one page-level CTA where appropriate.
-- Content sections remain full-width editorial bands with `py-32 lg:py-40`, hairline rules, and restrained `--bone` / `--paper` alternation.
-- Footer uses an ink surface, static ethereal shadow, a final CTA, then contact/sitemap/disciplines.
+- Content sections remain full-width editorial bands with `py-20 md:py-32 lg:py-40`, hairline rules, and restrained `--bone` / `--paper` alternation. (See §4.3 and §13.4 for the mobile cadence.)
+- Footer uses an ink surface, static ethereal shadow, a final CTA, then contact/sitemap/disciplines. On mobile the Disciplines column is hidden because it mirrors the primary nav and reads as filler.
 
 ### 13.2 Interaction system
 
@@ -601,6 +603,25 @@ This section records the shipped structure as of 2026-05-28. It replaces the old
 2. Move the logo-wall inline grayscale filter into a `.logo-monochrome` utility.
 3. Standardise typographic arrows versus lucide `ArrowRight`; the current site still uses both.
 4. Add dates or rename the About milestones so they do not read as timeline claims without chronology.
+
+### 13.4 Mobile editorial register
+
+The mobile view is not a narrower desktop. It is a separately authored composition that obeys the same design principles (§1.3) at a phone-shaped register. **All mobile-only changes are gated at the `md:` Tailwind breakpoint (≥768 px) so desktop stays byte-identical.**
+
+Rules of record:
+
+1. **Compressed vertical rhythm.** Sections use `py-20 md:py-32 lg:py-40` — roughly 38% less vertical space below `md`. Card padding follows: `p-6 md:p-10 lg:p-14`.
+2. **Heroes get a mobile description.** `StatsspeakHero` and `PageHero` both accept an optional `mobileDescription` prop. The desktop paragraph is preserved; the mobile sentence is one declarative line, ≤ 12 words, in the same `text-body-lg` style. If the desktop description is already short, the prop is omitted and the same copy renders at both breakpoints.
+3. **Secondary intro paragraphs are hidden.** The right-column "context" paragraph that sits next to a section heading on desktop (e.g. *"Most engagements span more than one part of the lifecycle…"*) renders `hidden md:block`. On a phone the heading carries the section.
+4. **Per-card repeat CTAs are hidden.** The "See related work →" link that appears under every discipline / service card, and the "Request a case note →" link under every case study, are desktop-only. Mobile relies on the section-level CTA at the foot of the band. Because `.link-action` forces `display: inline-flex`, the visibility toggle is on a wrapping `<span className="hidden md:inline-block">`, not on the button itself.
+5. **Tool / specialty tag clouds are hidden.** Service-card tool tags, case-study tool tags, and leadership-card specialty tags are desktop-only. They are metadata for someone who is already reading deeply; on a phone they read as visual noise.
+6. **Case studies compress.** Figure caption hidden. Duration chip hidden (category chip remains). Challenge/Response columns hidden (the description already covers the same ground). Evidence list capped at two bullets (`idx >= 2 ? "hidden md:list-item" : ""`).
+7. **Milestones become a title-only timeline.** The About "Journey" block hides each milestone description on mobile. The titles read as editorial dividers between hairlines — closer to a publication's table of contents than a marketing list.
+8. **Leadership cards compress.** Photo + name + role only. Bio paragraph, figure caption, and specialty tags are desktop-only.
+9. **Footer compresses.** Brand description paragraph hidden. Disciplines column hidden (mirrors primary nav). Padding follows the §4.3 mobile cadence.
+10. **The trailing proofs strip on Work is hidden on mobile.** It duplicates the Home track-record block; readers do not need two copies on a phone.
+
+What does **not** change on mobile: the type scale (§2.2 sizes already fluid via `clamp`), the colour palette, hairline weights, focus rings, iconography, the ethereal shadow system, or the trust-signal hierarchy (§11.4). The mobile composition is shorter, not different.
 
 ---
 
@@ -663,7 +684,7 @@ The brands this site is measured against in 2026: **McKinsey & Company**, **Bain
 3. **Named proof beats adjective proof.** Replace any "leading", "world-class", "innovative" with a client name, a number, or a date.
 4. **The page is read top to bottom once.** No flyouts, no mega-menus, no carousels, no on-load modals. The visitor never has to *navigate* to be persuaded.
 5. **Trust signal hierarchy:** proposition → named outcome → wordmarks → case study → CTA. If a section does not advance one of those five, it is removed.
-6. **Mobile is editorial too.** Display-1 must remain legible at 360 px; CTAs are full-width below 640 px; tap targets ≥ 44 × 44 px.
+6. **Mobile is editorial too.** Display-1 must remain legible at 360 px; tap targets ≥ 44 × 44 px; the navigation lives in a fixed bottom tab bar (§5.5), not a hidden drawer. The mobile composition follows §13.4: a shorter hero sentence, no repeated per-card CTAs, no tag clouds, milestones as a title-only timeline, footer Disciplines column dropped. The phone view is a separately authored composition at a phone-shaped register — not a narrower desktop.
 
 ### 15.5 Concrete implementation tasks
 
@@ -678,4 +699,8 @@ These are the next-pass commits, ranked. They derive directly from §15.3.
 
 ---
 
-_Last revised: 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the canvas direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim; iterated §6.7 across three canvas forms (Form C ethereal SVG shadow — current default; Form A noise-displaced wireframe icosahedron — documented alternate; Form B sparse constellation — documented fallback) after evaluating two external generative-art hero components; relaxed §6.7 Form C drift caps after the first visibly-animated revision was still imperceptible; **§6.7 Form C now uses CSS-keyframe orbital motion (two stacked closed-loop orbits at non-harmonic periods) instead of `requestAnimationFrame`** — sine-shaped motion was creating zero-velocity pauses at the extremes that read as abrupt start/stop, and `setAttribute` in a hot loop was creating filter-recompute jitter; **colour gradient now interpolates `--marine` (valleys) → `--logo-teal` (peaks)** to carry the brand teal forward — §3.2 amended with a single hero-only carve-out for `--logo-teal`; **hero layout switched from left-weighted 8/12 grid to a centred flex column** — radial mask, soft top/bottom scrim, centred type. This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
+_Last revised: 2026-05-29 — added §13.4 (Mobile editorial register) and rewrote §15.4 #6 with concrete mobile rules after the mobile refresh PR; revised §4.3 to acknowledge the compressed mobile cadence (`py-20 md:py-32 lg:py-40`); updated §5.5 to record the shipped bottom tab bar (the slide-in drawer it replaced is gone); updated §13.1 to note the responsive section padding, the `mobileDescription` hero prop, and the footer Disciplines column being hidden on mobile._
+
+_Previously, 2026-05-28 — added §6.7 (hero canvas carve-out), §9.5 (brand-mark casing), §15 (premium positioning audit), CTA sentence-case rule; revised §9.1 headline guidance and §13.2 P5 hero migration item to reflect the canvas direction; raised §6.7 visibility caps after the hero canvas read as invisible against the scrim; iterated §6.7 across three canvas forms (Form C ethereal SVG shadow — current default; Form A noise-displaced wireframe icosahedron — documented alternate; Form B sparse constellation — documented fallback) after evaluating two external generative-art hero components; relaxed §6.7 Form C drift caps after the first visibly-animated revision was still imperceptible; **§6.7 Form C now uses CSS-keyframe orbital motion (two stacked closed-loop orbits at non-harmonic periods) instead of `requestAnimationFrame`** — sine-shaped motion was creating zero-velocity pauses at the extremes that read as abrupt start/stop, and `setAttribute` in a hot loop was creating filter-recompute jitter; **colour gradient now interpolates `--marine` (valleys) → `--logo-teal` (peaks)** to carry the brand teal forward — §3.2 amended with a single hero-only carve-out for `--logo-teal`; **hero layout switched from left-weighted 8/12 grid to a centred flex column** — radial mask, soft top/bottom scrim, centred type._
+
+_This document supersedes every prior styling decision in the codebase. Where this document and the code disagree, the document is correct and the code is a bug._
