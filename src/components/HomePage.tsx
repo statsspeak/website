@@ -78,17 +78,29 @@ export function HomePage({ onPageChange }: HomePageProps) {
         onExploreSolutions={() => onPageChange("case-studies")}
       />
 
-      {/* ---------- Institutional clients (logo wall) ---------- */}
-      <section className="py-16 md:py-24 border-t border-line">
-        <div className="mx-auto max-w-[1280px] px-6 lg:px-12">
-          <div className="text-micro text-ink-500 mb-8 md:mb-12">Institutional clients</div>
-          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-8 md:gap-x-12 md:gap-y-10 items-center">
-            {partners.map((p) => (
-              <li key={p.name} className="flex items-center justify-center">
+      {/* ---------- Institutional clients (marquee) ---------- */}
+      <section className="py-16 md:py-24 border-t border-line overflow-hidden">
+        <div className="mx-auto max-w-[1280px] px-6 lg:px-12 mb-8 md:mb-12">
+          <div className="text-micro text-ink-500">Institutional clients</div>
+        </div>
+        <div
+          className="marquee-mask relative overflow-hidden"
+          role="region"
+          aria-label="Institutional clients"
+        >
+          <ul
+            className="marquee-track flex w-max items-center gap-12 md:gap-20"
+          >
+            {[...partners, ...partners].map((p, i) => (
+              <li
+                key={`${p.name}-${i}`}
+                className="shrink-0"
+                aria-hidden={i >= partners.length || undefined}
+              >
                 <ImageWithFallback
                   src={p.logo}
-                  alt={p.name}
-                  className="h-7 md:h-8 w-auto max-w-[120px] md:max-w-[140px] object-contain"
+                  alt={i >= partners.length ? "" : p.name}
+                  className="h-7 md:h-8 w-auto max-w-[140px] md:max-w-[160px] object-contain"
                   style={{ filter: "grayscale(1) brightness(0.6)", opacity: 0.85 }}
                 />
               </li>

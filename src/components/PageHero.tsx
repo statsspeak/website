@@ -12,7 +12,12 @@ interface PageHeroProps {
 export function PageHero({ eyebrow, title, description, mobileDescription, children }: PageHeroProps) {
   return (
     <section className="relative isolate overflow-hidden border-b border-line bg-bone pt-28 pb-16 md:pt-40 md:pb-32 lg:pt-56 lg:pb-40">
-      <div className="pointer-events-none absolute inset-0 opacity-60" aria-hidden="true">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        aria-hidden="true"
+        // Isolate the SVG filter's repaints from the rest of the page.
+        style={{ contain: "paint", willChange: "transform", transform: "translateZ(0)" }}
+      >
         <EtheralShadow
           color="rgba(0, 172, 200, 0.42)"
           animation={{ scale: 72, speed: 58 }}

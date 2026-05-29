@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StatsSpeakLogo from "./logo";
 import { PAGES, type Page, type PageChangeHandler } from "../pages";
 
@@ -20,9 +20,18 @@ const NAV_EASE = "cubic-bezier(0.32,0.72,0,1)";
 
 export function Navigation({ currentPage, onPageChange }: NavigationProps) {
   const [scrolled, setScrolled] = useState(false);
+  const scrolledRef = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      // Only react when we cross the 8px threshold — avoids a React render
+      // on every Lenis scroll frame.
+      const next = window.scrollY > 8;
+      if (next !== scrolledRef.current) {
+        scrolledRef.current = next;
+        setScrolled(next);
+      }
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -57,8 +66,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           {/* Brand → Home */}
           <button
             onClick={() => navigate("home")}
-            className="flex items-center gap-3 text-ink will-change-transform transition-transform duration-300 hover:-translate-y-0.5 active:translate-y-0"
-            style={{ transitionTimingFunction: NAV_EASE }}
+            className="flex items-center gap-3 text-ink"
             aria-label="StatsSpeak — Home"
           >
             <StatsSpeakLogo width={24} height={32} />
@@ -76,9 +84,8 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                   <button
                     onClick={() => navigate(item.id)}
                     className={[
-                      "group relative inline-block text-caption font-medium will-change-transform",
-                      "transition-[color,transform] duration-300",
-                      "hover:-translate-y-0.5 active:translate-y-0",
+                      "group relative inline-block text-caption font-medium",
+                      "transition-colors duration-300",
                       active ? "text-marine" : "text-ink-700 hover:text-marine",
                     ].join(" ")}
                     style={{ transitionTimingFunction: NAV_EASE }}
